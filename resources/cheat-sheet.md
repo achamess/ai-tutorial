@@ -443,7 +443,7 @@ claude "do something"  # one-shot command
 ## Key Links
 
 ### Learning resources
-- **Think Python** (free): https://greenteapress.com/thinkpython2/
+- **Think Python** (free): https://allendowney.github.io/ThinkPython/
 - **Missing Semester** (MIT): https://missing.csail.mit.edu/
 - **Python Data Science Handbook**: https://jakevdp.github.io/PythonDataScienceHandbook/
 
