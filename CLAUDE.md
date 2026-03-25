@@ -5,19 +5,20 @@ Interactive tutorial teaching Alex (pain biologist) to become a master AI user.
 Not about building AI — about leveraging AI tools effectively for research.
 
 ## Structure
-12 modules (38 notebooks total) in numbered directories:
-- 00-getting-started/ (1 notebook — preflight check)
+13 modules (41 notebooks total) in numbered directories:
+- 00-getting-started/ (2 notebooks — philosophy + preflight check)
 - 01-python-foundations/ (4 notebooks — includes data structures)
 - 02-your-computer/ (4 notebooks — includes AI toolkit guide)
 - 03-how-llms-work/ (3 notebooks)
 - 04-prompt-engineering/ (3 notebooks)
 - 05-mastering-claude-code/ (4 notebooks — includes setup & best practices)
 - 06-systems-thinking/ (3 notebooks)
-- 07-math-you-need/ (3 notebooks)
-- 08-claude-api/ (3 notebooks)
-- 09-data-skills/ (4 notebooks — includes databases intro)
-- 10-ai-research-workflows/ (3 notebooks)
-- 11-ai-landscape/ (3 notebooks)
+- 07-cloud-and-hpc/ (3 notebooks — SSH, SLURM, cloud computing)
+- 08-math-you-need/ (3 notebooks)
+- 09-claude-api/ (3 notebooks)
+- 10-data-skills/ (4 notebooks — includes databases intro)
+- 11-ai-research-workflows/ (3 notebooks)
+- 12-ai-landscape/ (3 notebooks)
 - resources/ — cheat sheet, glossary, references (downloaded Anthropic docs, external links index)
 - sessions/ — session logs with full verbatim conversation capture
 
@@ -35,7 +36,8 @@ Not about building AI — about leveraging AI tools effectively for research.
 - Every notebook should be self-contained and runnable top-to-bottom
 - Never use fake citations or author names — use obvious placeholders or real references
 - Cite sources liberally — link to docs, papers, books. Add Further Reading sections.
-- Cross-reference Think Python and MIT Missing Semester throughout
+- Cross-reference Think Python, Think Stats, and MIT Missing Semester throughout
+- Use standardized callout system: ⚠️ Warning, 💡 Tip, 🔑 Key concept, 🤔 Decision point (with tables), 📖 Deep dive (collapsible)
 - Include Mermaid/matplotlib visualizations for system diagrams and data flows
 - Edit log at the bottom of every notebook tracking all changes
 - Commit after substantive changes (new modules, major updates, end of session)

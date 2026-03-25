@@ -1,26 +1,26 @@
 # Session 2 — 2026-03-25 (Full Transcript)
 
 ## Session Overview
-Completion session. Finished all remaining build items from Session 1, then added substantial new content and infrastructure. Tutorial is now complete, QA'd, cross-platform, and published to GitHub.
+Completion and polish session. Finished all build items from Session 1, added substantial new content (HPC module, philosophy doc, cross-platform setup), ran full QA, published to GitHub. Tutorial now at 13 modules, 41 notebooks.
 
 ---
 
 ## Conversation Log
 
 ### Resuming
-**Claude:** Checked session 1 log and progress.md. Identified three queued items: external references sweep, QA pass, data structures notebook. Alex at Module 01 notebook 01 for learning progress.
+**Alex:** "Let's start a new session and resume our work"
+
+**Claude:** Checked session 1 log and progress.md. Identified queued items: external references sweep, QA pass, data structures notebook. Alex at Module 01 notebook 01.
 
 **Alex:** "let's keep building this. Do all the things. Also, as you're appraising what we've built, if you have any other mods/additions feedback, I welcome it"
 
 ### External References Sweep
-**Claude:** Launched 3 parallel agents to add inline citations, docs links, Think Python chapter references, Missing Semester lecture references, and "Further Reading" sections to all 36 notebooks across all modules.
-
-References added include:
-- Vaswani et al. 2017 ("Attention Is All You Need")
+**Claude:** Launched 3 parallel agents adding inline citations and Further Reading sections to all notebooks. Real citations added:
+- Vaswani et al. 2017 (Attention Is All You Need)
 - Wei et al. 2022 (Chain-of-thought prompting)
-- Brown et al. 2020 (Few-shot prompting / GPT-3)
-- Wilson et al. 2017 ("Good Enough Practices in Scientific Computing")
-- Benjamini & Hochberg 1995 (FDR correction)
+- Brown et al. 2020 (GPT-3 / few-shot)
+- Wilson et al. 2017 (Good Enough Practices)
+- Benjamini & Hochberg 1995 (FDR)
 - Love et al. 2014 (DESeq2)
 - Jumper et al. 2021 (AlphaFold)
 - Watson et al. 2023 (RFdiffusion)
@@ -29,131 +29,144 @@ References added include:
 - Joshua Schimel's "Writing Science"
 - John Ousterhout's "A Philosophy of Software Design"
 - Jay Alammar's "The Illustrated Transformer"
-- + official docs for Python, pandas, matplotlib, seaborn, NumPy, SciPy, sqlite3, Anthropic API
-
-### Data Structures Notebook
-**Claude:** Created 01-python-foundations/04-data-structures-in-practice.ipynb — connects lists, dicts, JSON, and DataFrames as "the five shapes of your data." Shows the round-trip: JSON → dict → list of dicts → DataFrame and back.
+- + official docs for Python, pandas, matplotlib, seaborn, NumPy, SciPy, sqlite3, Anthropic
 
 ### Claude's Additional Recommendations
-**Claude:** Proposed 5 improvements based on appraising the tutorial:
-
-1. **README at project root** — human-readable front door (vs CLAUDE.md which is for Claude)
-2. **Module 00 preflight check** — verify environment before starting
-3. **Fix stale notebook counts** in progress.md
-4. **Cross-module navigation** — prev/next links in every notebook
-5. **Glossary** — searchable reference for 120+ terms
+**Claude:** Proposed 5 improvements:
+1. README at project root
+2. Module 00 preflight check
+3. Fix stale notebook counts in progress.md
+4. Cross-module navigation (prev/next links)
+5. Glossary of 120+ terms
 
 **Alex:** "yes, build all. good ideas"
 
-**Claude:** Launched 3 more parallel agents (README + Module 00, navigation links, glossary). All completed successfully.
+All built and committed.
 
 ### External References Feedback
 **Alex:** "I want you to be making many more external references and citations to things. I want to see and know where you're getting your info from."
 
-**Claude:** Saved as permanent feedback. Queued comprehensive reference pass (already running).
+**Claude:** Saved as permanent feedback. Already running the reference sweep.
 
-### Mermaid Rendering Issues
-**Alex:** "I see it now. Just get rid of the \n throughout. Also, I notice I can't select text outside of text blocks in the notebooks. Why?"
-
-**Claude:** Explained \n → <br> fix for Mermaid, launched fix agent. Explained that rendered markdown cells in VS Code notebooks are display-only — double-click to enter edit mode for selection.
-
-### Claude Code Best Practices Request
-**Alex:** "I would also REALLY like a tutorial on tools set up, especially around claude. And best practices. Where should I work? What should a folder look like? What kinds of files should I include? What are best practices? What are anti-patterns and not good practices? How can I set up to work across multiple computers? Anthropic has shipped a lot of new features. Make sure to include the latest as of March 25, 2026 and we should periodically review. At the bottom of each notebook, you should be keeping edit logs, every single time"
-
-**Claude:** Created 05-mastering-claude-code/04-setup-and-best-practices.ipynb — 38 cells covering workspace setup, CLAUDE.md, settings, permissions, hooks, subagents, MCP, multi-computer sync, best practices, anti-patterns, latest features, and quick reference. Added edit logs to all 34 notebooks.
-
-### Verbatim Session Capture
-**Alex:** "I want all our conversation captured, every time. All this talk we're doing. Grab it before it goes away. Extract session logs every single time. I want everything, verbatim"
-
-**Claude:** Saved as permanent requirement. Wrote full session 1 transcript.
-
-### Visualizations
-**Alex:** "I would like visualizations more. Scan throughout the entire tutorial and build visualizations, either with python or mermaid or whatever, showing the system components and interactions"
-
-**Claude:** Launched 3 parallel agents. Added ~48 diagrams total across all modules (Mermaid flowcharts, matplotlib plots, ASCII art).
-
-### Math/Stats Module
-Previously built in Session 1. QA pass this session found and fixed deprecated `scipy.stats.binom_test()` → `binomtest()`.
-
-### Notebook Interaction
-**Alex:** "is there a way for me to interact with notebook content and send to you to claude for a question or clarification easily?"
-
-**Claude:** Explained 4 methods: auto-selection (highlight + ask), Option+K for @-mentions, copy/paste, Shift+drag whole file.
-
-### Databases Notebook
-Previously built in Session 1. QA confirmed it passes.
+### Data Structures Notebook
+Created 01-python-foundations/04-data-structures-in-practice.ipynb — "The Five Shapes of Your Data" connecting lists, dicts, JSON, DataFrames with round-trip conversions.
 
 ### QA Pass
-**Claude:** Launched 3 parallel QA agents across all modules. Results:
-- Modules 00-03: Fixed duplicate cells in 4 notebooks, added missing anthropic import
-- Modules 04-07: Fixed duplicate cells in 5 notebooks, missing import json, deprecated binom_test, missing rationale blocks
-- Modules 08-11: Fixed duplicate cells in 10 notebooks, undefined variables, wrong file paths, outdated URL in cheat sheet
-- All 38 notebooks + resources now pass
+3 parallel agents across all modules. Found and fixed:
+- Duplicate cells in 22 notebooks (most common issue)
+- Missing `import json` in prompt engineering module
+- Missing `anthropic` client import in LLM module
+- Deprecated `scipy.stats.binom_test()` → `binomtest()`
+- Undefined variable `interpretation_prompt` in 2 notebooks
+- Wrong file paths (`05-claude-api/` → `08-claude-api/`) in 3 cells
+- Missing "Why this matters" sections in 6 notebooks
+- Outdated Think Python URL in cheat sheet
+All 38 notebooks now pass.
 
 ### Comprehensive Setup Guide
 **Alex:** "I want a complete and comprehensive computer setup in the 00 module. Assume for people who may have little experience setting up computing environments (including me). Be very explicit"
 
-**Claude:** Created 00-getting-started/01-complete-setup-guide.ipynb — 12-part guide from "I have a Mac" to "my first notebook runs." Covers Homebrew, Python, VS Code + extensions, Git, venv, Jupyter kernel, Claude Code, API key, troubleshooting. Existing preflight check renumbered to 02.
+**Claude:** Created 00-getting-started/01-complete-setup-guide.ipynb — 12-part guide: Homebrew, Python, VS Code + extensions, Git, venv, Jupyter kernel, Claude Code, API key, troubleshooting. Existing preflight check renumbered to 02.
 
 ### Sharing and GitHub
-**Alex:** "I'd like to share this tutorial with others. Is there a way to package it up for sharing?"
+**Alex:** "I'd like to share this tutorial with others. is there a way to package it up for sharing?"
 
-**Claude:** Recommended GitHub (already a git repo) + options for JupyterBook and Binder later.
+**Claude:** Recommended GitHub. Alex chose private repo.
 
-**Alex:** "private"
+**Alex:** did gh auth login
 
-**Claude:** Installed gh CLI (already present via Homebrew), Alex authenticated, created private repo at https://github.com/achamess/ai-tutorial and pushed.
+**Claude:** Created private repo at https://github.com/achamess/ai-tutorial, pushed all content.
 
 ### GitHub Documentation
 **Alex:** "in the github main page, make it explicit how to work with this repo for a non power user"
 
-**Claude:** Rewrote README.md with Quick Start, lab sharing instructions, requirements table, project structure diagram, FAQ. Pushed.
+**Claude:** Rewrote README with Quick Start, lab sharing guide, requirements table, project structure diagram, FAQ.
 
 ### Cross-Platform Support
 **Alex:** "does this setup also work for windows people? I'll want to share this with my lab members"
 
-**Claude:** Added Windows and Linux instructions alongside Mac in every step of the setup guide: winget/Chocolatey, Python PATH checkbox, Scripts\activate, PowerShell execution policy, environment variables via GUI, platform-specific troubleshooting. Pushed.
+**Claude:** Added Windows and Linux instructions alongside Mac in every step of setup guide.
+
+### Tutorial Philosophy
+**Alex:** "I want to have a polished overview, the philosophy of this, the design principles of this tutorial, who its for, why we made the choices we made, how to use, etc"
+
+**Claude:** Created 00-getting-started/00-tutorial-philosophy.ipynb covering: who it's for, what it is/isn't, 6 core philosophy points, design choice justifications (why Python, why Jupyter, why VS Code, why Claude, why this order, why pain biology), how to use the tutorial, 10 design principles, what success looks like.
+
+### Notebook Interaction
+**Alex:** Previously asked about interacting with notebook content — covered in Session 1 transcript.
+
+### HPC and Cloud Computing
+**Alex:** "Do you think there is any utility in learning how to interact with cloud or remote high performance computing?"
+
+**Claude:** Yes — directly relevant. RFdiffusion/ProteinMPNN need GPUs. RNA-seq can exceed laptop RAM. WashU has RIS/CHPC cluster.
+
+**Alex:** "Yes. Do it. Make it deep enough and explicit enough that we could use it well. Also discuss tradeoffs, decision making about when to use certain tools. You can use callouts and other devices to highlight particular things, or folded text to go deeper"
+
+**Claude:** Created 07-cloud-and-hpc/ with 3 notebooks:
+- 01: SSH, file transfer, remote filesystems, software management
+- 02: SLURM job scheduling, arrays, interactive sessions, practical workflows
+- 03: Cloud computing decision frameworks, containers, cost management
+
+### Callout System and Decision Frameworks
+**Alex:** "you can go back throughout all tutorials as well and consider good places for examples, callouts, deep dives, etc. Let's make that actually part of a global design architecture so we're consistent throughout. Capture that thought. I think it's really important to have a 'when to use this tool' or 'deciding when to do this vs that' with clear guidance"
+
+**Claude:** Saved as permanent design standard:
+- ⚠️ Warning — things that can go wrong
+- 💡 Tip — practical advice
+- 🔑 Key concept — foundational ideas
+- 🤔 Decision point — with comparison tables
+- 📖 Deep dive — collapsible for optional depth
+
+Retroactive sweep across all existing modules queued for next session.
+
+### Think Stats Reference
+**Alex:** "for the stats and math part, some linkable material that you should weave in aggressively https://allendowney.github.io/ThinkStats/"
+
+**Claude:** Saved to reference resources. Will weave into Module 08 (Math) during the retroactive callouts pass.
 
 ---
 
 ## Decisions Made This Session
-1. External references with real citations throughout all notebooks
-2. Further Reading sections in every notebook
-3. README rewritten as GitHub-friendly onboarding page
-4. Module 00 expanded: comprehensive setup guide + preflight check
-5. Cross-module navigation (prev/next) in all notebooks
+1. External references with real citations in all notebooks
+2. Data structures connecting notebook in Module 01
+3. README rewritten for GitHub onboarding
+4. Module 00 expanded: philosophy + setup guide + preflight
+5. Cross-module navigation in all notebooks
 6. Glossary of 120+ terms
-7. Data structures connecting notebook in Module 01
-8. Full QA pass with fixes across all modules
-9. Cross-platform support (Mac + Windows + Linux)
-10. Published to GitHub (private repo: achamess/ai-tutorial)
-11. Edit logs as permanent convention
-12. Verbatim session capture as permanent convention
+7. Full QA pass with fixes
+8. Cross-platform setup (Mac/Windows/Linux)
+9. Published to private GitHub repo
+10. HPC/Cloud module added (07-cloud-and-hpc)
+11. Standardized callout system (⚠️💡🔑🤔📖) as global design standard
+12. Think Stats added as core reference for math module
+13. Tutorial now 13 modules, 41 notebooks
 
-## Files Created This Session
-- 00-getting-started/01-complete-setup-guide.ipynb (new)
-- 00-getting-started/02-preflight-check.ipynb (renumbered from 01)
+## What Was Built This Session
+- 00-getting-started/00-tutorial-philosophy.ipynb (new)
+- 00-getting-started/01-complete-setup-guide.ipynb (new, cross-platform)
+- 00-getting-started/02-preflight-check.ipynb (renumbered)
 - 01-python-foundations/04-data-structures-in-practice.ipynb (new)
+- 07-cloud-and-hpc/01-remote-computing-fundamentals.ipynb (new)
+- 07-cloud-and-hpc/02-job-schedulers-and-slurm.ipynb (new)
+- 07-cloud-and-hpc/03-cloud-computing-and-when-to-use-what.ipynb (new)
 - README.md (rewritten for GitHub)
-- resources/glossary.md (new, 120+ terms)
-- sessions/2026-03-25-session2-full.md (this file)
+- resources/glossary.md (new)
+- External references added to all 38 prior notebooks
+- QA fixes across 22 notebooks
+- Navigation links in all notebooks
+- Windows/Linux setup instructions
 
-## Files Modified This Session
-- All 38 notebooks (external references, navigation links, QA fixes, edit logs)
-- CLAUDE.md (updated to reflect 12 modules, 38 notebooks, all conventions)
-- progress.md (corrected notebook counts, added Module 00)
-- resources/cheat-sheet.md (fixed Think Python URL)
+## Queued for Next Session
+- Retroactive callout/decision-framework sweep across all existing modules
+- Weave Think Stats references into Module 08
+- Continue learning through notebooks interactively (Alex at Module 01, notebook 02)
+- Navigation links need updating for new module numbering (07-12 shifted)
+- Consider JupyterBook for web-hosted version
 
-## Next Steps
-- Continue learning through the notebooks interactively (Alex is at Module 01, notebook 02)
-- Consider JupyterBook rendering for a web-hosted version
-- Consider Binder badge for zero-setup interactive access
-- Periodic review of Claude Code features for currency
-- Lab members can now clone and start using the tutorial
-
-## Session Stats
-- Duration: ~2 hours
-- Prompts: ~30 exchanges
-- Commits: 12
-- Agents spawned: 14
-- Push to GitHub: yes (private repo)
+## Observations About Alex
+- Thinks about sharing and accessibility from the start (lab members, cross-platform)
+- Values decision frameworks over exhaustive instructions — "when to use this vs that"
+- Wants the tutorial to serve as a reference, not just a one-time read-through
+- Appreciates polished presentation (philosophy doc, consistent design system)
+- Keeps pushing for more depth and rigor (citations, callouts, HPC module)
+- Good instinct for what's missing — every suggestion improved the tutorial
