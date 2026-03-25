@@ -34,7 +34,7 @@ Open `01-python-foundations/01-your-first-code.ipynb` and begin. Work through th
 
 ## What this is
 
-12 modules, 38 interactive Jupyter notebooks that take you from "I've never written code" to "I can build AI-powered research tools." Every example uses pain biology data so the skills transfer directly to the bench.
+13 modules, 42 interactive Jupyter notebooks that take you from "I've never written code" to "I can build AI-powered research tools." Every example uses pain biology data so the skills transfer directly to the bench.
 
 Each notebook has:
 - **"Why this matters"** — concrete justification tied to research work
@@ -47,18 +47,19 @@ Each notebook has:
 
 | # | Module | Notebooks | What you'll learn |
 |---|--------|-----------|-------------------|
-| 00 | **Getting Started** | 2 | Setup guide + environment verification |
+| 00 | **Getting Started** | 3 | Tutorial philosophy, setup guide, environment verification |
 | 01 | **Python Foundations** | 4 | Variables, files, libraries, data structures |
 | 02 | **Your Computer** | 4 | Filesystem, processes, networking, AI toolkit |
 | 03 | **How LLMs Work** | 3 | What LLMs are, tokens, context windows, how Claude thinks |
 | 04 | **Prompt Engineering** | 3 | Prompt anatomy, techniques, research-specific prompts |
 | 05 | **Mastering Claude Code** | 4 | Basics, workflows, customization, best practices |
 | 06 | **Systems Thinking** | 3 | Decomposition, debugging, reproducibility |
-| 07 | **Math You Actually Need** | 3 | Stats, hypothesis testing, probability for AI |
-| 08 | **Claude API** | 3 | First API call, structured outputs, research tools |
-| 09 | **Data Skills** | 4 | Pandas, visualization, analysis, databases |
-| 10 | **AI Research Workflows** | 3 | Literature review, data pipelines, writing with AI |
-| 11 | **AI Landscape** | 3 | Models, tools ecosystem, staying current |
+| 07 | **Cloud & HPC** | 3 | Remote computing, job schedulers, cloud platforms |
+| 08 | **Math You Actually Need** | 3 | Stats, hypothesis testing, probability for AI |
+| 09 | **Claude API** | 3 | First API call, structured outputs, research tools |
+| 10 | **Data Skills** | 4 | Pandas, visualization, analysis, databases |
+| 11 | **AI Research Workflows** | 3 | Literature review, data pipelines, writing with AI |
+| 12 | **AI Landscape** | 3 | Models, tools ecosystem, staying current |
 
 ## How to use this repo
 
@@ -76,7 +77,7 @@ Each notebook has:
 1. Add collaborators: **Settings** → **Collaborators** → **Add people** (by GitHub username or email)
 2. Each person clones the repo and follows the setup guide
 3. Everyone gets their own virtual environment — they won't break each other's setup
-4. Each person needs their own Anthropic API key for Modules 08-10 (free tier works for the exercises)
+4. Each person needs their own Anthropic API key for Modules 09-11 (free tier works for the exercises)
 
 ### What you need
 
@@ -86,7 +87,7 @@ Each notebook has:
 | VS Code | From the start | Free: https://code.visualstudio.com |
 | Python 3.14 | From the start | Setup guide covers this |
 | Git | From the start | Setup guide covers this |
-| Anthropic API key | Module 08 onwards | Free: https://console.anthropic.com |
+| Anthropic API key | Module 09 onwards | Free: https://console.anthropic.com |
 | Claude Code | Module 05 onwards | Setup guide covers this |
 
 ## Project structure
@@ -99,7 +100,7 @@ ai-tutorial/
 ├── 01-python-foundations/    ← Then work through these in order
 ├── 02-your-computer/
 ├── ...
-├── 11-ai-landscape/
+├── 12-ai-landscape/
 ├── resources/
 │   ├── cheat-sheet.md        ← Quick reference for Python, pandas, API, prompts
 │   ├── glossary.md           ← 120+ terms defined for researchers

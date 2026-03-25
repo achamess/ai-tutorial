@@ -5,8 +5,8 @@ Interactive tutorial teaching Alex (pain biologist) to become a master AI user.
 Not about building AI — about leveraging AI tools effectively for research.
 
 ## Structure
-13 modules (41 notebooks total) in numbered directories:
-- 00-getting-started/ (2 notebooks — philosophy + preflight check)
+13 modules (42 notebooks total) in numbered directories:
+- 00-getting-started/ (3 notebooks — philosophy, setup guide, preflight check)
 - 01-python-foundations/ (4 notebooks — includes data structures)
 - 02-your-computer/ (4 notebooks — includes AI toolkit guide)
 - 03-how-llms-work/ (3 notebooks)
