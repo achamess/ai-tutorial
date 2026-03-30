@@ -28,8 +28,8 @@ Not about building AI — about leveraging AI tools effectively for research.
 - Core packages: marimo, pandas, numpy, matplotlib, seaborn, anthropic
 
 ## Conventions
-- Each module contains numbered .py notebooks with cross-module navigation (prev/next)
-- Notebooks mix explanation (markdown cells) with runnable exercises (code cells)
+- Each module contains numbered .py marimo notebooks with cross-module navigation (prev/next)
+- Notebooks mix explanation (markdown cells via `mo.md()`) with runnable exercises (code cells)
 - Every notebook opens with a "Why this matters" justification tied to Alex's research
 - Use pain biology examples wherever possible (DRG neurons, nociceptors, inflammatory mediators, behavioral assays, calcium imaging, RNA-seq of pain-related tissues)
 - Keep code simple — Alex is learning programming as a tool, not becoming a developer
