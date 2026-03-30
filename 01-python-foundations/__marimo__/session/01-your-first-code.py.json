@@ -8,7 +8,14 @@
     {
       "id": "Hbol",
       "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
-      "outputs": [],
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
       "console": []
     },
     {
@@ -103,12 +110,12 @@
     },
     {
       "id": "RGSE",
-      "code_hash": "d38eaf053a690964eed537f23c2a0457",
+      "code_hash": "959f9839997148987cab15e79c0c2d0b",
       "outputs": [
         {
           "type": "data",
           "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><div class=\"language-xml codehilite\"><pre><span></span><code>graph<span class=\"w\"> </span>TD\n<span class=\"w\">    </span>subgraph<span class=\"w\"> </span>&quot;Python&#39;s<span class=\"w\"> </span>Core<span class=\"w\"> </span>Data<span class=\"w\"> </span>Types&quot;\n<span class=\"w\">        </span>STR[&quot;<span class=\"nt\">&lt;b&gt;</span>str<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>Text<span class=\"nt\">&lt;br/&gt;&lt;i&gt;</span>&#39;NaV1.7&#39;<span class=\"nt\">&lt;/i&gt;</span>&quot;]\n<span class=\"w\">        </span>INT[&quot;<span class=\"nt\">&lt;b&gt;</span>int<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>Whole<span class=\"w\"> </span>numbers<span class=\"nt\">&lt;br/&gt;&lt;i&gt;</span>45<span class=\"nt\">&lt;/i&gt;</span>&quot;]\n<span class=\"w\">        </span>FLOAT[&quot;<span class=\"nt\">&lt;b&gt;</span>float<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>Decimals<span class=\"nt\">&lt;br/&gt;&lt;i&gt;</span>-35.2<span class=\"nt\">&lt;/i&gt;</span>&quot;]\n<span class=\"w\">        </span>BOOL[&quot;<span class=\"nt\">&lt;b&gt;</span>bool<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>True<span class=\"w\"> </span>/<span class=\"w\"> </span>False<span class=\"nt\">&lt;br/&gt;&lt;i&gt;</span>True<span class=\"nt\">&lt;/i&gt;</span>&quot;]\n<span class=\"w\">    </span>end\n\n<span class=\"w\">    </span>subgraph<span class=\"w\"> </span>&quot;When<span class=\"w\"> </span>to<span class=\"w\"> </span>use<span class=\"w\"> </span>each&quot;\n<span class=\"w\">        </span>STR<span class=\"w\"> </span>---<span class=\"w\"> </span>S1[&quot;Names,<span class=\"w\"> </span>labels,<span class=\"w\"> </span>sequences<span class=\"nt\">&lt;br/&gt;</span>Gene<span class=\"w\"> </span>names,<span class=\"w\"> </span>binder<span class=\"w\"> </span>IDs,<span class=\"w\"> </span>FASTA&quot;]\n<span class=\"w\">        </span>INT<span class=\"w\"> </span>---<span class=\"w\"> </span>S2[&quot;Counts,<span class=\"w\"> </span>indices<span class=\"nt\">&lt;br/&gt;</span>Neuron<span class=\"w\"> </span>counts,<span class=\"w\"> </span>well<span class=\"w\"> </span>numbers&quot;]\n<span class=\"w\">        </span>FLOAT<span class=\"w\"> </span>---<span class=\"w\"> </span>S3[&quot;Measurements<span class=\"nt\">&lt;br/&gt;</span>Kd<span class=\"w\"> </span>values,<span class=\"w\"> </span>voltage,<span class=\"w\"> </span>temperature&quot;]\n<span class=\"w\">        </span>BOOL<span class=\"w\"> </span>---<span class=\"w\"> </span>S4[&quot;Yes/No<span class=\"w\"> </span>decisions<span class=\"nt\">&lt;br/&gt;</span>Is<span class=\"w\"> </span>it<span class=\"w\"> </span>a<span class=\"w\"> </span>nociceptor?<span class=\"w\"> </span>Passed<span class=\"w\"> </span>QC?&quot;]\n<span class=\"w\">    </span>end\n\n<span class=\"w\">    </span>style<span class=\"w\"> </span>STR<span class=\"w\"> </span>fill:#4488cc,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>INT<span class=\"w\"> </span>fill:#44aa88,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>FLOAT<span class=\"w\"> </span>fill:#cc8844,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>BOOL<span class=\"w\"> </span>fill:#aa44aa,color:#fff\n</code></pre></div></span>"
+            "text/html": "<marimo-mermaid data-diagram='&quot;&#92;n    graph TD&#92;n        subgraph &#92;&quot;Python&#x27;s Core Data Types&#92;&quot;&#92;n            STR[&#92;&quot;&lt;b&gt;str&lt;/b&gt;&lt;br/&gt;Text&lt;br/&gt;&lt;i&gt;&#x27;NaV1.7&#x27;&lt;/i&gt;&#92;&quot;]&#92;n            INT[&#92;&quot;&lt;b&gt;int&lt;/b&gt;&lt;br/&gt;Whole numbers&lt;br/&gt;&lt;i&gt;45&lt;/i&gt;&#92;&quot;]&#92;n            FLOAT[&#92;&quot;&lt;b&gt;float&lt;/b&gt;&lt;br/&gt;Decimals&lt;br/&gt;&lt;i&gt;-35.2&lt;/i&gt;&#92;&quot;]&#92;n            BOOL[&#92;&quot;&lt;b&gt;bool&lt;/b&gt;&lt;br/&gt;True / False&lt;br/&gt;&lt;i&gt;True&lt;/i&gt;&#92;&quot;]&#92;n        end&#92;n&#92;n        subgraph &#92;&quot;When to use each&#92;&quot;&#92;n            STR --- S1[&#92;&quot;Names, labels, sequences&lt;br/&gt;Gene names, binder IDs, FASTA&#92;&quot;]&#92;n            INT --- S2[&#92;&quot;Counts, indices&lt;br/&gt;Neuron counts, well numbers&#92;&quot;]&#92;n            FLOAT --- S3[&#92;&quot;Measurements&lt;br/&gt;Kd values, voltage, temperature&#92;&quot;]&#92;n            BOOL --- S4[&#92;&quot;Yes/No decisions&lt;br/&gt;Is it a nociceptor? Passed QC?&#92;&quot;]&#92;n        end&#92;n&#92;n        style STR fill:#4488cc,color:#fff&#92;n        style INT fill:#44aa88,color:#fff&#92;n        style FLOAT fill:#cc8844,color:#fff&#92;n        style BOOL fill:#aa44aa,color:#fff&#92;n    &quot;'></marimo-mermaid>"
           }
         }
       ],
@@ -130,42 +137,14 @@
     {
       "id": "emfo",
       "code_hash": "caf87d2ef3ef20c32c0ff28b34a35eee",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
-      "console": [
-        {
-          "type": "stream",
-          "name": "stdout",
-          "text": "['NaV1.7', 'NaV1.8', 'KCNQ2', 'KCNQ3']\nNumber of targets: 4\n",
-          "mimetype": "text/plain"
-        }
-      ]
+      "outputs": [],
+      "console": []
     },
     {
       "id": "Hstk",
       "code_hash": "9851a57c69513e0a3274cd7e9a3b517b",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/plain": ""
-          }
-        }
-      ],
-      "console": [
-        {
-          "type": "stream",
-          "name": "stdout",
-          "text": "NaV1.7\nKCNQ3\n",
-          "mimetype": "text/plain"
-        }
-      ]
+      "outputs": [],
+      "console": []
     },
     {
       "id": "nWHF",
@@ -232,15 +211,8 @@
     },
     {
       "id": "DnEU",
-      "code_hash": "5562800e9924a7dc5b8fa5bc39525b40",
-      "outputs": [
-        {
-          "type": "data",
-          "data": {
-            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><div class=\"language-teratermmacro codehilite\"><pre><span></span><code><span class=\"nv\">graph</span><span class=\"w\"> </span><span class=\"nv\">LR</span>\n<span class=\"w\">    </span><span class=\"nv\">subgraph</span><span class=\"w\"> </span><span class=\"s2\">&quot;Lists \u2014 Ordered Collections&quot;</span>\n<span class=\"w\">        </span><span class=\"nv\">L</span>[<span class=\"s2\">&quot;[ &#39;NaV1.7&#39;, &#39;NaV1.8&#39;, &#39;KCNQ2&#39; ]&quot;</span>]\n<span class=\"w\">        </span><span class=\"nv\">L</span><span class=\"w\"> </span><span class=\"o\">---</span><span class=\"w\"> </span><span class=\"nv\">L1</span>[<span class=\"s2\">&quot;Access by position: list[0]&quot;</span>]\n<span class=\"w\">        </span><span class=\"nv\">L</span><span class=\"w\"> </span><span class=\"o\">---</span><span class=\"w\"> </span><span class=\"nv\">L2</span>[<span class=\"s2\">&quot;Ordered: first, second, third...&quot;</span>]\n<span class=\"w\">        </span><span class=\"nv\">L</span><span class=\"w\"> </span><span class=\"o\">---</span><span class=\"w\"> </span><span class=\"nv\">L3</span>[<span class=\"s2\">&quot;Use for: channels, measurements, gene lists&quot;</span>]\n<span class=\"w\">    </span><span class=\"k\">end</span>\n\n<span class=\"w\">    </span><span class=\"nv\">subgraph</span><span class=\"w\"> </span><span class=\"s2\">&quot;Dictionaries \u2014 Labeled Records&quot;</span>\n<span class=\"w\">        </span><span class=\"nv\">D</span>[<span class=\"s2\">&quot;{ &#39;target&#39;: &#39;NaV1.8&#39;, &#39;Kd&#39;: 12.7 }&quot;</span>]\n<span class=\"w\">        </span><span class=\"nv\">D</span><span class=\"w\"> </span><span class=\"o\">---</span><span class=\"w\"> </span><span class=\"nv\">D1</span>[<span class=\"s2\">&quot;Access by key: dict[&#39;target&#39;]&quot;</span>]\n<span class=\"w\">        </span><span class=\"nv\">D</span><span class=\"w\"> </span><span class=\"o\">---</span><span class=\"w\"> </span><span class=\"nv\">D2</span>[<span class=\"s2\">&quot;Labeled: each value has a name&quot;</span>]\n<span class=\"w\">        </span><span class=\"nv\">D</span><span class=\"w\"> </span><span class=\"o\">---</span><span class=\"w\"> </span><span class=\"nv\">D3</span>[<span class=\"s2\">&quot;Use for: experiments, candidates, metadata&quot;</span>]\n<span class=\"w\">    </span><span class=\"k\">end</span>\n\n<span class=\"w\">    </span><span class=\"nv\">style</span><span class=\"w\"> </span><span class=\"nv\">L</span><span class=\"w\"> </span><span class=\"nv\">fill</span>:<span class=\"sc\">#4488</span><span class=\"nv\">cc</span>,<span class=\"nv\">color</span>:#<span class=\"nv\">fff</span>\n<span class=\"w\">    </span><span class=\"nv\">style</span><span class=\"w\"> </span><span class=\"nv\">D</span><span class=\"w\"> </span><span class=\"nv\">fill</span>:<span class=\"sc\">#44</span><span class=\"nv\">aa88</span>,<span class=\"nv\">color</span>:#<span class=\"nv\">fff</span>\n</code></pre></div></span>"
-          }
-        }
-      ],
+      "code_hash": "67b9deca46e46dfb2c2bc76348253f10",
+      "outputs": [],
       "console": []
     },
     {
@@ -463,8 +435,15 @@
     },
     {
       "id": "SdmI",
-      "code_hash": "240f47c38978a13463ba4d1088275c7b",
-      "outputs": [],
+      "code_hash": "9eea383b9363d82326215fdedb83c9cd",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"edit-log\">Edit Log</h2>\n<ul>\n<li>2026-03-24: Created notebook with initial content</li>\n<li>2026-03-25: Fixed exercise 1 f-string bugs, added corrected version with Alex's attempt preserved</li>\n<li>2026-03-25: Fixed exercise 2 loop bugs, added corrected version with Alex's attempt preserved</li>\n<li>2026-03-25: Added \"Why this matters\" rationale section</li>\n<li>2026-03-25: Added external references and Further Reading section</li>\n<li>2026-03-25: Added cross-module navigation links</li>\n<li>2026-03-25: Added standardized callouts and decision frameworks</li>\n</ul></span>"
+          }
+        }
+      ],
       "console": []
     },
     {
