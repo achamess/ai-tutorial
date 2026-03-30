@@ -138,38 +138,44 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### Configuration Hierarchy (Priority Order)
 
-    ```mermaid
-    graph TB
-        subgraph "Highest Priority"
-            A["Your Direct Message<br>'Use seaborn for this plot'"]
-        end
-        subgraph "Project-Specific"
-            B["Subdirectory CLAUDE.md<br>analysis/CLAUDE.md"]
-            C["Project CLAUDE.md<br>~/project/CLAUDE.md"]
-        end
-        subgraph "Global"
-            D["User CLAUDE.md<br>~/.claude/CLAUDE.md"]
-            E["Memory<br>Persistent learned preferences"]
-        end
-        subgraph "Lowest Priority"
-            F["Claude Code Defaults<br>Built-in behavior"]
-        end
-
-        A --> B --> C --> D --> E --> F
-
-        style A fill:#E24A33,color:#fff
-        style B fill:#FDB863,color:#000
-        style C fill:#FDB863,color:#000
-        style D fill:#4878CF,color:#fff
-        style E fill:#4878CF,color:#fff
-        style F fill:#cccccc,color:#000
-    ```
+    """),
+    mo.mermaid(
+        """
+        graph TB
+            subgraph "Highest Priority"
+                A["Your Direct Message<br>'Use seaborn for this plot'"]
+            end
+            subgraph "Project-Specific"
+                B["Subdirectory CLAUDE.md<br>analysis/CLAUDE.md"]
+                C["Project CLAUDE.md<br>~/project/CLAUDE.md"]
+            end
+            subgraph "Global"
+                D["User CLAUDE.md<br>~/.claude/CLAUDE.md"]
+                E["Memory<br>Persistent learned preferences"]
+            end
+            subgraph "Lowest Priority"
+                F["Claude Code Defaults<br>Built-in behavior"]
+            end
+        
+            A --> B --> C --> D --> E --> F
+        
+            style A fill:#E24A33,color:#fff
+            style B fill:#FDB863,color:#000
+            style C fill:#FDB863,color:#000
+            style D fill:#4878CF,color:#fff
+            style E fill:#4878CF,color:#fff
+            style F fill:#cccccc,color:#000
+        """
+    ),
+    mo.md(r"""
 
     More specific instructions always override more general ones. Your direct messages in a conversation have the highest priority -- they override everything else. This is why you can always say "ignore the CLAUDE.md convention and use plotly this time" and it will work.
     """)
+    ])
     return
 
 

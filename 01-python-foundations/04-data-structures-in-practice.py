@@ -266,36 +266,40 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
+    mo.mermaid(
+        """
+        graph TD
+            V["Single Value<br/><code>'SCN9A'</code> or <code>8.3</code>"]
+            L["List<br/><code>['SCN9A', 'SCN10A', ...]</code>"]
+            D["Dictionary<br/><code>{'gene': 'SCN9A', 'kd': 8.3}</code>"]
+            LD["List of Dicts<br/><code>[{'gene': ..., 'kd': ...}, ...]</code><br/>★ TABLE ★"]
+            N["Nested Structure<br/><code>{'target': {'gene': ...}, 'results': [...]}</code>"]
+        
+            V -->|"collect into"| L
+            V -->|"add labels"| D
+            D -->|"collect into"| LD
+            D -->|"nest deeper"| N
+            L -->|"nest into dicts"| N
+            LD -->|"nest into dicts"| N
+        
+            LD -.->|"pd.DataFrame()"| DF["pandas DataFrame"]
+            LD -.->|"json.dumps()"| JSON["JSON string"]
+        
+            style V fill:#f59e0b,color:#000
+            style L fill:#3b82f6,color:#fff
+            style D fill:#10b981,color:#fff
+            style LD fill:#ef4444,color:#fff
+            style N fill:#8b5cf6,color:#fff
+            style DF fill:#ec4899,color:#fff
+            style JSON fill:#ec4899,color:#fff
+        """
+    ),
     mo.md(r"""
-    ```mermaid
-    graph TD
-        V["Single Value<br/><code>'SCN9A'</code> or <code>8.3</code>"]
-        L["List<br/><code>['SCN9A', 'SCN10A', ...]</code>"]
-        D["Dictionary<br/><code>{'gene': 'SCN9A', 'kd': 8.3}</code>"]
-        LD["List of Dicts<br/><code>[{'gene': ..., 'kd': ...}, ...]</code><br/>★ TABLE ★"]
-        N["Nested Structure<br/><code>{'target': {'gene': ...}, 'results': [...]}</code>"]
-
-        V -->|"collect into"| L
-        V -->|"add labels"| D
-        D -->|"collect into"| LD
-        D -->|"nest deeper"| N
-        L -->|"nest into dicts"| N
-        LD -->|"nest into dicts"| N
-
-        LD -.->|"pd.DataFrame()"| DF["pandas DataFrame"]
-        LD -.->|"json.dumps()"| JSON["JSON string"]
-
-        style V fill:#f59e0b,color:#000
-        style L fill:#3b82f6,color:#fff
-        style D fill:#10b981,color:#fff
-        style LD fill:#ef4444,color:#fff
-        style N fill:#8b5cf6,color:#fff
-        style DF fill:#ec4899,color:#fff
-        style JSON fill:#ec4899,color:#fff
-    ```
 
     The red box — list of dicts — is the hub. It connects to DataFrames (pandas) and JSON (APIs and files). Master that shape and you can move data anywhere.
     """)
+    ])
     return
 
 

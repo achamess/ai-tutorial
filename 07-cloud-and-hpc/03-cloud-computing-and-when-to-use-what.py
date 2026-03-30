@@ -38,6 +38,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ---
 
@@ -61,33 +62,36 @@ def _(mo):
 
     ### Decision Tree
 
-    ```mermaid
-    graph TD
-        A["🤔 I have a computation to run"] --> B{"Does it need a GPU?"}
-        B -->|No| C{"Is the data > 10GB?"}
-        B -->|Yes| D{"Is WashU RIS available<br/>with reasonable queue time?"}
-
-        C -->|No| E["✅ Run on your laptop"]
-        C -->|Yes| F{"Does it need > 32GB RAM?"}
-        F -->|No| E
-        F -->|Yes| G["✅ Run on HPC cluster"]
-
-        D -->|Yes| H["✅ Submit to RIS<br/>(free GPU!)"]
-        D -->|No, queue is days long| I{"How urgent is this?"}
-
-        I -->|Can wait| H
-        I -->|Need it this week| J{"Budget available?"}
-
-        J -->|Yes| K["✅ Lambda Labs or<br/>cloud GPU (~$1-4/hr)"]
-        J -->|No| L["✅ Try Google Colab<br/>(free tier, limited)"]
-
-        style E fill:#e8f5e9
-        style G fill:#e8f5e9
-        style H fill:#e8f5e9
-        style K fill:#fff3e0
-        style L fill:#e3f2fd
-    ```
-    """)
+    """),
+    mo.mermaid(
+        """
+        graph TD
+            A["🤔 I have a computation to run"] --> B{"Does it need a GPU?"}
+            B -->|No| C{"Is the data > 10GB?"}
+            B -->|Yes| D{"Is WashU RIS available<br/>with reasonable queue time?"}
+        
+            C -->|No| E["✅ Run on your laptop"]
+            C -->|Yes| F{"Does it need > 32GB RAM?"}
+            F -->|No| E
+            F -->|Yes| G["✅ Run on HPC cluster"]
+        
+            D -->|Yes| H["✅ Submit to RIS<br/>(free GPU!)"]
+            D -->|No, queue is days long| I{"How urgent is this?"}
+        
+            I -->|Can wait| H
+            I -->|Need it this week| J{"Budget available?"}
+        
+            J -->|Yes| K["✅ Lambda Labs or<br/>cloud GPU (~$1-4/hr)"]
+            J -->|No| L["✅ Try Google Colab<br/>(free tier, limited)"]
+        
+            style E fill:#e8f5e9
+            style G fill:#e8f5e9
+            style H fill:#e8f5e9
+            style K fill:#fff3e0
+            style L fill:#e3f2fd
+        """
+    )
+    ])
     return
 
 

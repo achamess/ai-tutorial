@@ -131,27 +131,33 @@ def _():
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### Configuration Hierarchy
 
     Claude Code reads configuration from multiple levels. Higher levels override lower ones:
 
-    ```mermaid
-    graph TD
-        A["Managed Policy<br/>(org admin, highest priority)"] --> B["CLI Flags<br/>(--permission-mode, --model)"]
-        B --> C["Local Settings<br/>(.claude/settings.local.json)<br/>Personal, NOT committed"]
-        C --> D["Project Settings<br/>(.claude/settings.json)<br/>Team-shared, committed to git"]
-        D --> E["User Settings<br/>(~/.claude/settings.json)<br/>Your global defaults"]
-
-        style A fill:#ff6b6b,color:#fff
-        style B fill:#ffa07a,color:#fff
-        style C fill:#98d8c8,color:#333
-        style D fill:#87ceeb,color:#333
-        style E fill:#dda0dd,color:#333
-    ```
+    """),
+    mo.mermaid(
+        """
+        graph TD
+            A["Managed Policy<br/>(org admin, highest priority)"] --> B["CLI Flags<br/>(--permission-mode, --model)"]
+            B --> C["Local Settings<br/>(.claude/settings.local.json)<br/>Personal, NOT committed"]
+            C --> D["Project Settings<br/>(.claude/settings.json)<br/>Team-shared, committed to git"]
+            D --> E["User Settings<br/>(~/.claude/settings.json)<br/>Your global defaults"]
+        
+            style A fill:#ff6b6b,color:#fff
+            style B fill:#ffa07a,color:#fff
+            style C fill:#98d8c8,color:#333
+            style D fill:#87ceeb,color:#333
+            style E fill:#dda0dd,color:#333
+        """
+    ),
+    mo.md(r"""
 
     **Practical implication:** Your team's `.claude/settings.json` sets baseline rules. Your personal `.claude/settings.local.json` can override them for your own workflow (e.g., you prefer a different editor mode). Org admins can lock things down with managed policies that nobody can override.
     """)
+    ])
     return
 
 
@@ -457,6 +463,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ---
 
@@ -479,18 +486,21 @@ def _(mo):
 
     ### Recommended Progression
 
-    ```mermaid
-    graph LR
-        A["Week 1-2<br/>default mode<br/>Learn the tool"] --> B["Week 3-4<br/>acceptEdits mode<br/>Trust file edits"]
-        B --> C["Month 2+<br/>auto mode<br/>Full speed"]
-        C --> D["CI/CD only<br/>dontAsk mode<br/>Automated pipelines"]
-
-        style A fill:#98d8c8,color:#333
-        style B fill:#87ceeb,color:#333
-        style C fill:#ffa07a,color:#333
-        style D fill:#ff6b6b,color:#fff
-    ```
-    """)
+    """),
+    mo.mermaid(
+        """
+        graph LR
+            A["Week 1-2<br/>default mode<br/>Learn the tool"] --> B["Week 3-4<br/>acceptEdits mode<br/>Trust file edits"]
+            B --> C["Month 2+<br/>auto mode<br/>Full speed"]
+            C --> D["CI/CD only<br/>dontAsk mode<br/>Automated pipelines"]
+        
+            style A fill:#98d8c8,color:#333
+            style B fill:#87ceeb,color:#333
+            style C fill:#ffa07a,color:#333
+            style D fill:#ff6b6b,color:#fff
+        """
+    )
+    ])
     return
 
 
@@ -593,6 +603,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ---
 
@@ -606,23 +617,27 @@ def _(mo):
 
     ### When Hooks Fire
 
-    ```mermaid
-    sequenceDiagram
-        participant You
-        participant Claude
-        participant Hook
-        participant Tool
-
-        You->>Claude: "Fix the normalize script"
-        Note over Hook: PreToolUse fires
-        Hook-->>Claude: (can block or modify)
-        Claude->>Tool: Edit(scripts/normalize.py)
-        Tool-->>Claude: File edited
-        Note over Hook: PostToolUse fires
-        Hook-->>Claude: (can auto-format, validate)
-        Note over Hook: Notification hook fires
-        Hook-->>You: Desktop notification
-    ```
+    """),
+    mo.mermaid(
+        """
+        sequenceDiagram
+            participant You
+            participant Claude
+            participant Hook
+            participant Tool
+        
+            You->>Claude: "Fix the normalize script"
+            Note over Hook: PreToolUse fires
+            Hook-->>Claude: (can block or modify)
+            Claude->>Tool: Edit(scripts/normalize.py)
+            Tool-->>Claude: File edited
+            Note over Hook: PostToolUse fires
+            Hook-->>Claude: (can auto-format, validate)
+            Note over Hook: Notification hook fires
+            Hook-->>You: Desktop notification
+        """
+    ),
+    mo.md(r"""
 
     ### Hook Types
 
@@ -635,6 +650,7 @@ def _(mo):
     | **SubagentStop** | When a subagent finishes | Process subagent results |
     | **PreCompact** | Before context compaction | Re-inject critical information |
     """)
+    ])
     return
 
 
@@ -777,6 +793,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ---
 
@@ -790,25 +807,30 @@ def _(mo):
 
     ### How MCP Works
 
-    ```mermaid
-    graph LR
-        A[Claude Code] -->|uses tools from| B[MCP Server: GitHub]
-        A -->|uses tools from| C[MCP Server: PostgreSQL]
-        A -->|uses tools from| D[MCP Server: Notion]
-        A -->|uses tools from| E[MCP Server: Slack]
-
-        B -->|reads/writes| F[(GitHub API)]
-        C -->|queries| G[(Lab Database)]
-        D -->|reads| H[(Lab Notebook)]
-        E -->|posts| I[(Lab Channel)]
-
-        style A fill:#87ceeb,color:#333
-    ```
+    """),
+    mo.mermaid(
+        """
+        graph LR
+            A[Claude Code] -->|uses tools from| B[MCP Server: GitHub]
+            A -->|uses tools from| C[MCP Server: PostgreSQL]
+            A -->|uses tools from| D[MCP Server: Notion]
+            A -->|uses tools from| E[MCP Server: Slack]
+        
+            B -->|reads/writes| F[(GitHub API)]
+            C -->|queries| G[(Lab Database)]
+            D -->|reads| H[(Lab Notebook)]
+            E -->|posts| I[(Lab Channel)]
+        
+            style A fill:#87ceeb,color:#333
+        """
+    ),
+    mo.md(r"""
 
     ### Configuration
 
     MCP servers are configured in `.claude/mcp.json`:
     """)
+    ])
     return
 
 

@@ -85,36 +85,42 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### Batch Processing Flow
 
-    ```mermaid
-    flowchart TD
-        INPUT["List of items<br>(genes, abstracts,<br>compounds)"] --> LOOP["For each item"]
-        LOOP --> CALL["Call Claude API<br>with item + system prompt"]
-        CALL --> PARSE{"Parse JSON<br>successful?"}
-
-        PARSE -->|"Yes"| COLLECT["Add result<br>to list"]
-        PARSE -->|"No"| RETRY{"Retries<br>left?"}
-
-        RETRY -->|"Yes"| WAIT["Wait<br>(exponential backoff)"] --> CALL
-        RETRY -->|"No"| SKIP["Log failure<br>append None"]
-
-        COLLECT --> MORE{"More<br>items?"}
-        SKIP --> MORE
-        MORE -->|"Yes"| DELAY["Brief delay<br>(avoid rate limits)"] --> LOOP
-        MORE -->|"No"| DF["pd.DataFrame(results)<br>Filter, analyze, save"]
-
-        style INPUT fill:#4878CF,color:#fff
-        style CALL fill:#E24A33,color:#fff
-        style COLLECT fill:#55A868,color:#fff
-        style DF fill:#55A868,color:#fff
-        style SKIP fill:#FDB863,color:#000
-        style WAIT fill:#FDB863,color:#000
-    ```
+    """),
+    mo.mermaid(
+        """
+        flowchart TD
+            INPUT["List of items<br>(genes, abstracts,<br>compounds)"] --> LOOP["For each item"]
+            LOOP --> CALL["Call Claude API<br>with item + system prompt"]
+            CALL --> PARSE{"Parse JSON<br>successful?"}
+        
+            PARSE -->|"Yes"| COLLECT["Add result<br>to list"]
+            PARSE -->|"No"| RETRY{"Retries<br>left?"}
+        
+            RETRY -->|"Yes"| WAIT["Wait<br>(exponential backoff)"] --> CALL
+            RETRY -->|"No"| SKIP["Log failure<br>append None"]
+        
+            COLLECT --> MORE{"More<br>items?"}
+            SKIP --> MORE
+            MORE -->|"Yes"| DELAY["Brief delay<br>(avoid rate limits)"] --> LOOP
+            MORE -->|"No"| DF["pd.DataFrame(results)<br>Filter, analyze, save"]
+        
+            style INPUT fill:#4878CF,color:#fff
+            style CALL fill:#E24A33,color:#fff
+            style COLLECT fill:#55A868,color:#fff
+            style DF fill:#55A868,color:#fff
+            style SKIP fill:#FDB863,color:#000
+            style WAIT fill:#FDB863,color:#000
+        """
+    ),
+    mo.md(r"""
 
     This is the robust batch processing pattern you'll use for any task that processes multiple items through Claude. The key features are: (1) error handling with retries, (2) brief delays between calls to avoid rate limits, and (3) graceful failure -- one bad item doesn't crash the whole batch.
     """)
+    ])
     return
 
 

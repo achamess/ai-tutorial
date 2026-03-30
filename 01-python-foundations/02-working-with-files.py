@@ -235,26 +235,30 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
+    mo.mermaid(
+        """
+        graph LR
+            subgraph "The File Processing Pattern"
+                READ["1. READ<br/><code>read_text()</code><br/>File → String"]
+                SPLIT["2. SPLIT<br/><code>.strip().split('\\n')</code><br/>String → Lines"]
+                FILTER["3. FILTER / TRANSFORM<br/><code>if</code> / <code>for</code><br/>Lines → Results"]
+                WRITE["4. WRITE<br/><code>write_text()</code><br/>Results → File"]
+        
+                READ --> SPLIT --> FILTER --> WRITE
+            end
+        
+            style READ fill:#4488cc,color:#fff
+            style SPLIT fill:#44aa88,color:#fff
+            style FILTER fill:#cc8844,color:#fff
+            style WRITE fill:#aa44aa,color:#fff
+        """
+    ),
     mo.md(r"""
-    ```mermaid
-    graph LR
-        subgraph "The File Processing Pattern"
-            READ["1. READ<br/><code>read_text()</code><br/>File → String"]
-            SPLIT["2. SPLIT<br/><code>.strip().split('\\n')</code><br/>String → Lines"]
-            FILTER["3. FILTER / TRANSFORM<br/><code>if</code> / <code>for</code><br/>Lines → Results"]
-            WRITE["4. WRITE<br/><code>write_text()</code><br/>Results → File"]
-
-            READ --> SPLIT --> FILTER --> WRITE
-        end
-
-        style READ fill:#4488cc,color:#fff
-        style SPLIT fill:#44aa88,color:#fff
-        style FILTER fill:#cc8844,color:#fff
-        style WRITE fill:#aa44aa,color:#fff
-    ```
 
     This is the core workflow for all file-based data processing in Python -- from 6-line experiment logs to million-row RNA-seq tables. The tools change (you'll eventually use pandas instead of manual splitting), but the pattern stays the same.
     """)
+    ])
     return
 
 
@@ -607,8 +611,9 @@ def _(mo):
     return
 
 
-app._unparsable_cell(
-    r"""
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
     ---
 
     ## Edit Log
@@ -618,9 +623,8 @@ app._unparsable_cell(
     - 2026-03-25: Added cross-module navigation links
     - 2026-03-25: Added external references and Further Reading section
     - 2026-03-25: Added standardized callouts and decision frameworks
-    """,
-    name="_"
-)
+    """)
+    return
 
 
 @app.cell(hide_code=True)

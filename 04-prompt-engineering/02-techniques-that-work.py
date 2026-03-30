@@ -405,37 +405,41 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
+    mo.mermaid(
+        """
+        graph TD
+            subgraph "Prompt Chaining: Complex Tasks as a Pipeline"
+                INPUT["<b>Input</b><br/>RNA-seq experiment<br/>description"]
+        
+                STEP1["<b>Step 1: Evaluate Design</b><br/>Role: Bioinformatician<br/>Output: Strengths, weaknesses,<br/>missing controls"]
+        
+                REVIEW1["You review<br/>intermediate output"]
+        
+                STEP2["<b>Step 2: Plan Analysis</b><br/>Role: Bioinformatician<br/>Input: Experiment + Step 1 output<br/>Output: Analysis pipeline"]
+        
+                REVIEW2["You review<br/>intermediate output"]
+        
+                STEP3["<b>Step 3: Generate Questions</b><br/>Role: Translational scientist<br/>Input: Experiment + Step 2 output<br/>Output: Prioritized questions"]
+        
+                INPUT --> STEP1 --> REVIEW1 --> STEP2 --> REVIEW2 --> STEP3
+            end
+        
+            NOTE["Each step can use a<br/><b>different role</b> and<br/>feeds its output into<br/>the next step's context"]
+        
+            style INPUT fill:#cc8844,color:#fff
+            style STEP1 fill:#4488cc,color:#fff
+            style STEP2 fill:#44aa88,color:#fff
+            style STEP3 fill:#aa44aa,color:#fff
+            style REVIEW1 fill:#fff,stroke:#999
+            style REVIEW2 fill:#fff,stroke:#999
+        """
+    ),
     mo.md(r"""
-    ```mermaid
-    graph TD
-        subgraph "Prompt Chaining: Complex Tasks as a Pipeline"
-            INPUT["<b>Input</b><br/>RNA-seq experiment<br/>description"]
-
-            STEP1["<b>Step 1: Evaluate Design</b><br/>Role: Bioinformatician<br/>Output: Strengths, weaknesses,<br/>missing controls"]
-
-            REVIEW1["You review<br/>intermediate output"]
-
-            STEP2["<b>Step 2: Plan Analysis</b><br/>Role: Bioinformatician<br/>Input: Experiment + Step 1 output<br/>Output: Analysis pipeline"]
-
-            REVIEW2["You review<br/>intermediate output"]
-
-            STEP3["<b>Step 3: Generate Questions</b><br/>Role: Translational scientist<br/>Input: Experiment + Step 2 output<br/>Output: Prioritized questions"]
-
-            INPUT --> STEP1 --> REVIEW1 --> STEP2 --> REVIEW2 --> STEP3
-        end
-
-        NOTE["Each step can use a<br/><b>different role</b> and<br/>feeds its output into<br/>the next step's context"]
-
-        style INPUT fill:#cc8844,color:#fff
-        style STEP1 fill:#4488cc,color:#fff
-        style STEP2 fill:#44aa88,color:#fff
-        style STEP3 fill:#aa44aa,color:#fff
-        style REVIEW1 fill:#fff,stroke:#999
-        style REVIEW2 fill:#fff,stroke:#999
-    ```
 
     The key advantage of chaining: you can **review intermediates** and course-correct between steps, just like you would in a real collaboration.
     """)
+    ])
     return
 
 

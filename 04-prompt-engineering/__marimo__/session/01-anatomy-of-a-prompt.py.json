@@ -1,0 +1,418 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.21.1",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "0982efa7498dad260406b850daf1fb3c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"01-anatomy-of-a-prompt\">01: Anatomy of a Prompt</h1>\n<span class=\"paragraph\">You already use Claude for grant writing and literature synthesis \u2014 so you know that <em>how</em> you ask matters. This notebook takes that intuition and makes it systematic.</span>\n<span class=\"paragraph\">We'll break every prompt into its component parts, then build one up piece by piece so you can see exactly how each addition changes the output.</span>\n<blockquote>\n<span class=\"paragraph\"><strong>Requires:</strong> <code>ANTHROPIC_API_KEY</code> set as an environment variable. All code cells call the Claude API.</span>\n<span class=\"paragraph\"><strong>Key reference:</strong> <a href=\"https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview\" rel=\"noopener noreferrer\" target=\"_blank\">Anthropic's Prompt Engineering Guide</a> covers these same concepts \u2014 and a local copy is available at <code>resources/references/anthropic-prompt-engineering-guide.md</code>. Also see the <a href=\"https://github.com/anthropics/anthropic-cookbook\" rel=\"noopener noreferrer\" target=\"_blank\">Anthropic Cookbook</a> for worked examples.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "1d19785a75c274fb64919dd581343bfe",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Navigation:</strong> <a href=\"../03-how-llms-work/03-how-claude-thinks.py\">\\u2190 Previous: How Claude \"Thinks\"</a> | <a href=\"../README.md\">Module Index</a> | <a href=\"02-techniques-that-work.py\">Next: Techniques That Work \\u2192</a></span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "440869513dbcc88398af404c87cdd6a4",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Why this matters for your work</strong></span>\n<ul>\n<li>Prompt quality is the highest-leverage skill in AI use. A 30-second improvement to your prompt can save 30 minutes of re-prompting and manual editing. This notebook teaches you the systematic framework to get it right the first time.</li>\n<li>The difference between a generic NaV1.7 overview and a targeted analysis of binder-accessible epitopes on VSD-II comes down to adding the right components: role, context, constraints, and output format. Each component is a dial you can turn.</li>\n<li>When Claude gives you a mediocre response, you need a diagnostic framework: is the problem missing context? Wrong role? No output format specified? This notebook gives you that framework.</li>\n<li>Every prompt you write for the API (Module 05) and every CLAUDE.md instruction (Module 04) uses these same components. This is the foundation for all your AI interactions going forward.</li>\n</ul>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "9559d574b3e7b516087298d951f9244c",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "b23856d054963fe7b0876b4bab6accb9",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"the-six-components-of-a-prompt\">The six components of a prompt</h2>\n<span class=\"paragraph\">Every effective prompt is built from some combination of these parts:</span>\n<table>\n<thead>\n<tr>\n<th>Component</th>\n<th>What it does</th>\n<th>Example</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><strong>System prompt / Role</strong></td>\n<td>Sets the persona and ground rules</td>\n<td>\"You are an expert in voltage-gated sodium channel pharmacology\"</td>\n</tr>\n<tr>\n<td><strong>Context</strong></td>\n<td>Background information Claude needs</td>\n<td>A paper abstract, dataset description, or experimental protocol</td>\n</tr>\n<tr>\n<td><strong>Instruction</strong></td>\n<td>The actual task \u2014 what you want Claude to do</td>\n<td>\"Summarize the key findings\"</td>\n</tr>\n<tr>\n<td><strong>Examples</strong></td>\n<td>Demonstrations of the desired input/output format</td>\n<td>A sample summary you've written</td>\n</tr>\n<tr>\n<td><strong>Constraints</strong></td>\n<td>Guardrails: length limits, what to include/exclude, tone</td>\n<td>\"Keep it under 200 words. Do not speculate beyond the data.\"</td>\n</tr>\n<tr>\n<td><strong>Output format</strong></td>\n<td>The structure you want the response in</td>\n<td>\"Return a markdown table with columns: Gene, Mutation, Effect\"</td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\">You don't need all six every time. But knowing they exist means you can reach for the right one when a prompt isn't giving you what you want.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "6a3791d98053333cc1a0585ffd693252",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\">\ud83d\udd11 <strong>Key concept:</strong> The quality of your prompt determines the quality of the output. This isn't a platitude \u2014 it's a measurable fact. A vague prompt (\"tell me about NaV1.7\") produces a generic Wikipedia-style response. A structured prompt with role, context, constraints, and output format produces exactly what you need, first try. The difference is 30 seconds of prompt investment that saves 30 minutes of re-prompting and manual editing. The rest of this notebook shows you this progression step by step.</span>\n<span class=\"paragraph\">\ud83d\udca1 <strong>Tip:</strong> Start with the simplest prompt and iterate. Don't try to write a perfect prompt on the first attempt. Start with just your instruction, see what comes back, then add components one at a time: context, then role, then constraints, then output format. Each addition is a dial you turn. The progressive build-up demo below shows exactly this workflow.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "7a84ab593dd71024ef20c54e5a56584c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><div class=\"language-xml codehilite\"><pre><span></span><code>graph<span class=\"w\"> </span>TD\n<span class=\"w\">    </span>subgraph<span class=\"w\"> </span>&quot;The<span class=\"w\"> </span>6<span class=\"w\"> </span>Components<span class=\"w\"> </span>of<span class=\"w\"> </span>an<span class=\"w\"> </span>Effective<span class=\"w\"> </span>Prompt&quot;\n<span class=\"w\">        </span>ROLE[&quot;1.<span class=\"w\"> </span><span class=\"nt\">&lt;b&gt;</span>ROLE<span class=\"w\"> </span>/<span class=\"w\"> </span>System<span class=\"w\"> </span>Prompt<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>&#39;You<span class=\"w\"> </span>are<span class=\"w\"> </span>an<span class=\"w\"> </span>ion<span class=\"w\"> </span>channel<span class=\"nt\">&lt;br/&gt;</span>pharmacology<span class=\"w\"> </span>expert&#39;&quot;]\n<span class=\"w\">        </span>CTX[&quot;2.<span class=\"w\"> </span><span class=\"nt\">&lt;b&gt;</span>CONTEXT<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>Paper<span class=\"w\"> </span>abstract,<span class=\"w\"> </span>dataset,<span class=\"nt\">&lt;br/&gt;</span>experimental<span class=\"w\"> </span>protocol&quot;]\n<span class=\"w\">        </span>INST[&quot;3.<span class=\"w\"> </span><span class=\"nt\">&lt;b&gt;</span>INSTRUCTION<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>&#39;Summarize<span class=\"w\"> </span>the<span class=\"w\"> </span>key<span class=\"w\"> </span>findings<span class=\"nt\">&lt;br/&gt;</span>relevant<span class=\"w\"> </span>to<span class=\"w\"> </span>binder<span class=\"w\"> </span>design&#39;&quot;]\n<span class=\"w\">        </span>EX[&quot;4.<span class=\"w\"> </span><span class=\"nt\">&lt;b&gt;</span>EXAMPLES<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>Input/output<span class=\"w\"> </span>demonstrations<span class=\"nt\">&lt;br/&gt;</span>showing<span class=\"w\"> </span>the<span class=\"w\"> </span>format<span class=\"w\"> </span>you<span class=\"w\"> </span>want&quot;]\n<span class=\"w\">        </span>CON[&quot;5.<span class=\"w\"> </span><span class=\"nt\">&lt;b&gt;</span>CONSTRAINTS<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>&#39;Under<span class=\"w\"> </span>150<span class=\"w\"> </span>words,<span class=\"nt\">&lt;br/&gt;</span>no<span class=\"w\"> </span>speculation,<span class=\"w\"> </span>exact<span class=\"w\"> </span>numbers&#39;&quot;]\n<span class=\"w\">        </span>FMT[&quot;6.<span class=\"w\"> </span><span class=\"nt\">&lt;b&gt;</span>OUTPUT<span class=\"w\"> </span>FORMAT<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>&#39;Return<span class=\"w\"> </span>a<span class=\"w\"> </span>markdown<span class=\"w\"> </span>table<span class=\"nt\">&lt;br/&gt;</span>with<span class=\"w\"> </span>columns:<span class=\"w\"> </span>Gene,<span class=\"w\"> </span>Mutation,<span class=\"w\"> </span>Effect&#39;&quot;]\n<span class=\"w\">    </span>end\n\n<span class=\"w\">    </span>ROLE<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>CTX<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>INST<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>EX<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>CON<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>FMT\n\n<span class=\"w\">    </span>subgraph<span class=\"w\"> </span>&quot;When<span class=\"w\"> </span>output<span class=\"w\"> </span>isn&#39;t<span class=\"w\"> </span>right,<span class=\"w\"> </span>diagnose:&quot;\n<span class=\"w\">        </span>P1[&quot;Too<span class=\"w\"> </span>generic?&quot;]<span class=\"w\"> </span>-.-&gt;<span class=\"w\"> </span>CTX\n<span class=\"w\">        </span>P2[&quot;Misses<span class=\"w\"> </span>what<span class=\"w\"> </span>matters?&quot;]<span class=\"w\"> </span>-.-&gt;<span class=\"w\"> </span>ROLE\n<span class=\"w\">        </span>P3[&quot;Too<span class=\"w\"> </span>long/vague?&quot;]<span class=\"w\"> </span>-.-&gt;<span class=\"w\"> </span>CON\n<span class=\"w\">        </span>P4[&quot;Inconsistent<span class=\"w\"> </span>format?&quot;]<span class=\"w\"> </span>-.-&gt;<span class=\"w\"> </span>FMT\n<span class=\"w\">        </span>P5[&quot;Doesn&#39;t<span class=\"w\"> </span>understand<span class=\"w\"> </span>task?&quot;]<span class=\"w\"> </span>-.-&gt;<span class=\"w\"> </span>EX\n<span class=\"w\">        </span>P6[&quot;Task<span class=\"w\"> </span>too<span class=\"w\"> </span>complex?&quot;]<span class=\"w\"> </span>-.-&gt;<span class=\"w\"> </span>CHAIN[&quot;Break<span class=\"w\"> </span>into<span class=\"w\"> </span>a<span class=\"nt\">&lt;br/&gt;</span>prompt<span class=\"w\"> </span>chain&quot;]\n<span class=\"w\">    </span>end\n\n<span class=\"w\">    </span>style<span class=\"w\"> </span>ROLE<span class=\"w\"> </span>fill:#aa44aa,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>CTX<span class=\"w\"> </span>fill:#cc8844,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>INST<span class=\"w\"> </span>fill:#4488cc,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>EX<span class=\"w\"> </span>fill:#44aa88,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>CON<span class=\"w\"> </span>fill:#cc4444,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>FMT<span class=\"w\"> </span>fill:#448888,color:#fff\n</code></pre></div>\n<span class=\"paragraph\">You don't need all six every time. But when a prompt isn't working, this map tells you which dial to turn.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "3acd3ad683275911a174d62b6ceefc49",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"demo-building-a-prompt-piece-by-piece\">Demo: Building a prompt piece by piece</h2>\n<span class=\"paragraph\">Let's start with a bare-bones prompt and progressively improve it. Our task: ask Claude to summarize findings about NaV1.7 gain-of-function mutations in inherited pain disorders.</span>\n<span class=\"paragraph\">Here's a realistic abstract we'll use as context:</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "ead68d0038de22c802420c94344da999",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "4d5e86849dca373878a885661c13b70c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"attempt-1-instruction-only-minimal-prompt\">Attempt 1: Instruction only (minimal prompt)</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "9e2cf96cbfa53d519232f0dab130a25a",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "09fecd8ab2be41e6d50572679be79159",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Notice what happens: Claude gives a <em>general</em> answer drawn from its training data. It's not wrong, but it's generic \u2014 it doesn't reference the specific mutations or data from the paper you care about.</span>\n<h3 id=\"attempt-2-add-context\">Attempt 2: Add context</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "d9f887da07d22b871ef295d69bc7f45e",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "981c1bb9b355068c0532474059fec391",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Better \u2014 now it's grounded in the actual paper. But it's probably too long, and it may not emphasize the aspects you care about as a binder designer.</span>\n<h3 id=\"attempt-3-add-a-role-via-the-system-prompt\">Attempt 3: Add a role via the system prompt</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "95dceb77bf919211cba48b18106e1d6d",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "ca5e217539556023d07a15cd57cccbff",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">The role changes <em>what Claude pays attention to</em>. With the binder-designer framing, it should now emphasize the structural mechanism (S4-S5 linker destabilization) and the quantitative gating shifts \u2014 the stuff that matters for your work.</span>\n<h3 id=\"attempt-4-add-constraints\">Attempt 4: Add constraints</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "de0702cda3202fcd043be2ba860ab8ed",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "b6cc47edec69e2dd78f4fafaaccdc96b",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Constraints are where you get precision. The word limit forces conciseness, and the explicit instructions about what to include/exclude shape the content.</span>\n<h3 id=\"attempt-5-add-output-format\">Attempt 5: Add output format</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "67ce833d5bd8a29af45413dc5dcf560f",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "a5d3d7614f2d113700a3bc8cd0d53849",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Now you're getting a structured, scannable summary that you could paste straight into your lab notes or a Slack channel.</span>\n<h3 id=\"side-by-side-comparison\">Side-by-side comparison</h3></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ulZA",
+      "code_hash": "2b1e9be7da113e860a4bd023dd94ef29",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ecfG",
+      "code_hash": "c3c3f52773d13248ff50427dcc9bf3e8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><div class=\"language-xml codehilite\"><pre><span></span><code>graph<span class=\"w\"> </span>LR\n<span class=\"w\">    </span>subgraph<span class=\"w\"> </span>&quot;System<span class=\"w\"> </span>Prompt<span class=\"w\"> </span>(standing<span class=\"w\"> </span>rules)&quot;\n<span class=\"w\">        </span>SP[&quot;Your<span class=\"w\"> </span>role,<span class=\"w\"> </span>domain,<span class=\"nt\">&lt;br/&gt;</span>team<span class=\"w\"> </span>conventions<span class=\"nt\">&lt;br/&gt;&lt;i&gt;</span>Doesn&#39;t<span class=\"w\"> </span>change<span class=\"w\"> </span>between<span class=\"w\"> </span>requests<span class=\"nt\">&lt;/i&gt;</span>&quot;]\n<span class=\"w\">    </span>end\n\n<span class=\"w\">    </span>subgraph<span class=\"w\"> </span>&quot;User<span class=\"w\"> </span>Prompt<span class=\"w\"> </span>(specific<span class=\"w\"> </span>task)&quot;\n<span class=\"w\">        </span>UP[&quot;Context<span class=\"w\"> </span>+<span class=\"w\"> </span>instruction<span class=\"w\"> </span>+<span class=\"nt\">&lt;br/&gt;</span>constraints<span class=\"w\"> </span>+<span class=\"w\"> </span>format<span class=\"nt\">&lt;br/&gt;&lt;i&gt;</span>Changes<span class=\"w\"> </span>every<span class=\"w\"> </span>time<span class=\"nt\">&lt;/i&gt;</span>&quot;]\n<span class=\"w\">    </span>end\n\n<span class=\"w\">    </span>SP<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>|&quot;combined<span class=\"w\"> </span>for<span class=\"nt\">&lt;br/&gt;</span>each<span class=\"w\"> </span>API<span class=\"w\"> </span>call&quot;|<span class=\"w\"> </span>CALL[&quot;Claude<span class=\"nt\">&lt;br/&gt;</span>API<span class=\"w\"> </span>Call&quot;]\n<span class=\"w\">    </span>UP<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>CALL\n<span class=\"w\">    </span>CALL<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>OUT[&quot;Tailored<span class=\"nt\">&lt;br/&gt;</span>Response&quot;]\n\n<span class=\"w\">    </span>style<span class=\"w\"> </span>SP<span class=\"w\"> </span>fill:#aa44aa,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>UP<span class=\"w\"> </span>fill:#4488cc,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>CALL<span class=\"w\"> </span>fill:#44aa88,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>OUT<span class=\"w\"> </span>fill:#44aa88,color:#fff\n</code></pre></div>\n<span class=\"paragraph\"><strong>Think of it like a lab protocol:</strong> The system prompt is the standing protocol (always the same). The user prompt is today's specific experiment (what sample, what conditions, what measurements).</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Pvdt",
+      "code_hash": "b0fe3172a10e3078e0203d6c5054a035",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"the-component-map\">The component map</h2>\n<span class=\"paragraph\">Here's a mental model for when to reach for each component:</span>\n<table>\n<thead>\n<tr>\n<th>Problem</th>\n<th>Fix</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Response is too generic</td>\n<td>Add <strong>context</strong> (paste in the actual data/text)</td>\n</tr>\n<tr>\n<td>Response misses what matters to you</td>\n<td>Add a <strong>role/system prompt</strong> that reflects your expertise</td>\n</tr>\n<tr>\n<td>Response is too long or too vague</td>\n<td>Add <strong>constraints</strong> (word limits, include/exclude rules)</td>\n</tr>\n<tr>\n<td>Response format is inconsistent</td>\n<td>Specify <strong>output format</strong> explicitly</td>\n</tr>\n<tr>\n<td>Claude doesn't understand the task</td>\n<td>Add <strong>examples</strong> (we'll cover this in depth in notebook 02)</td>\n</tr>\n<tr>\n<td>Task is too complex for one pass</td>\n<td>Break it into a <strong>prompt chain</strong> (also notebook 02)</td>\n</tr>\n</tbody>\n</table></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZBYS",
+      "code_hash": "81fb1ffbdfe136cb0d956b1635a723dc",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\">\ud83e\udd14 <strong>Decision point:</strong> When should you use a system prompt vs. a user prompt?</span>\n<table>\n<thead>\n<tr>\n<th>Put in the...</th>\n<th>What goes here</th>\n<th>Pros</th>\n<th>Cons</th>\n<th>Use when...</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><strong>System prompt</strong></td>\n<td>Your role, domain expertise, standing conventions, style rules</td>\n<td>Persists across all turns in a conversation; sets consistent behavior; separates \"who Claude is\" from \"what to do\"</td>\n<td>Can't change mid-conversation without starting a new one; invisible in some interfaces</td>\n<td>You have standing context that applies to many different requests: your research area, your lab's conventions, formatting preferences</td>\n</tr>\n<tr>\n<td><strong>User prompt</strong></td>\n<td>The specific task, context data (paper abstracts, datasets), constraints for this task, output format</td>\n<td>Can change every message; carries the actual data and instructions</td>\n<td>Must be re-specified each time; can get long if you repeat standing context</td>\n<td>You have a specific task with specific data: \"summarize this abstract,\" \"extract data from this table,\" \"debug this code\"</td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\"><strong>Think of it like a lab protocol:</strong> The system prompt is the standing protocol (always the same). The user prompt is today's specific experiment (what sample, what conditions, what measurements).</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "aLJB",
+      "code_hash": "3e6c870affa1c2d798845f865038a48e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"system-prompt-vs-user-prompt-when-to-use-which\">System prompt vs. user prompt: when to use which</h2>\n<span class=\"paragraph\">The <strong>system prompt</strong> is like the lab protocol \u2014 it sets the standing rules. The <strong>user prompt</strong> is the specific request for today's experiment.</span>\n<span class=\"paragraph\">Put things in the <strong>system prompt</strong> when:</span>\n<ul>\n<li>They apply to many different requests (your role, your domain, your team's conventions)</li>\n<li>They're about <em>how</em> Claude should behave, not <em>what</em> to do right now</li>\n</ul>\n<span class=\"paragraph\">Put things in the <strong>user prompt</strong> when:</span>\n<ul>\n<li>They're specific to this one task (the abstract, the dataset, the question)</li>\n<li>They change from request to request</li>\n</ul>\n<span class=\"paragraph\">Let's see the difference:</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nHfw",
+      "code_hash": "8d5ea20f16fda47083f3d58ec57f3915",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "xXTn",
+      "code_hash": "fdb908115824d98da129ce710df92486",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "AjVT",
+      "code_hash": "259e370340c563957ebfbdfd6e3d508d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">The system prompt stays the same, but the output changes dramatically because the instruction changes. This is the power of separating the <em>standing context</em> from the <em>specific task</em>.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "pHFh",
+      "code_hash": "791fff5187e04ef24946606c6dd8265d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"common-pitfalls\">Common pitfalls</h2>\n<span class=\"paragraph\"><strong>1. Stuffing everything into one paragraph</strong></span>\n<span class=\"paragraph\">Bad:\n<div class=\"language-teratermmacro codehilite\"><pre><span></span><code><span class=\"nv\">You</span><span class=\"w\"> </span><span class=\"nv\">are</span><span class=\"w\"> </span><span class=\"nv\">an</span><span class=\"w\"> </span><span class=\"nv\">ion</span><span class=\"w\"> </span><span class=\"nv\">channel</span><span class=\"w\"> </span><span class=\"nv\">expert</span><span class=\"w\"> </span><span class=\"nv\">and</span><span class=\"w\"> </span><span class=\"nv\">I</span><span class=\"w\"> </span><span class=\"nv\">need</span><span class=\"w\"> </span><span class=\"nv\">you</span><span class=\"w\"> </span><span class=\"nv\">to</span><span class=\"w\"> </span><span class=\"nv\">summarize</span><span class=\"w\"> </span><span class=\"nv\">this</span><span class=\"w\"> </span><span class=\"nv\">paper</span><span class=\"w\"> </span><span class=\"nv\">about</span><span class=\"w\"> </span><span class=\"nv\">NaV1</span>.<span class=\"mi\">7</span><span class=\"w\"> </span><span class=\"nv\">mutations</span><span class=\"w\"> </span><span class=\"nv\">and</span><span class=\"w\"> </span><span class=\"nv\">make</span><span class=\"w\"> </span><span class=\"nv\">it</span><span class=\"w\"> </span><span class=\"nv\">short</span><span class=\"w\"> </span><span class=\"nv\">and</span><span class=\"w\"> </span><span class=\"nv\">in</span><span class=\"w\"> </span><span class=\"nv\">a</span><span class=\"w\"> </span><span class=\"nv\">table</span><span class=\"w\"> </span><span class=\"nv\">format</span><span class=\"w\"> </span><span class=\"nv\">and</span><span class=\"w\"> </span><span class=\"nv\">also</span><span class=\"w\"> </span><span class=\"nv\">mention</span><span class=\"w\"> </span><span class=\"nv\">what</span><span class=\"w\"> </span><span class=\"nv\">it</span><span class=\"w\"> </span><span class=\"nv\">means</span><span class=\"w\"> </span><span class=\"k\">for</span><span class=\"w\"> </span><span class=\"nv\">drug</span><span class=\"w\"> </span><span class=\"nv\">design</span>.\n</code></pre></div></span>\n<span class=\"paragraph\">Better: Separate your components with clear headers or line breaks, as we did in Attempt 5.</span>\n<span class=\"paragraph\"><strong>2. Being vague about constraints</strong></span>\n<span class=\"paragraph\">Bad: \"Keep it short.\"\nBetter: \"Maximum 150 words.\"</span>\n<span class=\"paragraph\">Bad: \"Focus on the important stuff.\"\nBetter: \"Focus on quantitative gating parameters and structural mechanisms.\"</span>\n<span class=\"paragraph\"><strong>3. Asking Claude to not hallucinate (instead of giving it the data)</strong></span>\n<span class=\"paragraph\">Bad: \"Don't make anything up about NaV1.7 mutations.\"\nBetter: Provide the abstract and say \"Stick strictly to data reported in the abstract.\"</span>\n<span class=\"paragraph\">The best way to prevent hallucination is to give Claude the source material and constrain it to that material.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "NCOB",
+      "code_hash": "6444a614e1a1f13775de0562cb2fd673",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"exercise-1-deconstruct-and-improve-a-research-digest-prompt\">Exercise 1: Deconstruct and improve a research digest prompt</h2>\n<span class=\"paragraph\">Here's a prompt that a researcher might use to create a daily research digest. It works, but it's not great. Your task:</span>\n<ol>\n<li>Run it as-is and read the output</li>\n<li>Identify which components are present and which are missing</li>\n<li>Rewrite it using the component framework from this notebook</li>\n<li>Compare the outputs</li>\n</ol></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "aqbW",
+      "code_hash": "2e41afccbd175c04fcacce61831dc983",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "TRpd",
+      "code_hash": "3dbfc8cb65edd6c9a5d2a4c8dea6ab72",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "TXez",
+      "code_hash": "35744f52c63c43f32c10d2261773f8d0",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"exercise-2-build-a-prompt-from-scratch\">Exercise 2: Build a prompt from scratch</h2>\n<span class=\"paragraph\">Pick one of these tasks and build a prompt using all the components that make sense:</span>\n<ol>\n<li><strong>Binder design review:</strong> Given a description of a de novo protein binder candidate, ask Claude to evaluate its strengths, weaknesses, and suggest modifications</li>\n<li><strong>Experimental protocol check:</strong> Paste in a calcium imaging protocol and ask Claude to identify potential issues and suggest controls</li>\n<li><strong>Grant aim critique:</strong> Paste a Specific Aim and ask Claude to find logical gaps and suggest improvements</li>\n</ol>\n<span class=\"paragraph\">For whichever you choose, write:</span>\n<ul>\n<li>A system prompt</li>\n<li>A user prompt with context, instruction, constraints, and output format</li>\n</ul>\n<span class=\"paragraph\">Then run it and iterate \u2014 try removing a component to see how the output changes.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "dNNg",
+      "code_hash": "5b9166e5672fb4a27ace6fcaa0f48c60",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "yCnT",
+      "code_hash": "13d5f1aa0241f14286b9b0aa913349f4",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"what-you-just-learned\">What you just learned</h2>\n<ul>\n<li>Every prompt has up to six components: <strong>role, context, instruction, examples, constraints, output format</strong></li>\n<li>Adding components incrementally and observing the change is the fastest way to improve a prompt</li>\n<li><strong>System prompts</strong> hold your standing context; <strong>user prompts</strong> hold the specific task</li>\n<li>Constraints should be <strong>specific and measurable</strong> (\"150 words\" not \"short\")</li>\n<li>The best defense against hallucination is providing source material and constraining Claude to it</li>\n</ul>\n<span class=\"paragraph\">Next up: <strong>02-techniques-that-work.py</strong> \u2014 chain-of-thought, few-shot examples, prompt chaining, and temperature.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "wlCL",
+      "code_hash": "0ad7daacc13e2c9ab8f2533807dd6a4d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"edit-log\">Edit Log</h2>\n<ul>\n<li>2026-03-25: Created notebook with initial content</li>\n<li>2026-03-25: Added \"Why this matters\" rationale section</li>\n<li>2026-03-25: Added cross-module navigation links</li>\n<li>2026-03-25: Added external references and Further Reading section</li>\n<li>2026-03-25: Added standardized callouts and decision frameworks</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "kqZH",
+      "code_hash": "36dba099e92d4381666c6c5fe234cb2f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"further-reading\">Further Reading</h2>\n<ul>\n<li><a href=\"https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview\" rel=\"noopener noreferrer\" target=\"_blank\">Anthropic Prompt Engineering Guide</a> \u2014 Anthropic's official guide covering all prompt components; a local copy is also available at <code>resources/references/anthropic-prompt-engineering-guide.md</code></li>\n<li><a href=\"https://github.com/anthropics/anthropic-cookbook\" rel=\"noopener noreferrer\" target=\"_blank\">Anthropic Cookbook</a> \u2014 a collection of worked examples and code recipes for using the Claude API effectively</li>\n<li><a href=\"https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts\" rel=\"noopener noreferrer\" target=\"_blank\">Anthropic: System Prompts</a> \u2014 best practices for writing system prompts</li>\n<li><a href=\"https://docs.anthropic.com/en/api/messages\" rel=\"noopener noreferrer\" target=\"_blank\">Anthropic docs: Temperature</a> \u2014 API reference for the <code>temperature</code> parameter and how it affects output variability</li>\n<li><a href=\"https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/give-claude-a-role\" rel=\"noopener noreferrer\" target=\"_blank\">Anthropic: Give Claude a Role</a> \u2014 specific guidance on role prompting</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "wAgl",
+      "code_hash": "47c4fcb5da042f33a415102c70555640",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"edit-log\">Edit Log</h2>\n<ul>\n<li>2026-03-25: Created notebook with initial content</li>\n<li>2026-03-25: Added \"Why this matters\" rationale section</li>\n<li>2026-03-25: Added cross-module navigation links</li>\n<li>2026-03-25: Added external references and Further Reading section</li>\n<li>2026-03-25: Updated navigation links for new module numbering</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}

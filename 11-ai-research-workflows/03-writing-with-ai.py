@@ -117,56 +117,62 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### The structured writing workflow
 
-    ```mermaid
-    flowchart TD
-        subgraph OUTLINE["1. OUTLINE"]
-            direction TB
-            O1["YOU: Define argument,<br>aims, key claims"]
-            O2["CLAUDE: Generate<br>structured outline"]
-            O1 --> O2
-        end
-
-        subgraph DRAFT["2. DRAFT"]
-            direction TB
-            D1["YOU: Approve/edit<br>outline"]
-            D2["CLAUDE: Write<br>each section"]
-            D1 --> D2
-        end
-
-        subgraph REVISE["3. REVISE"]
-            direction TB
-            R1["YOU: Check facts,<br>logic, emphasis"]
-            R2["CLAUDE: Revise for<br>clarity & flow"]
-            R1 --> R2
-            R2 -->|"iterate 2-3x"| R1
-        end
-
-        subgraph POLISH["4. POLISH"]
-            direction TB
-            P1["CLAUDE: Tighten<br>language, hit<br>word count"]
-            P2["YOU: Final review,<br>add citations,<br>verify claims"]
-            P1 --> P2
-        end
-
-        OUTLINE --> DRAFT
-        DRAFT --> REVISE
-        REVISE --> POLISH
-
-        style O1 fill:#e74c3c,color:#fff
-        style O2 fill:#8e44ad,color:#fff
-        style D1 fill:#e74c3c,color:#fff
-        style D2 fill:#8e44ad,color:#fff
-        style R1 fill:#e74c3c,color:#fff
-        style R2 fill:#8e44ad,color:#fff
-        style P1 fill:#8e44ad,color:#fff
-        style P2 fill:#e74c3c,color:#fff
-    ```
+    """),
+    mo.mermaid(
+        """
+        flowchart TD
+            subgraph OUTLINE["1. OUTLINE"]
+                direction TB
+                O1["YOU: Define argument,<br>aims, key claims"]
+                O2["CLAUDE: Generate<br>structured outline"]
+                O1 --> O2
+            end
+        
+            subgraph DRAFT["2. DRAFT"]
+                direction TB
+                D1["YOU: Approve/edit<br>outline"]
+                D2["CLAUDE: Write<br>each section"]
+                D1 --> D2
+            end
+        
+            subgraph REVISE["3. REVISE"]
+                direction TB
+                R1["YOU: Check facts,<br>logic, emphasis"]
+                R2["CLAUDE: Revise for<br>clarity & flow"]
+                R1 --> R2
+                R2 -->|"iterate 2-3x"| R1
+            end
+        
+            subgraph POLISH["4. POLISH"]
+                direction TB
+                P1["CLAUDE: Tighten<br>language, hit<br>word count"]
+                P2["YOU: Final review,<br>add citations,<br>verify claims"]
+                P1 --> P2
+            end
+        
+            OUTLINE --> DRAFT
+            DRAFT --> REVISE
+            REVISE --> POLISH
+        
+            style O1 fill:#e74c3c,color:#fff
+            style O2 fill:#8e44ad,color:#fff
+            style D1 fill:#e74c3c,color:#fff
+            style D2 fill:#8e44ad,color:#fff
+            style R1 fill:#e74c3c,color:#fff
+            style R2 fill:#8e44ad,color:#fff
+            style P1 fill:#8e44ad,color:#fff
+            style P2 fill:#e74c3c,color:#fff
+        """
+    ),
+    mo.md(r"""
 
     **Legend:** Red = you (the scientist). Purple = Claude. You own the science at every step; Claude handles the blank-page problem and language polish.
     """)
+    ])
     return
 
 

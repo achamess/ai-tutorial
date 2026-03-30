@@ -37,58 +37,62 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
+    mo.mermaid(
+        """
+        flowchart LR
+            subgraph INPUT["Paper Sources"]
+                Z1["Zotero<br>Export"]
+                Z2["PubMed<br>Search"]
+                Z3["Semantic<br>Scholar"]
+            end
+        
+            subgraph EXTRACT["Structured Extraction"]
+                E1["Claude API<br>(per paper)"]
+                E2["JSON output:<br>target, methods,<br>key finding,<br>relevance score"]
+            end
+        
+            subgraph ORGANIZE["Data Organization"]
+                O1["pandas<br>DataFrame"]
+                O2["Filter &<br>Sort"]
+                O3["Comparison<br>Table"]
+            end
+        
+            subgraph SYNTHESIZE["AI Synthesis"]
+                S1["Send structured<br>data to Claude"]
+                S2["Grant background<br>paragraph"]
+                S3["Review section<br>draft"]
+            end
+        
+            Z1 --> E1
+            Z2 --> E1
+            Z3 --> E1
+            E1 --> E2
+            E2 --> O1
+            O1 --> O2
+            O2 --> O3
+            O3 --> S1
+            S1 --> S2
+            S1 --> S3
+        
+            style Z1 fill:#3498db,color:#fff
+            style Z2 fill:#3498db,color:#fff
+            style Z3 fill:#3498db,color:#fff
+            style E1 fill:#8e44ad,color:#fff
+            style E2 fill:#8e44ad,color:#fff
+            style O1 fill:#f39c12,color:#fff
+            style O2 fill:#f39c12,color:#fff
+            style O3 fill:#f39c12,color:#fff
+            style S1 fill:#2ecc71,color:#fff
+            style S2 fill:#2ecc71,color:#fff
+            style S3 fill:#2ecc71,color:#fff
+        """
+    ),
     mo.md(r"""
-    ```mermaid
-    flowchart LR
-        subgraph INPUT["Paper Sources"]
-            Z1["Zotero<br>Export"]
-            Z2["PubMed<br>Search"]
-            Z3["Semantic<br>Scholar"]
-        end
-
-        subgraph EXTRACT["Structured Extraction"]
-            E1["Claude API<br>(per paper)"]
-            E2["JSON output:<br>target, methods,<br>key finding,<br>relevance score"]
-        end
-
-        subgraph ORGANIZE["Data Organization"]
-            O1["pandas<br>DataFrame"]
-            O2["Filter &<br>Sort"]
-            O3["Comparison<br>Table"]
-        end
-
-        subgraph SYNTHESIZE["AI Synthesis"]
-            S1["Send structured<br>data to Claude"]
-            S2["Grant background<br>paragraph"]
-            S3["Review section<br>draft"]
-        end
-
-        Z1 --> E1
-        Z2 --> E1
-        Z3 --> E1
-        E1 --> E2
-        E2 --> O1
-        O1 --> O2
-        O2 --> O3
-        O3 --> S1
-        S1 --> S2
-        S1 --> S3
-
-        style Z1 fill:#3498db,color:#fff
-        style Z2 fill:#3498db,color:#fff
-        style Z3 fill:#3498db,color:#fff
-        style E1 fill:#8e44ad,color:#fff
-        style E2 fill:#8e44ad,color:#fff
-        style O1 fill:#f39c12,color:#fff
-        style O2 fill:#f39c12,color:#fff
-        style O3 fill:#f39c12,color:#fff
-        style S1 fill:#2ecc71,color:#fff
-        style S2 fill:#2ecc71,color:#fff
-        style S3 fill:#2ecc71,color:#fff
-    ```
 
     The pipeline above is what we build in this notebook -- from raw paper abstracts to structured data to synthesized narrative.
     """)
+    ])
     return
 
 

@@ -483,40 +483,46 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### Visual Decision Tree: Which Statistical Test to Use
 
-    ```mermaid
-    flowchart TD
-        START["What kind of data<br>do you have?"] --> CONT{"Continuous<br>(measurements)?"}
-        START --> CAT{"Categorical<br>(counts/proportions)?"}
-
-        CONT --> NGROUPS{"How many<br>groups?"}
-        NGROUPS -->|"2 groups"| PAIRED{"Same subjects<br>measured twice?"}
-        NGROUPS -->|"3+ groups"| NORMAL2{"Data roughly<br>normal?"}
-
-        PAIRED -->|"Yes<br>(before/after)"| PT["Paired t-test<br>stats.ttest_rel()"]
-        PAIRED -->|"No<br>(different subjects)"| NORMAL1{"Data roughly<br>normal?"}
-
-        NORMAL1 -->|"Yes"| TT["Independent t-test<br>stats.ttest_ind()"]
-        NORMAL1 -->|"No / n<10"| MW["Mann-Whitney U<br>stats.mannwhitneyu()"]
-
-        NORMAL2 -->|"Yes"| ANOVA["One-way ANOVA<br>stats.f_oneway()<br>+ post-hoc Tukey"]
-        NORMAL2 -->|"No / n<10"| KW["Kruskal-Wallis<br>stats.kruskal()<br>+ post-hoc Dunn"]
-
-        CAT --> CHI["Chi-squared test<br>stats.chi2_contingency()<br>or Fisher's exact test"]
-
-        style START fill:#4878CF,color:#fff
-        style PT fill:#55A868,color:#fff
-        style TT fill:#55A868,color:#fff
-        style MW fill:#FDB863,color:#000
-        style ANOVA fill:#55A868,color:#fff
-        style KW fill:#FDB863,color:#000
-        style CHI fill:#8172B2,color:#fff
-    ```
+    """),
+    mo.mermaid(
+        """
+        flowchart TD
+            START["What kind of data<br>do you have?"] --> CONT{"Continuous<br>(measurements)?"}
+            START --> CAT{"Categorical<br>(counts/proportions)?"}
+        
+            CONT --> NGROUPS{"How many<br>groups?"}
+            NGROUPS -->|"2 groups"| PAIRED{"Same subjects<br>measured twice?"}
+            NGROUPS -->|"3+ groups"| NORMAL2{"Data roughly<br>normal?"}
+        
+            PAIRED -->|"Yes<br>(before/after)"| PT["Paired t-test<br>stats.ttest_rel()"]
+            PAIRED -->|"No<br>(different subjects)"| NORMAL1{"Data roughly<br>normal?"}
+        
+            NORMAL1 -->|"Yes"| TT["Independent t-test<br>stats.ttest_ind()"]
+            NORMAL1 -->|"No / n<10"| MW["Mann-Whitney U<br>stats.mannwhitneyu()"]
+        
+            NORMAL2 -->|"Yes"| ANOVA["One-way ANOVA<br>stats.f_oneway()<br>+ post-hoc Tukey"]
+            NORMAL2 -->|"No / n<10"| KW["Kruskal-Wallis<br>stats.kruskal()<br>+ post-hoc Dunn"]
+        
+            CAT --> CHI["Chi-squared test<br>stats.chi2_contingency()<br>or Fisher's exact test"]
+        
+            style START fill:#4878CF,color:#fff
+            style PT fill:#55A868,color:#fff
+            style TT fill:#55A868,color:#fff
+            style MW fill:#FDB863,color:#000
+            style ANOVA fill:#55A868,color:#fff
+            style KW fill:#FDB863,color:#000
+            style CHI fill:#8172B2,color:#fff
+        """
+    ),
+    mo.md(r"""
 
     **Green boxes** = parametric tests (assume roughly normal data). **Yellow boxes** = non-parametric alternatives (safer for small samples or non-normal data). When in doubt, the non-parametric option is the safer choice.
     """)
+    ])
     return
 
 

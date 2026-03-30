@@ -118,29 +118,29 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ```mermaid
-    graph TD
-        subgraph "Python's Core Data Types"
-            STR["<b>str</b><br/>Text<br/><i>'NaV1.7'</i>"]
-            INT["<b>int</b><br/>Whole numbers<br/><i>45</i>"]
-            FLOAT["<b>float</b><br/>Decimals<br/><i>-35.2</i>"]
-            BOOL["<b>bool</b><br/>True / False<br/><i>True</i>"]
-        end
-
-        subgraph "When to use each"
-            STR --- S1["Names, labels, sequences<br/>Gene names, binder IDs, FASTA"]
-            INT --- S2["Counts, indices<br/>Neuron counts, well numbers"]
-            FLOAT --- S3["Measurements<br/>Kd values, voltage, temperature"]
-            BOOL --- S4["Yes/No decisions<br/>Is it a nociceptor? Passed QC?"]
-        end
-
-        style STR fill:#4488cc,color:#fff
-        style INT fill:#44aa88,color:#fff
-        style FLOAT fill:#cc8844,color:#fff
-        style BOOL fill:#aa44aa,color:#fff
-    ```
-    """)
+    mo.mermaid(
+        """
+        graph TD
+            subgraph "Python's Core Data Types"
+                STR["<b>str</b><br/>Text<br/><i>'NaV1.7'</i>"]
+                INT["<b>int</b><br/>Whole numbers<br/><i>45</i>"]
+                FLOAT["<b>float</b><br/>Decimals<br/><i>-35.2</i>"]
+                BOOL["<b>bool</b><br/>True / False<br/><i>True</i>"]
+            end
+        
+            subgraph "When to use each"
+                STR --- S1["Names, labels, sequences<br/>Gene names, binder IDs, FASTA"]
+                INT --- S2["Counts, indices<br/>Neuron counts, well numbers"]
+                FLOAT --- S3["Measurements<br/>Kd values, voltage, temperature"]
+                BOOL --- S4["Yes/No decisions<br/>Is it a nociceptor? Passed QC?"]
+            end
+        
+            style STR fill:#4488cc,color:#fff
+            style INT fill:#44aa88,color:#fff
+            style FLOAT fill:#cc8844,color:#fff
+            style BOOL fill:#aa44aa,color:#fff
+        """
+    )
     return
 
 
@@ -243,27 +243,27 @@ def _(experiment):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ```mermaid
-    graph LR
-        subgraph "Lists — Ordered Collections"
-            L["[ 'NaV1.7', 'NaV1.8', 'KCNQ2' ]"]
-            L --- L1["Access by position: list[0]"]
-            L --- L2["Ordered: first, second, third..."]
-            L --- L3["Use for: channels, measurements, gene lists"]
-        end
-
-        subgraph "Dictionaries — Labeled Records"
-            D["{ 'target': 'NaV1.8', 'Kd': 12.7 }"]
-            D --- D1["Access by key: dict['target']"]
-            D --- D2["Labeled: each value has a name"]
-            D --- D3["Use for: experiments, candidates, metadata"]
-        end
-
-        style L fill:#4488cc,color:#fff
-        style D fill:#44aa88,color:#fff
-    ```
-    """)
+    mo.mermaid(
+        """
+        graph LR
+            subgraph "Lists — Ordered Collections"
+                L["[ 'NaV1.7', 'NaV1.8', 'KCNQ2' ]"]
+                L --- L1["Access by position: list[0]"]
+                L --- L2["Ordered: first, second, third..."]
+                L --- L3["Use for: channels, measurements, gene lists"]
+            end
+        
+            subgraph "Dictionaries — Labeled Records"
+                D["{ 'target': 'NaV1.8', 'Kd': 12.7 }"]
+                D --- D1["Access by key: dict['target']"]
+                D --- D2["Labeled: each value has a name"]
+                D --- D3["Use for: experiments, candidates, metadata"]
+            end
+        
+            style L fill:#4488cc,color:#fff
+            style D fill:#44aa88,color:#fff
+        """
+    )
     return
 
 
@@ -505,8 +505,9 @@ def _(mo):
     return
 
 
-app._unparsable_cell(
-    r"""
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
     ---
 
     ## Edit Log
@@ -518,9 +519,8 @@ app._unparsable_cell(
     - 2026-03-25: Added external references and Further Reading section
     - 2026-03-25: Added cross-module navigation links
     - 2026-03-25: Added standardized callouts and decision frameworks
-    """,
-    name="_"
-)
+    """)
+    return
 
 
 @app.cell(hide_code=True)

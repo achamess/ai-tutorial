@@ -1,0 +1,454 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.21.1",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "408c2bfdc3a9ea67c99bdbae2ae58e3f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"module-math-you-actually-need-01-descriptive-stats-and-distributions\">Module: Math You Actually Need -- 01: Descriptive Stats and Distributions</h1>\n<span class=\"paragraph\"><strong>Goal:</strong> Understand the basic numbers that summarize data -- means, medians, spread, and distributions -- so you can evaluate experimental results and understand how LLMs generate text.</span>\n<span class=\"paragraph\"><strong>References:</strong> <a href=\"https://numpy.org/doc/stable/reference/routines.statistics.html\" rel=\"noopener noreferrer\" target=\"_blank\">NumPy Statistical Functions</a> | <a href=\"https://docs.scipy.org/doc/scipy/reference/stats.html\" rel=\"noopener noreferrer\" target=\"_blank\">SciPy Stats Module</a> | <a href=\"https://allendowney.github.io/ThinkPython/chap07.html\" rel=\"noopener noreferrer\" target=\"_blank\">Think Python Ch 7: Iteration</a> | <a href=\"https://allendowney.github.io/ThinkStats/\" rel=\"noopener noreferrer\" target=\"_blank\">Think Stats</a> (Allen Downey)</span>\n<blockquote>\n<span class=\"paragraph\"><strong>Book companion:</strong> This notebook covers the same territory as <a href=\"https://allendowney.github.io/ThinkStats/\" rel=\"noopener noreferrer\" target=\"_blank\">Think Stats</a> by Allen Downey (the same author as Think Python, same accessible style). Think Stats goes deeper on every topic here \u2014 if you want more after this notebook, it's the natural next step. Especially relevant: <a href=\"https://allendowney.github.io/ThinkStats/\" rel=\"noopener noreferrer\" target=\"_blank\">Chapter 1 (Exploratory Data Analysis)</a> and <a href=\"https://allendowney.github.io/ThinkStats/\" rel=\"noopener noreferrer\" target=\"_blank\">Chapter 2 (Distributions)</a>.</span>\n</blockquote>\n<hr />\n<h2 id=\"why-you-need-this\">Why you need this</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "ff73d96f6e693ffde0105b4cc58e1e7b",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Navigation:</strong> <a href=\"../07-cloud-and-hpc/03-cloud-computing-and-when-to-use-what.py\">\\u2190 Previous: Cloud Computing and When to Use What</a> | <a href=\"../README.md\">Module Index</a> | <a href=\"02-hypothesis-testing-and-pvalues.py\">Next: Hypothesis Testing and P-values \\u2192</a></span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "eb3e88392e3b7616927500542ed744c7",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Why this matters for your work</strong></span>\n<ul>\n<li>When a paper reports \"von Frey threshold was 1.2 +/- 0.3 g,\" knowing whether that is SD or SEM changes your interpretation of the variability and reliability of the result. This notebook teaches you to spot the difference instantly.</li>\n<li>Your binder screening data (Kd values, selectivity ratios) follow lognormal distributions, not normal ones. Using the wrong summary statistic (mean vs median) on skewed data will mislead your hit-picking decisions.</li>\n<li>Understanding distributions is the foundation for the next two notebooks (hypothesis testing and AI math). Temperature in Claude's API literally reshapes a probability distribution over tokens -- the same math you learn here for binding affinities.</li>\n<li>Outlier detection protects your analyses from artifacts -- dead neurons in calcium imaging, failed injections in behavioral assays -- that would otherwise skew your results and waste follow-up experiments.</li>\n</ul>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "3a2423ecf498e9a672114fdf80843d82",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "No module named 'scipy'",
+          "traceback": []
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "<span class=\"codehilite\"><div class=\"highlight\"><pre><span></span><span class=\"gt\">Traceback (most recent call last):</span>\n  File <span class=\"nb\">&quot;/var/folders/px/207b8_7d2_z3ct5j69_g3qbc0000gp/T/marimo_80629/__marimo__cell_lEQa_.py&quot;</span>, line <span class=\"m\">5</span>, in <span class=\"n\">&lt;module&gt;</span>\n<span class=\"w\">    </span><span class=\"kn\">from</span><span class=\"w\"> </span><span class=\"nn\">scipy</span><span class=\"w\"> </span><span class=\"kn\">import</span> <span class=\"n\">stats</span>\n<span class=\"gr\">ModuleNotFoundError</span>: <span class=\"n\">No module named &#39;scipy&#39;</span>\n</pre></div>\n</span>",
+          "mimetype": "application/vnd.marimo+traceback"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "> /var/folders/px/207b8_7d2_z3ct5j69_g3qbc0000gp/T/marimo_80629/__marimo__cell_lEQa_.py(5)<module>()\n-> from scipy import stats\n(Pdb) ",
+          "mimetype": "text/plain"
+        },
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "PKri",
+      "code_hash": "b965da2209ff1f8d94c96a4f498640ed",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"1-mean-median-and-mode-when-each-matters\">1. Mean, Median, and Mode \u2014 When Each Matters</h2>\n<h3 id=\"why-you-need-this\">Why you need this</h3>\n<span class=\"paragraph\">You record calcium transient amplitudes from 30 DRG neurons after capsaicin application. Some neurons fire huge responses, some don't respond at all. Which single number best summarizes your data? The answer depends on the <em>shape</em> of your data \u2014 and picking the wrong summary statistic can hide the biology.</span>\n<span class=\"paragraph\">Let's create some realistic calcium imaging data and see why this matters.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "2cd135617cfe2ebe973f6929f832a569",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Key concept:</strong> The choice between mean and median depends on data shape. For symmetric data (normal distribution), mean and median are nearly identical and either works. For skewed data -- which is extremely common in biology (binding affinities, gene expression levels, calcium transient amplitudes) -- the median is a more honest summary because it's not pulled by extreme values. When you report \"average Kd = 500 nM\" for a screen where most binders have Kd &gt; 1000 nM but a few tight binders pull the mean down, you're giving a misleading picture of your typical candidate.</span>\n<span class=\"paragraph\"><strong>Decision point: When to use mean vs median</strong></span>\n<table>\n<thead>\n<tr>\n<th>Data shape</th>\n<th>Use</th>\n<th>Why</th>\n<th>Pain biology example</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>Symmetric (bell curve)</td>\n<td><strong>Mean</strong></td>\n<td>Mean = median, both are good summaries</td>\n<td>Withdrawal latencies in a homogeneous group</td>\n</tr>\n<tr>\n<td>Right-skewed (long tail of high values)</td>\n<td><strong>Median</strong></td>\n<td>Mean is inflated by outliers</td>\n<td>Binding affinities (Kd) from a screening campaign</td>\n</tr>\n<tr>\n<td>Left-skewed (long tail of low values)</td>\n<td><strong>Median</strong></td>\n<td>Mean is deflated by outliers</td>\n<td>Time-to-response in fast-responding neuron populations</td>\n</tr>\n<tr>\n<td>Bimodal (two peaks)</td>\n<td><strong>Neither alone</strong> -- report both peaks</td>\n<td>Mean falls in the gap between peaks, misleading</td>\n<td>Calcium imaging (responders vs non-responders)</td>\n</tr>\n<tr>\n<td>Small n (&lt; 10)</td>\n<td><strong>Median</strong></td>\n<td>Mean is unstable with few data points</td>\n<td>Pilot behavioral experiments</td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\"><strong>Warning:</strong> SEM (standard error of the mean) makes error bars look deceptively small. SEM = SD / sqrt(n), so it shrinks as you add more samples -- even if the underlying variability hasn't changed. A paper showing SEM error bars on n=50 will look much more precise than the same data with SD error bars. Always check whether a paper reports SD or SEM. For your own figures: use SD to show biological variability, SEM only when you're specifically estimating precision of the mean.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "29ebf33850d226dfb8f39b4be4920f70",
+      "outputs": [
+        {
+          "type": "error",
+          "ename": "exception",
+          "evalue": "An ancestor raised an exception (ModuleNotFoundError): ",
+          "traceback": []
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "7e1f23c6d45a21c252fa3afa3e456985",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "793e538df1a84da6317bbccb0f9d6ad8",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "0da94685d0e761b37692320ecee44ab9",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"the-lesson\">The lesson</h3>\n<table>\n<thead>\n<tr>\n<th>Statistic</th>\n<th>Best when...</th>\n<th>Pain biology example</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><strong>Mean</strong></td>\n<td>Data is roughly symmetric, no extreme outliers</td>\n<td>Paw withdrawal latency in a uniform group</td>\n</tr>\n<tr>\n<td><strong>Median</strong></td>\n<td>Data is skewed or has outliers</td>\n<td>Binding affinities (Kd values span orders of magnitude)</td>\n</tr>\n<tr>\n<td><strong>Mode</strong></td>\n<td>Data has distinct peaks / categories</td>\n<td>Neuron subtypes in calcium imaging (responder vs non-responder)</td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\"><strong>Rule of thumb:</strong> Always plot your data before picking a summary statistic. If it's skewed, use the median. If it's bimodal, report both peaks.</span>\n<span class=\"paragraph\">For a deeper treatment of when to use each measure and how they behave with different distribution shapes, see <a href=\"https://allendowney.github.io/ThinkStats/\" rel=\"noopener noreferrer\" target=\"_blank\">Think Stats, Chapter 2 (Distributions)</a> \u2014 Downey uses real-world datasets to show how summary statistics can mislead.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "9c87b2b5e588023658a0cc0bc6ba22f9",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "4992da48cca4a0c1e6db16f6ee0d1aa1",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"2-standard-deviation-and-sem-what-spread-tells-you\">2. Standard Deviation and SEM \u2014 What Spread Tells You</h2>\n<h3 id=\"why-you-need-this\">Why you need this</h3>\n<span class=\"paragraph\">You read a paper that says \"von Frey threshold was 0.4 \u00b1 0.1 g.\" That \u00b1 could mean two completely different things:</span>\n<ul>\n<li><strong>\u00b1 SD (standard deviation):</strong> How much individual mice vary. Tells you about biological variability.</li>\n<li><strong>\u00b1 SEM (standard error of the mean):</strong> How precisely you've estimated the group average. Tells you about measurement precision.</li>\n</ul>\n<span class=\"paragraph\">SEM is always smaller than SD (by a factor of sqrt(n)), so some papers use SEM to make error bars look smaller. This is not fraud, but it can be misleading if you don't know the difference.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "91ca83cdf2b16c35c589261e227fc5b8",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "782802addb11bb14653128e169ff1b78",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "1f477da864d8fc7e7cf7b6f0ed8d9ab1",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "16cb81bd675aa9320227fce9095f7d63",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"key-insight-for-reading-papers\">Key insight for reading papers</h3>\n<span class=\"paragraph\">When you see <code>mean \u00b1 something</code> in a paper:</span>\n<ol>\n<li><strong>Check whether it's SD or SEM</strong> (should be stated in methods)</li>\n<li><strong>If SEM, mentally multiply by sqrt(n)</strong> to get SD and understand real variability</li>\n<li><strong>More mice \u2192 smaller SEM</strong> (but SD stays roughly the same)</li>\n</ol>\n<span class=\"paragraph\">When you ask Claude to interpret experimental results, you can now verify whether it's handling SD vs SEM correctly.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "9e83fb96f78763e302f609d152a8dbd2",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "b025ed4dcc6cb709235927ecb04b27a4",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"3-distributions-normal-skewed-and-bimodal\">3. Distributions: Normal, Skewed, and Bimodal</h2>\n<h3 id=\"why-you-need-this\">Why you need this</h3>\n<span class=\"paragraph\">The <em>shape</em> of your data determines which statistical tests are valid, which summary statistics are meaningful, and how to interpret results. Many biological measurements are NOT normally distributed:</span>\n<ul>\n<li>Binding affinities (Kd) span orders of magnitude \u2192 <strong>log-normal</strong></li>\n<li>Neuron firing rates often have many zeros \u2192 <strong>skewed right</strong></li>\n<li>Mixed cell populations \u2192 <strong>bimodal</strong> (as we saw above with calcium imaging)</li>\n</ul>\n<span class=\"paragraph\">And critically, <strong>LLMs generate text by sampling from probability distributions</strong> \u2014 understanding distribution shapes prepares you for Module 03 (probability and AI math).</span>\n<span class=\"paragraph\">For a thorough, code-driven exploration of PMFs (probability mass functions) and CDFs (cumulative distribution functions), see <a href=\"https://allendowney.github.io/ThinkStats/\" rel=\"noopener noreferrer\" target=\"_blank\">Think Stats, Chapter 3 (PMFs)</a> and <a href=\"https://allendowney.github.io/ThinkStats/\" rel=\"noopener noreferrer\" target=\"_blank\">Chapter 4 (CDFs)</a>. CDFs are especially useful for comparing distributions \u2014 they make it immediately obvious whether one group is shifted relative to another.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "f65c845f09b208525992dc85e31c6387",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "4a01d56086fe4757d26adbc2ecb7c68d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"why-distributions-matter-for-ai\">Why distributions matter for AI</h3>\n<span class=\"paragraph\">When an LLM generates text, at each step it produces a <strong>probability distribution</strong> over all possible next tokens (~100,000 words/word-pieces). The <code>temperature</code> parameter reshapes this distribution:</span>\n<ul>\n<li><strong>temperature=0</strong> \u2192 all probability on the single most likely token (deterministic)</li>\n<li><strong>temperature=1</strong> \u2192 the model's \"natural\" distribution</li>\n<li><strong>temperature&gt;1</strong> \u2192 flatter distribution (more random/creative)</li>\n</ul>\n<span class=\"paragraph\">We'll explore this in detail in notebook 03, but the key idea is: <strong>probability distributions aren't abstract math \u2014 they're the mechanism by which Claude generates every word.</strong></span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ulZA",
+      "code_hash": "99d09cf941e2a6dc092f162c3448ade8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"4-log-transformations-why-everything-is-log-scale\">4. Log Transformations \u2014 Why Everything is Log-Scale</h2>\n<h3 id=\"why-you-need-this\">Why you need this</h3>\n<span class=\"paragraph\">Three specific scenarios from your daily work:</span>\n<ol>\n<li><strong>RNA-seq results</strong> report log2 fold changes. A log2FC of 3 means 2^3 = 8-fold increase. You need to go between log and linear scales fluently.</li>\n<li><strong>Binding affinities</strong> are reported as pKd (negative log10) because Kd values range from picomolar to millimolar \u2014 9 orders of magnitude.</li>\n<li><strong>LLM loss functions</strong> use logarithms (cross-entropy loss). When you see \"perplexity\" in an AI paper, it's an exponentiated average log-probability.</li>\n</ol>\n<span class=\"paragraph\">Log transformations are everywhere because <strong>biology operates on multiplicative scales</strong>, not additive ones.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ecfG",
+      "code_hash": "ca782f4db4878c2ad4004f23f1602719",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Pvdt",
+      "code_hash": "b850390d6fccab76f01734e941271599",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ZBYS",
+      "code_hash": "1c3a9b4b6cbe7e86e3d15e744fe9ccbd",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "aLJB",
+      "code_hash": "b01f6b7016701ca2ff969d839d78d566",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "nHfw",
+      "code_hash": "9bedb557e443d065425d4dd5843e9d73",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"5-identifying-outliers\">5. Identifying Outliers</h2>\n<h3 id=\"why-you-need-this\">Why you need this</h3>\n<span class=\"paragraph\">Outliers in behavioral data can mean a dead mouse, a failed injection, a recording artifact \u2014 or genuinely unusual biology. You need systematic ways to flag them, rather than eyeballing.</span>\n<span class=\"paragraph\">Two common approaches:</span>\n<ul>\n<li><strong>Z-score method:</strong> flag points more than 2-3 standard deviations from the mean</li>\n<li><strong>IQR method:</strong> flag points beyond 1.5x the interquartile range (what box plots use)</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "xXTn",
+      "code_hash": "3b120ccb316488430e4b22a42e8a9b28",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "AjVT",
+      "code_hash": "8abc227ed2167507fe121721188ebfe7",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "pHFh",
+      "code_hash": "74631ac919f62235ffd84fc2296d89bd",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"exercise-drg-calcium-imaging-analysis\">Exercise: DRG Calcium Imaging Analysis</h2>\n<span class=\"paragraph\">You've performed calcium imaging on DRG neurons from a CFA-treated mouse. Each neuron was exposed to three stimuli in sequence: capsaicin (TRPV1 agonist), ATP (P2X agonist), and high K+ (depolarization control).</span>\n<span class=\"paragraph\">Your tasks:</span>\n<ol>\n<li>Generate synthetic data and compute descriptive statistics</li>\n<li>Visualize the distributions</li>\n<li>Identify which summary statistics are appropriate for each stimulus</li>\n<li>Find outlier neurons</li>\n</ol>\n<span class=\"paragraph\"><strong>Step 1:</strong> Run the cell below to generate the dataset.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "NCOB",
+      "code_hash": "a101d0d6b831120cb307496bbd9e28c7",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "aqbW",
+      "code_hash": "23579f80f37b655011e1038f0a7455c3",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"task-1-compute-descriptive-statistics-for-each-stimulus\">Task 1: Compute descriptive statistics for each stimulus</h3>\n<span class=\"paragraph\">For each of the three responses (capsaicin, ATP, high K+), compute: mean, median, SD, SEM, min, max.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TRpd",
+      "code_hash": "63a304dd8dcf9cac72d6775ca8890407",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "TXez",
+      "code_hash": "8c3fc2334314ce92a0781d34875b0095",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"task-2-visualize-all-three-distributions\">Task 2: Visualize all three distributions</h3>\n<span class=\"paragraph\">Create a figure with three histograms (one per stimulus). Mark the mean and median on each.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "dNNg",
+      "code_hash": "f89f1701ded14db08934fd278eafb017",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "yCnT",
+      "code_hash": "67956855b0fa263e3fa73dd78a3099cc",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"task-3-which-summary-statistic-is-appropriate-for-each\">Task 3: Which summary statistic is appropriate for each?</h3>\n<span class=\"paragraph\">After looking at the histograms, answer these questions in the markdown cell below:</span>\n<ul>\n<li>For capsaicin responses: should you report mean or median? Why?</li>\n<li>For ATP responses: should you report mean or median? Why?</li>\n<li>For high K+ responses: does it matter? Why?</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "wlCL",
+      "code_hash": "208f9d2e99c5996b66f532f159e8900c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><em>Your answers here:</em></span>\n<ul>\n<li>Capsaicin: ...</li>\n<li>ATP: ...</li>\n<li>High K+: ...</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "kqZH",
+      "code_hash": "dd781ac4dd6e04930f21f913e97c62a9",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"task-4-identify-outlier-neurons-in-the-high-k-response\">Task 4: Identify outlier neurons in the high K+ response</h3>\n<span class=\"paragraph\">Use both Z-score (threshold=2.5) and IQR methods. How many outliers does each method find?</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "wAgl",
+      "code_hash": "2e21c0bedd1b74a72406a2f5eb45ce2e",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "rEll",
+      "code_hash": "b03cafe8bc8806f5f5faa7acf274cf2b",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"summary\">Summary</h2>\n<table>\n<thead>\n<tr>\n<th>Concept</th>\n<th>What it tells you</th>\n<th>Pain biology example</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><strong>Mean</strong></td>\n<td>Center of symmetric data</td>\n<td>Average tail-flick latency</td>\n</tr>\n<tr>\n<td><strong>Median</strong></td>\n<td>Center of skewed data</td>\n<td>Typical binding Kd in a screen</td>\n</tr>\n<tr>\n<td><strong>SD</strong></td>\n<td>How much individuals vary</td>\n<td>Variability in von Frey thresholds</td>\n</tr>\n<tr>\n<td><strong>SEM</strong></td>\n<td>How precisely you know the mean</td>\n<td>Error bars on a bar graph</td>\n</tr>\n<tr>\n<td><strong>Distribution shape</strong></td>\n<td>What kind of data you have</td>\n<td>Normal, skewed, bimodal</td>\n</tr>\n<tr>\n<td><strong>Log transform</strong></td>\n<td>Makes multiplicative data additive</td>\n<td>RNA-seq log2FC, pKd</td>\n</tr>\n<tr>\n<td><strong>Outlier detection</strong></td>\n<td>Flags unusual observations</td>\n<td>Failed recordings in calcium imaging</td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\"><strong>AI connection preview:</strong> In notebook 03, we'll see how probability distributions are the foundation of LLM text generation \u2014 temperature, top-p sampling, and softmax all manipulate distributions over tokens.</span>\n<span class=\"paragraph\"><strong>Next up:</strong> Hypothesis testing and p-values \u2014 the statistics you encounter in every paper and every RNA-seq analysis.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "dGlV",
+      "code_hash": "ff73d96f6e693ffde0105b4cc58e1e7b",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Navigation:</strong> <a href=\"../07-cloud-and-hpc/03-cloud-computing-and-when-to-use-what.py\">\\u2190 Previous: Cloud Computing and When to Use What</a> | <a href=\"../README.md\">Module Index</a> | <a href=\"02-hypothesis-testing-and-pvalues.py\">Next: Hypothesis Testing and P-values \\u2192</a></span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SdmI",
+      "code_hash": "a1539b930fe3266ec824a07b3d88608f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"further-reading\">Further Reading</h2>\n<ul>\n<li>\n<span class=\"paragraph\"><strong><a href=\"https://allendowney.github.io/ThinkStats/\" rel=\"noopener noreferrer\" target=\"_blank\">Think Stats</a></strong> (Allen Downey) -- Free online textbook by the same author as Think Python. Covers exploratory data analysis, distributions, PMFs, CDFs, and statistical thinking with Python code throughout. <strong>Especially relevant chapters:</strong></span>\n<ul>\n<li><a href=\"https://allendowney.github.io/ThinkStats/\" rel=\"noopener noreferrer\" target=\"_blank\">Chapter 1: Exploratory Data Analysis</a> -- first look at a dataset, summary statistics, histograms</li>\n<li><a href=\"https://allendowney.github.io/ThinkStats/\" rel=\"noopener noreferrer\" target=\"_blank\">Chapter 2: Distributions</a> -- representing distributions, comparing distributions, outliers</li>\n<li><a href=\"https://allendowney.github.io/ThinkStats/\" rel=\"noopener noreferrer\" target=\"_blank\">Chapter 3: Probability Mass Functions</a> -- PMFs for comparing groups, visualizing discrete distributions</li>\n<li><a href=\"https://allendowney.github.io/ThinkStats/\" rel=\"noopener noreferrer\" target=\"_blank\">Chapter 4: Cumulative Distribution Functions</a> -- CDFs as the most useful way to compare distributions</li>\n</ul>\n</li>\n<li><strong><a href=\"https://allendowney.github.io/ThinkPython/chap07.html\" rel=\"noopener noreferrer\" target=\"_blank\">Think Python, Chapter 7: Iteration</a></strong> -- Loops and iteration in Python, which underpin computing statistics over datasets.</li>\n<li><strong><a href=\"https://numpy.org/doc/stable/reference/routines.statistics.html\" rel=\"noopener noreferrer\" target=\"_blank\">NumPy: Statistical Functions</a></strong> -- Official reference for <code>np.mean()</code>, <code>np.median()</code>, <code>np.std()</code>, <code>np.percentile()</code>, and other statistical functions used throughout this notebook.</li>\n<li><strong><a href=\"https://docs.scipy.org/doc/scipy/reference/stats.html\" rel=\"noopener noreferrer\" target=\"_blank\">SciPy: Statistical Functions (<code>scipy.stats</code>)</a></strong> -- Comprehensive library for probability distributions, statistical tests, and descriptive statistics.</li>\n<li><strong><a href=\"https://www.khanacademy.org/math/statistics-probability\" rel=\"noopener noreferrer\" target=\"_blank\">Khan Academy: Statistics and Probability</a></strong> -- A gentler, visual introduction to the same concepts covered here (mean, median, standard deviation, distributions).</li>\n<li><strong><a href=\"https://matplotlib.org/stable/gallery/statistics/hist.html\" rel=\"noopener noreferrer\" target=\"_blank\">Matplotlib: Histogram Tutorial</a></strong> -- How to create and customize histograms for visualizing distributions.</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lgWD",
+      "code_hash": "9097c70a82d3e78cd949c803b99e8967",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"edit-log\">Edit Log</h2>\n<ul>\n<li>2026-03-25: Created notebook with initial content</li>\n<li>2026-03-25: Added cross-module navigation links</li>\n<li>2026-03-25: Added external references and Further Reading section</li>\n<li>2026-03-25: QA pass \u2014 added \"Why this matters\" rationale blockquote</li>\n<li>2026-03-25: Added standardized callouts and decision frameworks</li>\n<li>2026-03-25: Updated navigation links for new module numbering</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}

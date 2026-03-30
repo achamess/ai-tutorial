@@ -1,0 +1,402 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.21.1",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "0a8ab35dc58ec61577e443d57a29e2f8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"01-what-is-an-llm\">01: What Is an LLM?</h1>\n<span class=\"paragraph\">You already use Claude every day for grant writing and research digests. This module gives you the mental model of what's actually happening under the hood \u2014 not to make you an ML engineer, but to make you a sharper user.</span>\n<span class=\"paragraph\">By the end of this notebook you'll understand:</span>\n<ul>\n<li>What LLMs actually are (and what they aren't)</li>\n<li>How training works at a high level</li>\n<li>The difference between training and inference</li>\n<li>Why text is the universal interface to knowledge</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "532e74839e02ce7abb0c5e0609cff0fc",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Navigation:</strong> <a href=\"../02-your-computer/04-your-ai-toolkit.py\">\\u2190 Previous: Your AI Toolkit</a> | <a href=\"../README.md\">Module Index</a> | <a href=\"02-tokens-and-context.py\">Next: Tokens and Context Windows \\u2192</a></span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "8f02c27ce9c1d1e7a43d017a48b17994",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"the-one-sentence-explanation\">The one-sentence explanation</h2>\n<span class=\"paragraph\"><strong>A large language model is a pattern-completion machine trained on text.</strong></span>\n<span class=\"paragraph\">That's it. Everything else is details. When you ask Claude to summarize a paper on NaV1.7 gain-of-function mutations, it's not \"understanding\" the paper the way you do. It's predicting what text should come next, based on patterns it learned from an enormous amount of training data.</span>\n<span class=\"paragraph\">But here's the remarkable thing: pattern completion at sufficient scale looks a lot like understanding. Enough patterns over enough text, and the model learns to write coherent paragraphs, reason about experimental design, and explain the difference between TTX-sensitive and TTX-resistant sodium channels.</span>\n<blockquote>\n<span class=\"paragraph\">The architecture behind modern LLMs is the <strong>Transformer</strong>, introduced in the seminal paper \"Attention Is All You Need\" (<a href=\"https://arxiv.org/abs/1706.03762\" rel=\"noopener noreferrer\" target=\"_blank\">Vaswani et al., 2017</a>). For a visual, intuitive explanation, see Jay Alammar's <a href=\"https://jalammar.github.io/illustrated-transformer/\" rel=\"noopener noreferrer\" target=\"_blank\">The Illustrated Transformer</a> \u2014 one of the best introductions to how attention mechanisms work.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "f0015b234d9b246272048c3b9756cda7",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\">\ud83d\udd11 <strong>Key concept:</strong> LLMs are probability machines, not knowledge databases. Claude doesn't store facts in a table and look them up. It stores <em>patterns</em> in billions of neural network weights. When it says \"NaV1.7 is expressed in nociceptors,\" it's generating the most probable continuation of your text \u2014 not retrieving a stored fact. This distinction matters because it explains both why LLMs are remarkably capable (they generalize from patterns) and why they hallucinate (they generate plausible-sounding text even when no fact supports it).</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "1386371a27cc467722a7cf6d91382893",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"a-pain-biology-analogy\">A pain biology analogy</h2>\n<span class=\"paragraph\">Think of how you read a calcium imaging trace. You see a fluorescence spike in a DRG neuron after capsaicin application and you immediately predict what comes next \u2014 the signal will decay, the neuron will either desensitize or fire again, and neighboring non-TRPV1-expressing neurons will stay quiet.</span>\n<span class=\"paragraph\">You can make those predictions because you've seen thousands of calcium traces. You've internalized the <strong>patterns</strong> of neuronal responses.</span>\n<span class=\"paragraph\">An LLM does the same thing, but with text. It has \"seen\" billions of documents \u2014 papers, textbooks, code, conversations. It has internalized patterns of how text follows text. When you give it a prompt like:</span>\n<blockquote>\n<span class=\"paragraph\"><em>\"The NaV1.7 channel is important for pain because...\"</em></span>\n</blockquote>\n<span class=\"paragraph\">It predicts the most likely continuation based on all the text it trained on. Not by looking up a stored fact, but by generating text that fits the pattern.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "37d4ec66533e13489f2fc5ceac7106eb",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"next-token-prediction-the-core-mechanism\">Next-token prediction: the core mechanism</h2>\n<span class=\"paragraph\">At its heart, an LLM does one thing: given a sequence of tokens (roughly, words or word-pieces), predict the next token.</span>\n<span class=\"paragraph\">Let's build a toy version of this to make it concrete.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "9f4001f0ea906d501a7e660134fb743a",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "8d375a11e8d5d930463b554829954328",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">The model doesn't \"know\" that NaV1.7 is expressed in nociceptors the way you know it from reading Dib-Hajj et al. It has learned that in its training data, the word <strong>\"nociceptors\"</strong> frequently follows phrases about NaV1.7 expression.</span>\n<span class=\"paragraph\">The key insight: <strong>this is a probability distribution, not a lookup table.</strong> The model doesn't retrieve a stored answer \u2014 it generates a ranked set of possibilities.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "19651ffbfd67416f8683cc442e0d472a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"lets-simulate-token-by-token-generation\">Let's simulate token-by-token generation</h2>\n<span class=\"paragraph\">Here's how an LLM builds a sentence. At each step it picks the next token, adds it to the sequence, then predicts again. This is called <strong>autoregressive generation</strong>.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "1adeb50f02015c85caf941b34717b4c8",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "a38026b46b65e3711c7785ec13a06e8b",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">That's the fundamental mechanism: predict, append, repeat. A real LLM like Claude does this with a massive neural network instead of a hand-coded table, and it handles millions of possible next tokens at each step. But the core loop is identical.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "b300ac6fce7ca304a455c5a5b5a3084c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><div class=\"language-xml codehilite\"><pre><span></span><code>graph<span class=\"w\"> </span>LR\n<span class=\"w\">    </span>subgraph<span class=\"w\"> </span>&quot;LLM<span class=\"w\"> </span>Architecture<span class=\"w\"> </span>at<span class=\"w\"> </span>a<span class=\"w\"> </span>High<span class=\"w\"> </span>Level&quot;\n<span class=\"w\">        </span>INPUT[&quot;<span class=\"nt\">&lt;b&gt;</span>Input<span class=\"w\"> </span>Text<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>&#39;NaV1.7<span class=\"w\"> </span>is<span class=\"w\"> </span>expressed<span class=\"w\"> </span>in&#39;&quot;]<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>TOK[&quot;<span class=\"nt\">&lt;b&gt;</span>Tokenizer<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>Text<span class=\"w\"> </span>\u2192<span class=\"w\"> </span>tokens<span class=\"nt\">&lt;br/&gt;</span>(subword<span class=\"w\"> </span>pieces)&quot;]\n<span class=\"w\">        </span>TOK<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>TRANS[&quot;<span class=\"nt\">&lt;b&gt;</span>Transformer<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>Neural<span class=\"w\"> </span>network<span class=\"w\"> </span>with<span class=\"nt\">&lt;br/&gt;</span>billions<span class=\"w\"> </span>of<span class=\"w\"> </span>parameters<span class=\"nt\">&lt;br/&gt;</span>Processes<span class=\"w\"> </span>all<span class=\"w\"> </span>tokens<span class=\"nt\">&lt;br/&gt;</span>in<span class=\"w\"> </span>parallel<span class=\"w\"> </span>via<span class=\"nt\">&lt;br/&gt;&lt;i&gt;</span>attention<span class=\"w\"> </span>mechanism<span class=\"nt\">&lt;/i&gt;</span>&quot;]\n<span class=\"w\">        </span>TRANS<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>PROB[&quot;<span class=\"nt\">&lt;b&gt;</span>Probability<span class=\"nt\">&lt;br/&gt;</span>Distribution<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>A<span class=\"w\"> </span>score<span class=\"w\"> </span>for<span class=\"w\"> </span>every<span class=\"nt\">&lt;br/&gt;</span>possible<span class=\"w\"> </span>next<span class=\"w\"> </span>token<span class=\"nt\">&lt;br/&gt;</span>(~50,000+<span class=\"w\"> </span>options)&quot;]\n<span class=\"w\">        </span>PROB<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>SAMPLE[&quot;<span class=\"nt\">&lt;b&gt;</span>Sampling<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>Pick<span class=\"w\"> </span>one<span class=\"w\"> </span>token<span class=\"nt\">&lt;br/&gt;</span>(temperature<span class=\"w\"> </span>controls<span class=\"nt\">&lt;br/&gt;</span>how<span class=\"w\"> </span>random)&quot;]\n<span class=\"w\">        </span>SAMPLE<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>OUTPUT[&quot;<span class=\"nt\">&lt;b&gt;</span>Output<span class=\"w\"> </span>Token<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>&#39;nociceptors&#39;&quot;]\n<span class=\"w\">    </span>end\n\n<span class=\"w\">    </span>OUTPUT<span class=\"w\"> </span>-.-&gt;|&quot;append<span class=\"w\"> </span>to<span class=\"w\"> </span>input,<span class=\"nt\">&lt;br/&gt;</span>repeat&quot;|<span class=\"w\"> </span>INPUT\n\n<span class=\"w\">    </span>style<span class=\"w\"> </span>INPUT<span class=\"w\"> </span>fill:#4488cc,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>TOK<span class=\"w\"> </span>fill:#44aa88,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>TRANS<span class=\"w\"> </span>fill:#cc8844,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>PROB<span class=\"w\"> </span>fill:#aa44aa,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>SAMPLE<span class=\"w\"> </span>fill:#cc4444,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>OUTPUT<span class=\"w\"> </span>fill:#4488cc,color:#fff\n</code></pre></div>\n<span class=\"paragraph\">This loop -- predict one token, append it, predict the next -- is called <strong>autoregressive generation</strong>. The code demo below simulates exactly this process with a toy model.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "a8c924e4f1aee1bf6f8b8dd789d1ba46",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"how-training-works-the-30000-foot-view\">How training works (the 30,000-foot view)</h2>\n<span class=\"paragraph\">Training an LLM happens in stages. You don't need to understand the math \u2014 just the logic.</span>\n<h3 id=\"stage-1-pre-training-learning-to-predict-text\">Stage 1: Pre-training (learning to predict text)</h3>\n<span class=\"paragraph\">The model reads an enormous corpus of text \u2014 web pages, books, scientific papers, code. For each passage, it tries to predict the next word. When it gets it wrong, its internal weights get nudged slightly in the direction of the right answer.</span>\n<span class=\"paragraph\"><strong>Pain biology analogy:</strong> This is like a new graduate student reading 10,000 papers in their first year. They don't understand everything, but they start to internalize the patterns \u2014 how methods sections are structured, what words appear near \"nociceptor,\" how results relate to hypotheses.</span>\n<span class=\"paragraph\">After pre-training, the model can complete text fluently but it's not yet a good assistant. It might continue your prompt by writing more of a Wikipedia article rather than answering your question.</span>\n<h3 id=\"stage-2-fine-tuning-with-human-feedback-rlhf\">Stage 2: Fine-tuning with human feedback (RLHF)</h3>\n<span class=\"paragraph\">Human trainers show the model examples of good and bad responses. \"When someone asks about NaV1.7 mutations, this response is helpful and accurate; this one is vague and wrong.\" The model learns to produce responses that humans rate as helpful, harmless, and honest. For more on this process, see <a href=\"https://www.anthropic.com/research\" rel=\"noopener noreferrer\" target=\"_blank\">Anthropic's research page</a>.</span>\n<span class=\"paragraph\"><strong>Analogy:</strong> This is like a postdoc getting feedback from their PI. \"That's a good summary of the DRG data. But this paragraph about calcium imaging \u2014 you're confusing peak amplitude with AUC. Fix that.\"</span>\n<h3 id=\"stage-3-ongoing-refinement\">Stage 3: Ongoing refinement</h3>\n<span class=\"paragraph\">Anthropic continues to refine Claude based on real-world usage patterns, safety evaluations, and capability benchmarks. The model gets better at specific tasks over time.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "78fa9392ca07e3ec7a26eee36a82625a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"training-vs-inference\">Training vs. Inference</h2>\n<span class=\"paragraph\">This distinction matters for how you think about using AI tools.</span>\n<table>\n<thead>\n<tr>\n<th></th>\n<th><strong>Training</strong></th>\n<th><strong>Inference</strong></th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><strong>When</strong></td>\n<td>Before you ever see the model</td>\n<td>Every time you chat with Claude</td>\n</tr>\n<tr>\n<td><strong>What happens</strong></td>\n<td>Model learns patterns from data</td>\n<td>Model generates text from your prompt</td>\n</tr>\n<tr>\n<td><strong>Who does it</strong></td>\n<td>Anthropic (with massive compute)</td>\n<td>You (through the API or chat interface)</td>\n</tr>\n<tr>\n<td><strong>Compute cost</strong></td>\n<td>Millions of dollars</td>\n<td>Fractions of a cent per response</td>\n</tr>\n<tr>\n<td><strong>Analogy</strong></td>\n<td>Grad school + postdoc training</td>\n<td>Answering questions at lab meeting</td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\"><strong>Key implication:</strong> Claude's knowledge comes from training data. It doesn't learn from your conversations (unless you're using a system that explicitly saves context). Each conversation starts fresh.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "4dcf28191047c6fdc7e4fba1abc30243",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"why-text-is-the-universal-interface\">Why text is the universal interface</h2>\n<span class=\"paragraph\">Here's why LLMs are so useful for research: <strong>almost everything in science can be expressed as text.</strong></span>\n<ul>\n<li>Your grant aims? Text.</li>\n<li>A protein sequence? Text (MANLGCWMLV...).</li>\n<li>RNA-seq results? A table, which is structured text.</li>\n<li>Experimental protocols? Text.</li>\n<li>A PDB structure? Text (ATOM records).</li>\n<li>Code to analyze calcium imaging data? Text.</li>\n</ul>\n<span class=\"paragraph\">Because LLMs operate on text, they can help with all of these. A single model can draft a specific aims page, explain a Python error in your analysis script, suggest controls for a behavioral assay, and convert a binder sequence to FASTA format \u2014 all because these are text-to-text transformations.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "a5a2d067b84056531aaad8c2dd7e9435",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "7017c9e1dcb77e0b5d0906858d398677",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><div class=\"language-xml codehilite\"><pre><span></span><code>graph<span class=\"w\"> </span>TD\n<span class=\"w\">    </span>TASK[&quot;I<span class=\"w\"> </span>need<span class=\"w\"> </span>to...&quot;]<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>Q1{&quot;What<span class=\"w\"> </span>kind<span class=\"w\"> </span>of<span class=\"w\"> </span>task?&quot;}\n\n<span class=\"w\">    </span>Q1<span class=\"w\"> </span>--&gt;|&quot;Draft,<span class=\"w\"> </span>summarize,<span class=\"nt\">&lt;br/&gt;</span>explain,<span class=\"w\"> </span>brainstorm&quot;|<span class=\"w\"> </span>LLM[&quot;Use<span class=\"w\"> </span><span class=\"nt\">&lt;b&gt;</span>Claude<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>(text<span class=\"w\"> </span>transformation)&quot;]\n<span class=\"w\">    </span>Q1<span class=\"w\"> </span>--&gt;|&quot;Look<span class=\"w\"> </span>up<span class=\"w\"> </span>a<span class=\"w\"> </span>specific<span class=\"nt\">&lt;br/&gt;</span>fact<span class=\"w\"> </span>or<span class=\"w\"> </span>number&quot;|<span class=\"w\"> </span>DB[&quot;Use<span class=\"w\"> </span>the<span class=\"w\"> </span><span class=\"nt\">&lt;b&gt;</span>source<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>(paper,<span class=\"w\"> </span>database,<span class=\"w\"> </span>docs)&quot;]\n<span class=\"w\">    </span>Q1<span class=\"w\"> </span>--&gt;|&quot;Find<span class=\"w\"> </span>recent<span class=\"w\"> </span>papers&quot;|<span class=\"w\"> </span>SEARCH[&quot;Use<span class=\"w\"> </span><span class=\"nt\">&lt;b&gt;</span>PubMed<span class=\"w\"> </span>/<span class=\"w\"> </span>Google<span class=\"w\"> </span>Scholar<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>(search<span class=\"w\"> </span>engine)&quot;]\n<span class=\"w\">    </span>Q1<span class=\"w\"> </span>--&gt;|&quot;Calculate<span class=\"w\"> </span>something<span class=\"nt\">&lt;br/&gt;</span>precisely&quot;|<span class=\"w\"> </span>CALC[&quot;Use<span class=\"w\"> </span><span class=\"nt\">&lt;b&gt;</span>Python<span class=\"w\"> </span>/<span class=\"w\"> </span>calculator<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>(exact<span class=\"w\"> </span>computation)&quot;]\n<span class=\"w\">    </span>Q1<span class=\"w\"> </span>--&gt;|&quot;Design<span class=\"w\"> </span>a<span class=\"w\"> </span>protein<span class=\"nt\">&lt;br/&gt;</span>sequence&quot;|<span class=\"w\"> </span>TOOL[&quot;Use<span class=\"w\"> </span><span class=\"nt\">&lt;b&gt;</span>specialized<span class=\"w\"> </span>tools<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>(RFdiffusion,<span class=\"w\"> </span>AlphaFold2)&quot;]\n\n<span class=\"w\">    </span>LLM<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>TIP1[&quot;High<span class=\"w\"> </span>reliability<span class=\"nt\">&lt;br/&gt;</span>This<span class=\"w\"> </span>is<span class=\"w\"> </span>the<span class=\"w\"> </span>sweet<span class=\"w\"> </span>spot&quot;]\n<span class=\"w\">    </span>DB<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>TIP2[&quot;Verify<span class=\"w\"> </span>LLM<span class=\"w\"> </span>claims<span class=\"w\"> </span>here&quot;]\n<span class=\"w\">    </span>SEARCH<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>TIP3[&quot;LLMs<span class=\"w\"> </span>have<span class=\"w\"> </span>a<span class=\"w\"> </span>training<span class=\"nt\">&lt;br/&gt;</span>cutoff<span class=\"w\"> </span>date&quot;]\n<span class=\"w\">    </span>CALC<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>TIP4[&quot;LLMs<span class=\"w\"> </span>are<span class=\"w\"> </span>unreliable<span class=\"nt\">&lt;br/&gt;</span>at<span class=\"w\"> </span>precise<span class=\"w\"> </span>math&quot;]\n<span class=\"w\">    </span>TOOL<span class=\"w\"> </span>--&gt;<span class=\"w\"> </span>TIP5[&quot;LLMs<span class=\"w\"> </span>can<span class=\"w\"> </span>help<span class=\"w\"> </span>you<span class=\"nt\">&lt;br/&gt;</span>USE<span class=\"w\"> </span>these<span class=\"w\"> </span>tools&quot;]\n\n<span class=\"w\">    </span>style<span class=\"w\"> </span>LLM<span class=\"w\"> </span>fill:#44aa88,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>DB<span class=\"w\"> </span>fill:#4488cc,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>SEARCH<span class=\"w\"> </span>fill:#cc8844,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>CALC<span class=\"w\"> </span>fill:#aa44aa,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>TOOL<span class=\"w\"> </span>fill:#cc4444,color:#fff\n</code></pre></div></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "38935d05e0072fc80eeeabf62862d152",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Why this section matters most:</strong> The \"what LLMs are NOT\" list is your cheat sheet for avoiding the most common mistakes. The researchers who get burned by AI are the ones who treat it as a database (trusting hallucinated citations) or a search engine (asking about last week's preprints). Internalize these limits and you'll avoid those traps.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "21b704f7cf2c21a604067496e025e360",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\">\u26a0\ufe0f <strong>Warning:</strong> Never treat LLM output as fact without verification. Claude will confidently generate citations that don't exist, Kd values that were never measured, and mechanisms that sound right but are wrong. The risk scales with how specific and niche the claim is: \"NaV1.7 is a sodium channel\" is almost certainly correct (well-established, widely published). \"The Kd of antibody X for NaV1.7 is 2.3 nM (Smith et al., 2023)\" could be entirely fabricated. Your rule: trust Claude for well-established knowledge and text transformation tasks; verify specific numbers, citations, and niche claims against primary sources.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "e5973816a8785c9b0505f0b51532a9a9",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"what-llms-are-not\">What LLMs are NOT</h2>\n<span class=\"paragraph\">Understanding what LLMs <em>aren't</em> will save you from a lot of frustration and misuse.</span>\n<h3 id=\"not-a-database\">Not a database</h3>\n<span class=\"paragraph\">An LLM doesn't store facts in a table that it looks up. It stores <em>patterns</em> in neural network weights. This means:</span>\n<ul>\n<li>It can \"know\" that NaV1.7 is encoded by SCN9A because that pattern appears frequently in training data</li>\n<li>But it might confidently state a wrong Kd value because it's generating plausible-sounding numbers, not looking up a measured value</li>\n</ul>\n<span class=\"paragraph\"><strong>Rule of thumb:</strong> Trust LLMs for well-established, widely-published facts. Verify specific numbers, citations, and niche claims.</span>\n<h3 id=\"not-a-search-engine\">Not a search engine</h3>\n<span class=\"paragraph\">Claude doesn't search the internet when you ask it something (unless it has explicit web search tools). Its knowledge comes from training data with a cutoff date. If a paper was published last week describing a new NaV1.7 variant, Claude won't know about it.</span>\n<h3 id=\"not-a-reasoning-engine-in-the-way-you-are\">Not a reasoning engine (in the way you are)</h3>\n<span class=\"paragraph\">LLMs can do impressive multi-step reasoning, but they're doing it through pattern completion, not through the kind of causal reasoning you use when designing an experiment. They can sometimes get \"reasoning\" wrong in ways that look right on the surface.</span>\n<h3 id=\"not-deterministic\">Not deterministic</h3>\n<span class=\"paragraph\">Ask the same question twice and you may get different answers. The generation process involves randomness (sampling). This is a feature, not a bug \u2014 it allows creative variation \u2014 but it means you can't rely on exact reproducibility.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ulZA",
+      "code_hash": "9bb09a7cd5f7bceb8fa19f4ded9370c0",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ecfG",
+      "code_hash": "fff51a97b0b0a8d244c0eb5105185481",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Notice how each run can produce a different continuation. Some runs will produce the \"textbook\" answer (\"a nonselective cation channel\"), others will take different paths. The higher the temperature, the more variation you get. We'll explore this in detail in notebook 03.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Pvdt",
+      "code_hash": "8dc5778b4d76721c9bcde5658dbd8db8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"the-scale-that-makes-it-work\">The scale that makes it work</h2>\n<span class=\"paragraph\">Our toy model above had a few dozen entries. A real LLM has:</span>\n<ul>\n<li><strong>Billions of parameters</strong> (weights) \u2014 these encode patterns learned during training</li>\n<li><strong>Trillions of tokens</strong> of training data \u2014 books, papers, websites, code</li>\n<li><strong>Thousands of GPUs</strong> running for weeks during training</li>\n</ul>\n<span class=\"paragraph\">The surprising discovery of the last few years is that scaling up this simple recipe \u2014 predict the next token, but with more data and more parameters \u2014 produces increasingly capable models. This is sometimes called the <strong>scaling laws</strong> of LLMs.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZBYS",
+      "code_hash": "32ebeab0e2852c28cb6d150d75ac3b68",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "aLJB",
+      "code_hash": "0c7e5cc9dd55e707a093bd8a4fd8b36a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"exercise-build-your-own-probability-table\">Exercise: Build your own probability table</h2>\n<span class=\"paragraph\">Create a next-token probability table for a pain biology sentence. Pick a short prompt related to your work and fill in plausible next-word probabilities.</span>\n<span class=\"paragraph\">Requirements:</span>\n<ol>\n<li>Choose a 3-4 word prompt related to your research</li>\n<li>List at least 5 possible next words with probabilities</li>\n<li>Probabilities should sum to ~1.0 (they can be approximate)</li>\n<li>Visualize it as a bar chart</li>\n</ol></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nHfw",
+      "code_hash": "3ecc51d95879186a2f5a3bf8cc6d4d6f",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "xXTn",
+      "code_hash": "9870153a94efde224f2d326e86f15586",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"exercise-spot-the-limitations\">Exercise: Spot the limitations</h2>\n<span class=\"paragraph\">For each scenario below, decide whether an LLM is a good tool or a risky one, and why. Write your answers in the markdown cell after the list.</span>\n<ol>\n<li><strong>Drafting a specific aims page</strong> for an R01 on NaV1.7 targeted degradation</li>\n<li><strong>Looking up the exact Kd</strong> of a published antibody for NaV1.8</li>\n<li><strong>Explaining the difference</strong> between TTX-sensitive and TTX-resistant sodium channels</li>\n<li><strong>Finding papers published last month</strong> on KCNQ2 openers for neuropathic pain</li>\n<li><strong>Writing Python code</strong> to plot calcium imaging traces</li>\n<li><strong>Calculating the molecular weight</strong> of a 400-residue protein binder</li>\n<li><strong>Summarizing a paper</strong> you paste into the conversation</li>\n</ol></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "AjVT",
+      "code_hash": "ecc05c9ec34812c56c9f9db80a218a02",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Your answers here:</strong></span>\n<ol>\n<li>Good / Risky? Why?</li>\n<li>...</li>\n<li>...</li>\n</ol>\n<span class=\"paragraph\">(Double-click this cell to edit it, then Shift+Enter to render.)</span>\n<hr />\n<span class=\"paragraph\"><strong>Answer key</strong> (read after you've written your own answers):</span>\n<ol>\n<li><strong>Good</strong> \u2014 drafting text is an LLM's sweet spot. You provide the scientific content and structure; Claude handles the prose. Always review for accuracy.</li>\n<li><strong>Risky</strong> \u2014 specific numerical values can be hallucinated. Always verify in the original paper. Use Claude to <em>find</em> the paper, not to <em>be</em> the source.</li>\n<li><strong>Good</strong> \u2014 this is well-established textbook knowledge that appears extensively in training data.</li>\n<li><strong>Risky</strong> \u2014 LLMs have a training cutoff date and don't search the internet by default. Use PubMed for recent literature.</li>\n<li><strong>Good</strong> \u2014 code generation is one of the strongest LLM capabilities. Test the code, but the drafts are usually solid.</li>\n<li><strong>Risky</strong> \u2014 LLMs are unreliable at precise arithmetic. Use Python or a calculator. (Though Claude can write the Python code to do the calculation!)</li>\n<li><strong>Good</strong> \u2014 when you give Claude the full text, it's working from the source material, not from memory. This is one of the most reliable use cases.</li>\n</ol></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "pHFh",
+      "code_hash": "0fe6896dcfd76786a3db2f0a4bd46407",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"key-takeaways\">Key takeaways</h2>\n<ol>\n<li><strong>LLMs are pattern-completion machines</strong> \u2014 they predict the next token based on learned patterns from training data.</li>\n<li><strong>Training and inference are separate</strong> \u2014 the model learns during training (done by Anthropic); you use it during inference (every chat or API call).</li>\n<li><strong>Text is the universal interface</strong> \u2014 sequences, protocols, data tables, and code are all text that LLMs can work with.</li>\n<li><strong>LLMs are not databases</strong> \u2014 they generate plausible text, which is often but not always accurate. Verify specific facts.</li>\n<li><strong>Scale matters</strong> \u2014 the same basic mechanism (next-token prediction) produces dramatically different capabilities at different scales.</li>\n</ol>\n<span class=\"paragraph\">Next up: <a href=\"./02-tokens-and-context.py\">02-tokens-and-context.py</a> \u2014 we'll look at how text gets broken into tokens and why context windows matter for your work.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "NCOB",
+      "code_hash": "04c2a099e1eab1f4d003078b048c3c29",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Navigation:</strong> <a href=\"../02-your-computer/04-your-ai-toolkit.py\">\u2190 Previous: Your AI Toolkit</a> | <a href=\"../README.md\">Module Index</a> | <a href=\"02-tokens-and-context.py\">Next: Tokens and Context Windows \u2192</a></span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "aqbW",
+      "code_hash": "0f7d6ad7986ab07cf7ac0c47d4cfe9bc",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"edit-log\">Edit Log</h2>\n<ul>\n<li>2026-03-25: Created notebook with initial content</li>\n<li>2026-03-25: Added \"Why this matters\" rationale section</li>\n<li>2026-03-25: Added cross-module navigation links</li>\n<li>2026-03-25: Added external references and Further Reading section</li>\n<li>2026-03-25: QA pass \u2014 removed duplicate \"one-sentence explanation\" and \"how training works\" sections</li>\n<li>2026-03-25: Added standardized callouts and decision frameworks</li>\n<li>2026-03-25: Updated navigation links for new module numbering</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TRpd",
+      "code_hash": "e66afea2fbe23a5ce65fec8be74df812",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"further-reading\">Further Reading</h2>\n<ul>\n<li><a href=\"https://www.anthropic.com/research\" rel=\"noopener noreferrer\" target=\"_blank\">Anthropic Research</a> \u2014 Anthropic's published research on AI safety, interpretability, and model capabilities</li>\n<li><strong>\"Attention Is All You Need\"</strong> (<a href=\"https://arxiv.org/abs/1706.03762\" rel=\"noopener noreferrer\" target=\"_blank\">Vaswani et al., 2017</a>) \u2014 the foundational paper introducing the Transformer architecture that all modern LLMs are built on</li>\n<li><a href=\"https://jalammar.github.io/illustrated-transformer/\" rel=\"noopener noreferrer\" target=\"_blank\">The Illustrated Transformer</a> \u2014 Jay Alammar's visual, step-by-step explanation of how Transformers work; the best non-technical introduction available</li>\n<li><a href=\"https://jalammar.github.io/illustrated-gpt2/\" rel=\"noopener noreferrer\" target=\"_blank\">The Illustrated GPT-2</a> \u2014 Jay Alammar's follow-up showing how GPT-style autoregressive language models generate text token by token</li>\n<li><a href=\"https://www.anthropic.com/research\" rel=\"noopener noreferrer\" target=\"_blank\">Anthropic: Core Views on AI Safety</a> \u2014 Anthropic's perspective on why AI safety research matters, including Constitutional AI</li>\n<li><a href=\"https://docs.anthropic.com/en/docs/about-claude/models\" rel=\"noopener noreferrer\" target=\"_blank\">What are LLMs? (Anthropic docs)</a> \u2014 Anthropic's own documentation on Claude's models, capabilities, and limitations</li>\n<li><a href=\"https://arxiv.org/abs/2001.08361\" rel=\"noopener noreferrer\" target=\"_blank\">Scaling Laws for Neural Language Models</a> (Kaplan et al., 2020) \u2014 the paper that established how model performance improves predictably with scale</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TXez",
+      "code_hash": "e955e1f8d4f519163b9cf256e8948fea",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"edit-log\">Edit Log</h2>\n<ul>\n<li>2026-03-25: Created notebook with initial content</li>\n<li>2026-03-25: Added \"Why this matters\" rationale section</li>\n<li>2026-03-25: Added cross-module navigation links</li>\n<li>2026-03-25: Added external references and Further Reading section</li>\n<li>2026-03-25: QA pass \u2014 removed duplicate \"one-sentence explanation\" and \"how training works\" sections</li>\n<li>2026-03-25: Updated navigation links for new module numbering</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}

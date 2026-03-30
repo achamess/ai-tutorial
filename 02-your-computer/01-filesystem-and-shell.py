@@ -83,44 +83,48 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
+    mo.mermaid(
+        """
+        graph TD
+            ROOT["/  (root)"]
+            ROOT --> USERS["/Users"]
+            ROOT --> APPS["/Applications"]
+            ROOT --> TMP["/tmp"]
+            ROOT --> USR["/usr"]
+            ROOT --> OPT["/opt"]
+        
+            USERS --> ALEX["/Users/alex  ~"]
+            ALEX --> DESK["Desktop/"]
+            ALEX --> DOCS["Documents/"]
+            ALEX --> DOWN["Downloads/"]
+            ALEX --> AI["<b>ai-tutorial/</b>"]
+            ALEX --> ZSHRC[".zshrc"]
+        
+            AI --> M01["01-python-foundations/"]
+            AI --> M02["02-your-computer/"]
+            AI --> M03["03-how-llms-work/"]
+            AI --> M04["04-prompt-engineering/"]
+            AI --> VENV[".venv/"]
+            AI --> GIT[".git/"]
+            AI --> CMD["CLAUDE.md"]
+        
+            USR --> LOCAL["/usr/local/bin/<br/>Homebrew tools"]
+            OPT --> BREW["/opt/homebrew/<br/>Homebrew (Apple Silicon)"]
+        
+            style ROOT fill:#cc4444,color:#fff
+            style ALEX fill:#4488cc,color:#fff
+            style AI fill:#44aa88,color:#fff
+            style VENV fill:#888,color:#fff
+            style GIT fill:#888,color:#fff
+            style ZSHRC fill:#888,color:#fff
+        """
+    ),
     mo.md(r"""
-    ```mermaid
-    graph TD
-        ROOT["/  (root)"]
-        ROOT --> USERS["/Users"]
-        ROOT --> APPS["/Applications"]
-        ROOT --> TMP["/tmp"]
-        ROOT --> USR["/usr"]
-        ROOT --> OPT["/opt"]
-
-        USERS --> ALEX["/Users/alex  ~"]
-        ALEX --> DESK["Desktop/"]
-        ALEX --> DOCS["Documents/"]
-        ALEX --> DOWN["Downloads/"]
-        ALEX --> AI["<b>ai-tutorial/</b>"]
-        ALEX --> ZSHRC[".zshrc"]
-
-        AI --> M01["01-python-foundations/"]
-        AI --> M02["02-your-computer/"]
-        AI --> M03["03-how-llms-work/"]
-        AI --> M04["04-prompt-engineering/"]
-        AI --> VENV[".venv/"]
-        AI --> GIT[".git/"]
-        AI --> CMD["CLAUDE.md"]
-
-        USR --> LOCAL["/usr/local/bin/<br/>Homebrew tools"]
-        OPT --> BREW["/opt/homebrew/<br/>Homebrew (Apple Silicon)"]
-
-        style ROOT fill:#cc4444,color:#fff
-        style ALEX fill:#4488cc,color:#fff
-        style AI fill:#44aa88,color:#fff
-        style VENV fill:#888,color:#fff
-        style GIT fill:#888,color:#fff
-        style ZSHRC fill:#888,color:#fff
-    ```
 
     Dotfiles (gray) are hidden -- they start with `.` and don't show up in Finder. The `ai-tutorial` directory (green) is where all your work for this course lives.
     """)
+    ])
     return
 
 

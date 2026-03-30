@@ -78,47 +78,51 @@ def _():
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
+    mo.mermaid(
+        """
+        graph TD
+            subgraph "Research Workflow: Where Prompt Templates Fit"
+                LIT["<b>Literature</b><br/>Multi-paper synthesis<br/>Daily research digest"] --> PLAN["<b>Planning</b><br/>Analysis plans<br/>Experimental design"]
+                PLAN --> EXEC["<b>Execution</b><br/>Data extraction (JSON)<br/>Code generation"]
+                EXEC --> EVAL["<b>Evaluation</b><br/>Critical analysis<br/>Reviewer simulation"]
+                EVAL --> WRITE["<b>Writing</b><br/>Results paragraphs<br/>Grant sections"]
+                WRITE --> REVIEW["<b>Review</b><br/>Specific Aims feedback<br/>Argument stress-testing"]
+                REVIEW -.->|"iterate"| LIT
+            end
+        
+            subgraph "Prompt Templates in This Notebook"
+                T1["summarize_paper()"]
+                T2["generate_research_digest()"]
+                T3["analysis_plan_prompt"]
+                T4["results_paragraph_prompt"]
+                T5["critique_aim()"]
+                T6["simulate_reviewer()"]
+                T7["brainstorm()"]
+            end
+        
+            LIT -.- T1
+            LIT -.- T2
+            PLAN -.- T3
+            EXEC -.- T4
+            EVAL -.- T6
+            WRITE -.- T4
+            REVIEW -.- T5
+            PLAN -.- T7
+        
+            style LIT fill:#4488cc,color:#fff
+            style PLAN fill:#44aa88,color:#fff
+            style EXEC fill:#cc8844,color:#fff
+            style EVAL fill:#aa44aa,color:#fff
+            style WRITE fill:#cc4444,color:#fff
+            style REVIEW fill:#448888,color:#fff
+        """
+    ),
     mo.md(r"""
-    ```mermaid
-    graph TD
-        subgraph "Research Workflow: Where Prompt Templates Fit"
-            LIT["<b>Literature</b><br/>Multi-paper synthesis<br/>Daily research digest"] --> PLAN["<b>Planning</b><br/>Analysis plans<br/>Experimental design"]
-            PLAN --> EXEC["<b>Execution</b><br/>Data extraction (JSON)<br/>Code generation"]
-            EXEC --> EVAL["<b>Evaluation</b><br/>Critical analysis<br/>Reviewer simulation"]
-            EVAL --> WRITE["<b>Writing</b><br/>Results paragraphs<br/>Grant sections"]
-            WRITE --> REVIEW["<b>Review</b><br/>Specific Aims feedback<br/>Argument stress-testing"]
-            REVIEW -.->|"iterate"| LIT
-        end
-
-        subgraph "Prompt Templates in This Notebook"
-            T1["summarize_paper()"]
-            T2["generate_research_digest()"]
-            T3["analysis_plan_prompt"]
-            T4["results_paragraph_prompt"]
-            T5["critique_aim()"]
-            T6["simulate_reviewer()"]
-            T7["brainstorm()"]
-        end
-
-        LIT -.- T1
-        LIT -.- T2
-        PLAN -.- T3
-        EXEC -.- T4
-        EVAL -.- T6
-        WRITE -.- T4
-        REVIEW -.- T5
-        PLAN -.- T7
-
-        style LIT fill:#4488cc,color:#fff
-        style PLAN fill:#44aa88,color:#fff
-        style EXEC fill:#cc8844,color:#fff
-        style EVAL fill:#aa44aa,color:#fff
-        style WRITE fill:#cc4444,color:#fff
-        style REVIEW fill:#448888,color:#fff
-    ```
 
     Each stage of your research has corresponding prompt templates. The templates in this notebook are ready to use -- customize them with your specific data and context.
     """)
+    ])
     return
 
 

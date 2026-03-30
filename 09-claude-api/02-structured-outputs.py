@@ -147,29 +147,35 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### Structured Output Pipeline
 
-    ```mermaid
-    graph LR
-        A["Unstructured Input<br>(text, abstract,<br>notes)"] --> B["System Prompt<br>Defines JSON schema<br>+ extraction rules"]
-        B --> C["Claude API<br>Extracts structured<br>data from text"]
-        C --> D["Raw JSON String<br>'{\"gene\": \"SCN9A\", ...}'"]
-        D --> E["json.loads()<br>Parse to Python"]
-        E --> F["Python Dict<br>{'gene': 'SCN9A', ...}"]
-        F --> G["pd.DataFrame()<br>Tabular analysis"]
-
-        style A fill:#E24A33,color:#fff
-        style B fill:#FDB863,color:#000
-        style C fill:#4878CF,color:#fff
-        style D fill:#eee,color:#000
-        style E fill:#eee,color:#000
-        style F fill:#55A868,color:#fff
-        style G fill:#55A868,color:#fff
-    ```
+    """),
+    mo.mermaid(
+        """
+        graph LR
+            A["Unstructured Input<br>(text, abstract,<br>notes)"] --> B["System Prompt<br>Defines JSON schema<br>+ extraction rules"]
+            B --> C["Claude API<br>Extracts structured<br>data from text"]
+            C --> D["Raw JSON String<br>'{\"gene\": \"SCN9A\", ...}'"]
+            D --> E["json.loads()<br>Parse to Python"]
+            E --> F["Python Dict<br>{'gene': 'SCN9A', ...}"]
+            F --> G["pd.DataFrame()<br>Tabular analysis"]
+        
+            style A fill:#E24A33,color:#fff
+            style B fill:#FDB863,color:#000
+            style C fill:#4878CF,color:#fff
+            style D fill:#eee,color:#000
+            style E fill:#eee,color:#000
+            style F fill:#55A868,color:#fff
+            style G fill:#55A868,color:#fff
+        """
+    ),
+    mo.md(r"""
 
     This is the core pattern for turning unstructured text into structured data. The system prompt is your schema definition -- it tells Claude exactly what fields to extract and what format to use. The parsed dictionary can then be combined with other results into a pandas DataFrame for analysis.
     """)
+    ])
     return
 
 

@@ -185,29 +185,35 @@ def _(df):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### The typical pandas workflow
 
     Most data analysis follows this pipeline (see the [pandas Getting Started tutorials](https://pandas.pydata.org/docs/getting_started/) for more detail on each step):
 
-    ```mermaid
-    flowchart LR
-        A["📂 Load<br>pd.read_csv()"] --> B["🔍 Inspect<br>.shape, .head(),<br>.info(), .describe()"]
-        B --> C["🧹 Clean<br>.dropna(), .fillna(),<br>fix dtypes"]
-        C --> D["🔎 Filter<br>df[df['col'] > val]<br>.isin(), .str.contains()"]
-        D --> E["📊 Group & Aggregate<br>.groupby().mean()<br>.agg(), .value_counts()"]
-        E --> F["💾 Save / Plot<br>.to_csv()<br>matplotlib"]
-
-        style A fill:#3498db,color:#fff
-        style B fill:#2ecc71,color:#fff
-        style C fill:#f39c12,color:#fff
-        style D fill:#e74c3c,color:#fff
-        style E fill:#9b59b6,color:#fff
-        style F fill:#1abc9c,color:#fff
-    ```
+    """),
+    mo.mermaid(
+        """
+        flowchart LR
+            A["📂 Load<br>pd.read_csv()"] --> B["🔍 Inspect<br>.shape, .head(),<br>.info(), .describe()"]
+            B --> C["🧹 Clean<br>.dropna(), .fillna(),<br>fix dtypes"]
+            C --> D["🔎 Filter<br>df[df['col'] > val]<br>.isin(), .str.contains()"]
+            D --> E["📊 Group & Aggregate<br>.groupby().mean()<br>.agg(), .value_counts()"]
+            E --> F["💾 Save / Plot<br>.to_csv()<br>matplotlib"]
+        
+            style A fill:#3498db,color:#fff
+            style B fill:#2ecc71,color:#fff
+            style C fill:#f39c12,color:#fff
+            style D fill:#e74c3c,color:#fff
+            style E fill:#9b59b6,color:#fff
+            style F fill:#1abc9c,color:#fff
+        """
+    ),
+    mo.md(r"""
 
     This notebook walks through each step. By the end, you'll be comfortable with the whole pipeline.
     """)
+    ])
     return
 
 

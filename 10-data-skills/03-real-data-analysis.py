@@ -57,50 +57,56 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### The complete analysis workflow
 
     This notebook follows this pipeline end-to-end:
 
-    ```mermaid
-    flowchart TD
-        A["Raw DE Results<br>2000 genes from DESeq2"] --> B["Inspect & QC<br>shape, dtypes, missing values,<br>expression distributions"]
-        B --> C["Filter<br>Remove low-expression genes<br>(baseMean < 10)"]
-        C --> D["Classify<br>Significance thresholds:<br>|log2FC| > 1, padj < 0.05"]
-        D --> E["Visualize<br>Volcano plot, MA plot,<br>ion channel bar chart"]
-        E --> F["Extract Insights<br>Top hits, ion channel focus,<br>pathway patterns"]
-        F --> G["AI Interpretation<br>Send structured summary<br>to Claude API"]
-        G --> H["Biological Conclusions<br>Implications for binder<br>program & next experiments"]
-
-        style A fill:#bdc3c7,color:#2c3e50
-        style B fill:#3498db,color:#fff
-        style C fill:#f39c12,color:#fff
-        style D fill:#e74c3c,color:#fff
-        style E fill:#9b59b6,color:#fff
-        style F fill:#2ecc71,color:#fff
-        style G fill:#8e44ad,color:#fff
-        style H fill:#1abc9c,color:#fff
-
-        subgraph "YOUR EXPERTISE"
-            direction LR
-            H
-        end
-        subgraph "PANDAS + MATPLOTLIB"
-            direction LR
-            B
-            C
-            D
-            E
-            F
-        end
-        subgraph "CLAUDE API"
-            direction LR
-            G
-        end
-    ```
+    """),
+    mo.mermaid(
+        """
+        flowchart TD
+            A["Raw DE Results<br>2000 genes from DESeq2"] --> B["Inspect & QC<br>shape, dtypes, missing values,<br>expression distributions"]
+            B --> C["Filter<br>Remove low-expression genes<br>(baseMean < 10)"]
+            C --> D["Classify<br>Significance thresholds:<br>|log2FC| > 1, padj < 0.05"]
+            D --> E["Visualize<br>Volcano plot, MA plot,<br>ion channel bar chart"]
+            E --> F["Extract Insights<br>Top hits, ion channel focus,<br>pathway patterns"]
+            F --> G["AI Interpretation<br>Send structured summary<br>to Claude API"]
+            G --> H["Biological Conclusions<br>Implications for binder<br>program & next experiments"]
+        
+            style A fill:#bdc3c7,color:#2c3e50
+            style B fill:#3498db,color:#fff
+            style C fill:#f39c12,color:#fff
+            style D fill:#e74c3c,color:#fff
+            style E fill:#9b59b6,color:#fff
+            style F fill:#2ecc71,color:#fff
+            style G fill:#8e44ad,color:#fff
+            style H fill:#1abc9c,color:#fff
+        
+            subgraph "YOUR EXPERTISE"
+                direction LR
+                H
+            end
+            subgraph "PANDAS + MATPLOTLIB"
+                direction LR
+                B
+                C
+                D
+                E
+                F
+            end
+            subgraph "CLAUDE API"
+                direction LR
+                G
+            end
+        """
+    ),
+    mo.md(r"""
 
     Each step below corresponds to a stage in this pipeline. By the end, you'll have a reusable template for any differential expression analysis.
     """)
+    ])
     return
 
 

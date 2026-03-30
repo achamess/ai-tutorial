@@ -114,29 +114,29 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ```mermaid
-    graph TD
-        subgraph CONV ["What Claude sees at each turn"]
-            SYS["<b>System Prompt</b><br/>'You are a pain biology expert...'<br/><i>Sets behavior for entire conversation</i>"]
-            U1["<b>User Message 1</b><br/>'What controls should I include<br/>for my NaV1.7 binder assay?'"]
-            A1["<b>Assistant Message 1</b><br/>'You should include a vehicle control,<br/>a scrambled binder, and...'"]
-            U2["<b>User Message 2</b><br/>'How would I measure selectivity<br/>over NaV1.5?'"]
-            A2["<b>Assistant Message 2</b><br/><i>(Claude generates this now,<br/>seeing ALL of the above)</i>"]
-
-            SYS --> U1 --> A1 --> U2 --> A2
-        end
-
-        NOTE["Each turn, Claude sees the<br/><b>entire history</b> above.<br/>No memory between conversations —<br/>each new chat starts fresh."]
-
-        style SYS fill:#aa44aa,color:#fff
-        style U1 fill:#4488cc,color:#fff
-        style A1 fill:#44aa88,color:#fff
-        style U2 fill:#4488cc,color:#fff
-        style A2 fill:#44aa88,color:#fff,stroke:#cc4444,stroke-width:3px
-        style NOTE fill:#fff,stroke:#999
-    ```
-    """)
+    mo.mermaid(
+        """
+        graph TD
+            subgraph CONV ["What Claude sees at each turn"]
+                SYS["<b>System Prompt</b><br/>'You are a pain biology expert...'<br/><i>Sets behavior for entire conversation</i>"]
+                U1["<b>User Message 1</b><br/>'What controls should I include<br/>for my NaV1.7 binder assay?'"]
+                A1["<b>Assistant Message 1</b><br/>'You should include a vehicle control,<br/>a scrambled binder, and...'"]
+                U2["<b>User Message 2</b><br/>'How would I measure selectivity<br/>over NaV1.5?'"]
+                A2["<b>Assistant Message 2</b><br/><i>(Claude generates this now,<br/>seeing ALL of the above)</i>"]
+        
+                SYS --> U1 --> A1 --> U2 --> A2
+            end
+        
+            NOTE["Each turn, Claude sees the<br/><b>entire history</b> above.<br/>No memory between conversations —<br/>each new chat starts fresh."]
+        
+            style SYS fill:#aa44aa,color:#fff
+            style U1 fill:#4488cc,color:#fff
+            style A1 fill:#44aa88,color:#fff
+            style U2 fill:#4488cc,color:#fff
+            style A2 fill:#44aa88,color:#fff,stroke:#cc4444,stroke-width:3px
+            style NOTE fill:#fff,stroke:#999
+        """
+    )
     return
 
 

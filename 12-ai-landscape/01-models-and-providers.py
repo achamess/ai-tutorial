@@ -221,40 +221,46 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### Protein design pipeline — which AI tool at each step
 
-    ```mermaid
-    flowchart TD
-        A["Target ID<br>NaV1.7 pain target<br>(Literature + Claude)"] --> B["Structure Prediction<br>AlphaFold 3<br>+ membrane context"]
-        B --> C["Epitope Selection<br>Your expertise<br>+ functional data"]
-        C --> D["Binder Generation<br>RFdiffusion<br>diverse backbone sampling"]
-        D --> E["Sequence Design<br>ProteinMPNN<br>sequence for each backbone"]
-        E --> F["Validation<br>AlphaFold 2 / ESMFold<br>does it fold correctly?"]
-        F --> G["Filtering<br>Rosetta energy<br>pAE, pLDDT scores"]
-        G --> H["Experimental Testing<br>SPR, thermal stability,<br>calcium imaging"]
-
-        A -.- Claude1["Claude helps:<br>lit review, planning"]
-        D -.- Claude2["Claude helps:<br>script writing,<br>parameter tuning"]
-        F -.- Claude3["Claude helps:<br>result interpretation,<br>filtering criteria"]
-        H -.- Claude4["Claude helps:<br>data analysis,<br>next-round design"]
-
-        style A fill:#bdc3c7,color:#2c3e50
-        style B fill:#e74c3c,color:#fff
-        style C fill:#f39c12,color:#fff
-        style D fill:#9b59b6,color:#fff
-        style E fill:#9b59b6,color:#fff
-        style F fill:#e74c3c,color:#fff
-        style G fill:#3498db,color:#fff
-        style H fill:#2ecc71,color:#fff
-        style Claude1 fill:#8e44ad,color:#fff,stroke-dasharray: 5 5
-        style Claude2 fill:#8e44ad,color:#fff,stroke-dasharray: 5 5
-        style Claude3 fill:#8e44ad,color:#fff,stroke-dasharray: 5 5
-        style Claude4 fill:#8e44ad,color:#fff,stroke-dasharray: 5 5
-    ```
+    """),
+    mo.mermaid(
+        """
+        flowchart TD
+            A["Target ID<br>NaV1.7 pain target<br>(Literature + Claude)"] --> B["Structure Prediction<br>AlphaFold 3<br>+ membrane context"]
+            B --> C["Epitope Selection<br>Your expertise<br>+ functional data"]
+            C --> D["Binder Generation<br>RFdiffusion<br>diverse backbone sampling"]
+            D --> E["Sequence Design<br>ProteinMPNN<br>sequence for each backbone"]
+            E --> F["Validation<br>AlphaFold 2 / ESMFold<br>does it fold correctly?"]
+            F --> G["Filtering<br>Rosetta energy<br>pAE, pLDDT scores"]
+            G --> H["Experimental Testing<br>SPR, thermal stability,<br>calcium imaging"]
+        
+            A -.- Claude1["Claude helps:<br>lit review, planning"]
+            D -.- Claude2["Claude helps:<br>script writing,<br>parameter tuning"]
+            F -.- Claude3["Claude helps:<br>result interpretation,<br>filtering criteria"]
+            H -.- Claude4["Claude helps:<br>data analysis,<br>next-round design"]
+        
+            style A fill:#bdc3c7,color:#2c3e50
+            style B fill:#e74c3c,color:#fff
+            style C fill:#f39c12,color:#fff
+            style D fill:#9b59b6,color:#fff
+            style E fill:#9b59b6,color:#fff
+            style F fill:#e74c3c,color:#fff
+            style G fill:#3498db,color:#fff
+            style H fill:#2ecc71,color:#fff
+            style Claude1 fill:#8e44ad,color:#fff,stroke-dasharray: 5 5
+            style Claude2 fill:#8e44ad,color:#fff,stroke-dasharray: 5 5
+            style Claude3 fill:#8e44ad,color:#fff,stroke-dasharray: 5 5
+            style Claude4 fill:#8e44ad,color:#fff,stroke-dasharray: 5 5
+        """
+    ),
+    mo.md(r"""
 
     **Key insight:** Specialized tools (red/purple) do the computation. Claude (dashed purple) helps you *use* those tools -- writing scripts, interpreting outputs, planning next steps. Neither replaces the other.
     """)
+    ])
     return
 
 

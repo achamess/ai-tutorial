@@ -221,29 +221,33 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
+    mo.mermaid(
+        """
+        graph LR
+            subgraph "LLM Architecture at a High Level"
+                INPUT["<b>Input Text</b><br/>'NaV1.7 is expressed in'"] --> TOK["<b>Tokenizer</b><br/>Text → tokens<br/>(subword pieces)"]
+                TOK --> TRANS["<b>Transformer</b><br/>Neural network with<br/>billions of parameters<br/>Processes all tokens<br/>in parallel via<br/><i>attention mechanism</i>"]
+                TRANS --> PROB["<b>Probability<br/>Distribution</b><br/>A score for every<br/>possible next token<br/>(~50,000+ options)"]
+                PROB --> SAMPLE["<b>Sampling</b><br/>Pick one token<br/>(temperature controls<br/>how random)"]
+                SAMPLE --> OUTPUT["<b>Output Token</b><br/>'nociceptors'"]
+            end
+        
+            OUTPUT -.->|"append to input,<br/>repeat"| INPUT
+        
+            style INPUT fill:#4488cc,color:#fff
+            style TOK fill:#44aa88,color:#fff
+            style TRANS fill:#cc8844,color:#fff
+            style PROB fill:#aa44aa,color:#fff
+            style SAMPLE fill:#cc4444,color:#fff
+            style OUTPUT fill:#4488cc,color:#fff
+        """
+    ),
     mo.md(r"""
-    ```mermaid
-    graph LR
-        subgraph "LLM Architecture at a High Level"
-            INPUT["<b>Input Text</b><br/>'NaV1.7 is expressed in'"] --> TOK["<b>Tokenizer</b><br/>Text → tokens<br/>(subword pieces)"]
-            TOK --> TRANS["<b>Transformer</b><br/>Neural network with<br/>billions of parameters<br/>Processes all tokens<br/>in parallel via<br/><i>attention mechanism</i>"]
-            TRANS --> PROB["<b>Probability<br/>Distribution</b><br/>A score for every<br/>possible next token<br/>(~50,000+ options)"]
-            PROB --> SAMPLE["<b>Sampling</b><br/>Pick one token<br/>(temperature controls<br/>how random)"]
-            SAMPLE --> OUTPUT["<b>Output Token</b><br/>'nociceptors'"]
-        end
-
-        OUTPUT -.->|"append to input,<br/>repeat"| INPUT
-
-        style INPUT fill:#4488cc,color:#fff
-        style TOK fill:#44aa88,color:#fff
-        style TRANS fill:#cc8844,color:#fff
-        style PROB fill:#aa44aa,color:#fff
-        style SAMPLE fill:#cc4444,color:#fff
-        style OUTPUT fill:#4488cc,color:#fff
-    ```
 
     This loop -- predict one token, append it, predict the next -- is called **autoregressive generation**. The code demo below simulates exactly this process with a toy model.
     """)
+    ])
     return
 
 
@@ -320,8 +324,9 @@ def _(mo):
     return
 
 
-app._unparsable_cell(
-    r"""
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
     > 🤔 **Decision point:** When should you use an LLM vs. a search engine vs. a database?
     >
     > | Tool | Pros | Cons | Use when... |
@@ -331,60 +336,36 @@ app._unparsable_cell(
     > | **Database (UniProt, PDB, NCBI Gene)** | Authoritative, curated data; exact numbers you can cite; structured and queryable | No interpretation — just raw data; requires knowing the right query syntax | You need specific, verified facts: a protein sequence, a gene ID, a crystal structure, an IC50 value from a specific assay |
     >
     > **Best practice:** Use Claude to help you *think* about your data and *draft* your text. Use databases to *verify* specific claims. Use search engines to *find* recent papers. Then feed those papers back to Claude for synthesis.
-
-    ```mermaid
-    graph TD
-        TASK["I need to..."] --> Q1{"What kind of task?"}
-
-        Q1 -->|"Draft, summarize,<br/>explain, brainstorm"| LLM["Use **Claude**<br/>(text transformation)"]
-        Q1 -->|"Look up a specific<br/>fact or number"| DB["Use the **source**<br/>(paper, database, docs)"]
-        Q1 -->|"Find recent papers"| SEARCH["Use **PubMed / Google Scholar**<br/>(search engine)"]
-        Q1 -->|"Calculate something<br/>precisely"| CALC["Use **Python / calculator**<br/>(exact computation)"]
-        Q1 -->|"Design a protein<br/>sequence"| TOOL["Use **specialized tools**<br/>(RFdiffusion, AlphaFold2)"]
-
-        LLM --> TIP1["High reliability<br/>This is the sweet spot"]
-        DB --> TIP2["Verify LLM claims here"]
-        SEARCH --> TIP3["LLMs have a training<br/>cutoff date"]
-        CALC --> TIP4["LLMs are unreliable<br/>at precise math"]
-        TOOL --> TIP5["LLMs can help you<br/>USE these tools"]
-
-        style LLM fill:#44aa88,color:#fff
-        style DB fill:#4488cc,color:#fff
-        style SEARCH fill:#cc8844,color:#fff
-        style CALC fill:#aa44aa,color:#fff
-        style TOOL fill:#cc4444,color:#fff
-    ```
-    """,
-    name="_"
-)
+    """)
+    return
 
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ```mermaid
-    graph TD
-        TASK["I need to..."] --> Q1{"What kind of task?"}
-
-        Q1 -->|"Draft, summarize,<br/>explain, brainstorm"| LLM["Use <b>Claude</b><br/>(text transformation)"]
-        Q1 -->|"Look up a specific<br/>fact or number"| DB["Use the <b>source</b><br/>(paper, database, docs)"]
-        Q1 -->|"Find recent papers"| SEARCH["Use <b>PubMed / Google Scholar</b><br/>(search engine)"]
-        Q1 -->|"Calculate something<br/>precisely"| CALC["Use <b>Python / calculator</b><br/>(exact computation)"]
-        Q1 -->|"Design a protein<br/>sequence"| TOOL["Use <b>specialized tools</b><br/>(RFdiffusion, AlphaFold2)"]
-
-        LLM --> TIP1["High reliability<br/>This is the sweet spot"]
-        DB --> TIP2["Verify LLM claims here"]
-        SEARCH --> TIP3["LLMs have a training<br/>cutoff date"]
-        CALC --> TIP4["LLMs are unreliable<br/>at precise math"]
-        TOOL --> TIP5["LLMs can help you<br/>USE these tools"]
-
-        style LLM fill:#44aa88,color:#fff
-        style DB fill:#4488cc,color:#fff
-        style SEARCH fill:#cc8844,color:#fff
-        style CALC fill:#aa44aa,color:#fff
-        style TOOL fill:#cc4444,color:#fff
-    ```
-    """)
+    mo.mermaid(
+        """
+        graph TD
+            TASK["I need to..."] --> Q1{"What kind of task?"}
+        
+            Q1 -->|"Draft, summarize,<br/>explain, brainstorm"| LLM["Use <b>Claude</b><br/>(text transformation)"]
+            Q1 -->|"Look up a specific<br/>fact or number"| DB["Use the <b>source</b><br/>(paper, database, docs)"]
+            Q1 -->|"Find recent papers"| SEARCH["Use <b>PubMed / Google Scholar</b><br/>(search engine)"]
+            Q1 -->|"Calculate something<br/>precisely"| CALC["Use <b>Python / calculator</b><br/>(exact computation)"]
+            Q1 -->|"Design a protein<br/>sequence"| TOOL["Use <b>specialized tools</b><br/>(RFdiffusion, AlphaFold2)"]
+        
+            LLM --> TIP1["High reliability<br/>This is the sweet spot"]
+            DB --> TIP2["Verify LLM claims here"]
+            SEARCH --> TIP3["LLMs have a training<br/>cutoff date"]
+            CALC --> TIP4["LLMs are unreliable<br/>at precise math"]
+            TOOL --> TIP5["LLMs can help you<br/>USE these tools"]
+        
+            style LLM fill:#44aa88,color:#fff
+            style DB fill:#4488cc,color:#fff
+            style SEARCH fill:#cc8844,color:#fff
+            style CALC fill:#aa44aa,color:#fff
+            style TOOL fill:#cc4444,color:#fff
+        """
+    )
     return
 
 

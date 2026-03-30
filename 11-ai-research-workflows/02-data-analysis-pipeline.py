@@ -58,55 +58,61 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### The AI-integrated data analysis pipeline
 
-    ```mermaid
-    flowchart TD
-        subgraph DATA["Your Experiment"]
-            D1["Raw Data<br>(screening results,<br>behavioral scores,<br>calcium imaging)"]
-        end
-
-        subgraph PANDAS["pandas + matplotlib"]
-            P1["Load & Inspect<br>pd.read_csv(), .describe()"]
-            P2["Filter & Rank<br>apply hit criteria,<br>sort candidates"]
-            P3["Visualize<br>scatter plots, bar charts,<br>time courses"]
-            P4["Summarize<br>groupby stats,<br>hit rates, correlations"]
-        end
-
-        subgraph AI["Claude API"]
-            A1["Structured Summary<br>(text with numbers,<br>not raw DataFrames)"]
-            A2["Interpretation<br>patterns, tradeoffs,<br>biological context"]
-            A3["Recommendations<br>next experiments,<br>design improvements"]
-        end
-
-        subgraph YOU["Your Expertise"]
-            Y1["Scientific Judgment<br>validate claims,<br>plan next steps"]
-        end
-
-        D1 --> P1
-        P1 --> P2
-        P2 --> P3
-        P3 --> P4
-        P4 --> A1
-        A1 --> A2
-        A2 --> A3
-        A3 --> Y1
-        Y1 -->|"new experiment"| D1
-
-        style D1 fill:#bdc3c7,color:#2c3e50
-        style P1 fill:#3498db,color:#fff
-        style P2 fill:#3498db,color:#fff
-        style P3 fill:#3498db,color:#fff
-        style P4 fill:#3498db,color:#fff
-        style A1 fill:#8e44ad,color:#fff
-        style A2 fill:#8e44ad,color:#fff
-        style A3 fill:#8e44ad,color:#fff
-        style Y1 fill:#e74c3c,color:#fff
-    ```
+    """),
+    mo.mermaid(
+        """
+        flowchart TD
+            subgraph DATA["Your Experiment"]
+                D1["Raw Data<br>(screening results,<br>behavioral scores,<br>calcium imaging)"]
+            end
+        
+            subgraph PANDAS["pandas + matplotlib"]
+                P1["Load & Inspect<br>pd.read_csv(), .describe()"]
+                P2["Filter & Rank<br>apply hit criteria,<br>sort candidates"]
+                P3["Visualize<br>scatter plots, bar charts,<br>time courses"]
+                P4["Summarize<br>groupby stats,<br>hit rates, correlations"]
+            end
+        
+            subgraph AI["Claude API"]
+                A1["Structured Summary<br>(text with numbers,<br>not raw DataFrames)"]
+                A2["Interpretation<br>patterns, tradeoffs,<br>biological context"]
+                A3["Recommendations<br>next experiments,<br>design improvements"]
+            end
+        
+            subgraph YOU["Your Expertise"]
+                Y1["Scientific Judgment<br>validate claims,<br>plan next steps"]
+            end
+        
+            D1 --> P1
+            P1 --> P2
+            P2 --> P3
+            P3 --> P4
+            P4 --> A1
+            A1 --> A2
+            A2 --> A3
+            A3 --> Y1
+            Y1 -->|"new experiment"| D1
+        
+            style D1 fill:#bdc3c7,color:#2c3e50
+            style P1 fill:#3498db,color:#fff
+            style P2 fill:#3498db,color:#fff
+            style P3 fill:#3498db,color:#fff
+            style P4 fill:#3498db,color:#fff
+            style A1 fill:#8e44ad,color:#fff
+            style A2 fill:#8e44ad,color:#fff
+            style A3 fill:#8e44ad,color:#fff
+            style Y1 fill:#e74c3c,color:#fff
+        """
+    ),
+    mo.md(r"""
 
     Notice the loop: your judgment feeds back into new experiments. Claude accelerates the analysis-to-interpretation step, but you drive the science.
     """)
+    ])
     return
 
 

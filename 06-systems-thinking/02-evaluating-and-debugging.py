@@ -628,44 +628,50 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### Debugging Decision Tree
 
-    ```mermaid
-    flowchart TD
-        START["Got an error!"] --> READ["Read the error message<br>(last line first)"]
-        READ --> TYPE{"What type<br>of error?"}
-
-        TYPE -->|"KeyError /<br>ColumnNotFound"| KEY["Wrong column or<br>dictionary key name"]
-        TYPE -->|"FileNotFoundError"| FILE["Wrong file path<br>or missing file"]
-        TYPE -->|"TypeError"| TYPEE["Wrong data type<br>passed to function"]
-        TYPE -->|"ValueError"| VAL["Right type but<br>invalid value"]
-        TYPE -->|"Other / Logic bug<br>(wrong results)"| LOGIC["Code runs but<br>output is wrong"]
-
-        KEY --> FIX1["Check: df.columns or<br>dict.keys() to see<br>actual names"]
-        FILE --> FIX2["Check: does file exist?<br>Is the path relative<br>or absolute?"]
-        TYPEE --> FIX3["Check: type() of each<br>variable in the<br>failing line"]
-        VAL --> FIX4["Check: print the value<br>being passed -- is it<br>what you expect?"]
-        LOGIC --> ISO["Isolate: add print()<br>at each step boundary<br>to find where data<br>goes wrong"]
-
-        FIX1 --> APPLY["Apply fix"]
-        FIX2 --> APPLY
-        FIX3 --> APPLY
-        FIX4 --> APPLY
-        ISO --> APPLY
-        APPLY --> TEST["Test with<br>known input"]
-        TEST --> DONE{"Fixed?"}
-        DONE -->|"Yes"| COMMIT["Commit the fix"]
-        DONE -->|"No"| READ
-
-        style START fill:#E24A33,color:#fff
-        style COMMIT fill:#55A868,color:#fff
-        style READ fill:#4878CF,color:#fff
-        style ISO fill:#8172B2,color:#fff
-    ```
+    """),
+    mo.mermaid(
+        """
+        flowchart TD
+            START["Got an error!"] --> READ["Read the error message<br>(last line first)"]
+            READ --> TYPE{"What type<br>of error?"}
+        
+            TYPE -->|"KeyError /<br>ColumnNotFound"| KEY["Wrong column or<br>dictionary key name"]
+            TYPE -->|"FileNotFoundError"| FILE["Wrong file path<br>or missing file"]
+            TYPE -->|"TypeError"| TYPEE["Wrong data type<br>passed to function"]
+            TYPE -->|"ValueError"| VAL["Right type but<br>invalid value"]
+            TYPE -->|"Other / Logic bug<br>(wrong results)"| LOGIC["Code runs but<br>output is wrong"]
+        
+            KEY --> FIX1["Check: df.columns or<br>dict.keys() to see<br>actual names"]
+            FILE --> FIX2["Check: does file exist?<br>Is the path relative<br>or absolute?"]
+            TYPEE --> FIX3["Check: type() of each<br>variable in the<br>failing line"]
+            VAL --> FIX4["Check: print the value<br>being passed -- is it<br>what you expect?"]
+            LOGIC --> ISO["Isolate: add print()<br>at each step boundary<br>to find where data<br>goes wrong"]
+        
+            FIX1 --> APPLY["Apply fix"]
+            FIX2 --> APPLY
+            FIX3 --> APPLY
+            FIX4 --> APPLY
+            ISO --> APPLY
+            APPLY --> TEST["Test with<br>known input"]
+            TEST --> DONE{"Fixed?"}
+            DONE -->|"Yes"| COMMIT["Commit the fix"]
+            DONE -->|"No"| READ
+        
+            style START fill:#E24A33,color:#fff
+            style COMMIT fill:#55A868,color:#fff
+            style READ fill:#4878CF,color:#fff
+            style ISO fill:#8172B2,color:#fff
+        """
+    ),
+    mo.md(r"""
 
     This flowchart captures the systematic debugging process. The key insight: **always read the error message first** (many beginners skip this!) and **identify the error type** before trying to fix anything. Each error type has a specific diagnostic step.
     """)
+    ])
     return
 
 

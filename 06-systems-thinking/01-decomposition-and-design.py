@@ -158,44 +158,50 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### Decomposition Diagram: Research Pipeline as Components
 
-    ```mermaid
-    graph LR
-        subgraph "Component 1"
-            A1["INPUT<br>Raw data files"] --> A2["PROCESS<br>Load & validate"] --> A3["OUTPUT<br>Clean DataFrame"]
-        end
-        subgraph "Component 2"
-            B1["INPUT<br>Clean DataFrame"] --> B2["PROCESS<br>Compute properties"] --> B3["OUTPUT<br>Enriched table"]
-        end
-        subgraph "Component 3"
-            C1["INPUT<br>Enriched table"] --> C2["PROCESS<br>Filter & score"] --> C3["OUTPUT<br>Ranked hits"]
-        end
-        subgraph "Component 4"
-            D1["INPUT<br>Ranked hits"] --> D2["PROCESS<br>Visualize & report"] --> D3["OUTPUT<br>Figures + report"]
-        end
-
-        A3 --> B1
-        B3 --> C1
-        C3 --> D1
-
-        style A1 fill:#4878CF,color:#fff
-        style A2 fill:#55A868,color:#fff
-        style A3 fill:#FDB863,color:#000
-        style B1 fill:#4878CF,color:#fff
-        style B2 fill:#55A868,color:#fff
-        style B3 fill:#FDB863,color:#000
-        style C1 fill:#4878CF,color:#fff
-        style C2 fill:#55A868,color:#fff
-        style C3 fill:#FDB863,color:#000
-        style D1 fill:#4878CF,color:#fff
-        style D2 fill:#55A868,color:#fff
-        style D3 fill:#FDB863,color:#000
-    ```
+    """),
+    mo.mermaid(
+        """
+        graph LR
+            subgraph "Component 1"
+                A1["INPUT<br>Raw data files"] --> A2["PROCESS<br>Load & validate"] --> A3["OUTPUT<br>Clean DataFrame"]
+            end
+            subgraph "Component 2"
+                B1["INPUT<br>Clean DataFrame"] --> B2["PROCESS<br>Compute properties"] --> B3["OUTPUT<br>Enriched table"]
+            end
+            subgraph "Component 3"
+                C1["INPUT<br>Enriched table"] --> C2["PROCESS<br>Filter & score"] --> C3["OUTPUT<br>Ranked hits"]
+            end
+            subgraph "Component 4"
+                D1["INPUT<br>Ranked hits"] --> D2["PROCESS<br>Visualize & report"] --> D3["OUTPUT<br>Figures + report"]
+            end
+        
+            A3 --> B1
+            B3 --> C1
+            C3 --> D1
+        
+            style A1 fill:#4878CF,color:#fff
+            style A2 fill:#55A868,color:#fff
+            style A3 fill:#FDB863,color:#000
+            style B1 fill:#4878CF,color:#fff
+            style B2 fill:#55A868,color:#fff
+            style B3 fill:#FDB863,color:#000
+            style C1 fill:#4878CF,color:#fff
+            style C2 fill:#55A868,color:#fff
+            style C3 fill:#FDB863,color:#000
+            style D1 fill:#4878CF,color:#fff
+            style D2 fill:#55A868,color:#fff
+            style D3 fill:#FDB863,color:#000
+        """
+    ),
+    mo.md(r"""
 
     Each component is self-contained with defined inputs and outputs. The output of one component becomes the input of the next. This is the key principle: **if you can describe the input, process, and output of each component, you can build (or ask Claude to build) the whole pipeline one piece at a time.**
     """)
+    ])
     return
 
 
@@ -229,37 +235,43 @@ def _():
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### Data Flow Diagram: Binder Screening Pipeline
 
-    ```mermaid
-    flowchart TD
-        CSV["CSV file<br>100 binder sequences<br>+ metadata"] --> LOAD["Load Candidates<br>Read, validate,<br>remove duplicates"]
-        LOAD --> CLEAN["Clean list<br>95 unique candidates<br>(DataFrame)"]
-        CLEAN --> PROPS["Compute Properties<br>MW, pI, hydrophobicity,<br>predicted solubility"]
-        PROPS --> ENRICHED["Enriched table<br>95 rows x 8 columns"]
-        ENRICHED --> FILTER["Filter by Criteria<br>Kd < 100nM<br>Solubility > 0.3<br>Selectivity > 5x"]
-        FILTER --> VIABLE["Viable candidates<br>~20 remaining"]
-        VIABLE --> SCORE["Score & Rank<br>Weighted composite:<br>40% affinity<br>35% selectivity<br>25% druglikeness"]
-        SCORE --> RANKED["Ranked list<br>with composite scores"]
-        RANKED --> REPORT["Generate Report<br>Summary stats<br>Visualizations<br>Top-10 detail cards"]
-        REPORT --> OUTPUT["PDF/HTML report<br>+ figures/"]
-
-        style CSV fill:#4878CF,color:#fff
-        style CLEAN fill:#FDB863,color:#000
-        style ENRICHED fill:#FDB863,color:#000
-        style VIABLE fill:#FDB863,color:#000
-        style RANKED fill:#FDB863,color:#000
-        style OUTPUT fill:#55A868,color:#fff
-        style LOAD fill:#eee,color:#000
-        style PROPS fill:#eee,color:#000
-        style FILTER fill:#eee,color:#000
-        style SCORE fill:#eee,color:#000
-        style REPORT fill:#eee,color:#000
-    ```
+    """),
+    mo.mermaid(
+        """
+        flowchart TD
+            CSV["CSV file<br>100 binder sequences<br>+ metadata"] --> LOAD["Load Candidates<br>Read, validate,<br>remove duplicates"]
+            LOAD --> CLEAN["Clean list<br>95 unique candidates<br>(DataFrame)"]
+            CLEAN --> PROPS["Compute Properties<br>MW, pI, hydrophobicity,<br>predicted solubility"]
+            PROPS --> ENRICHED["Enriched table<br>95 rows x 8 columns"]
+            ENRICHED --> FILTER["Filter by Criteria<br>Kd < 100nM<br>Solubility > 0.3<br>Selectivity > 5x"]
+            FILTER --> VIABLE["Viable candidates<br>~20 remaining"]
+            VIABLE --> SCORE["Score & Rank<br>Weighted composite:<br>40% affinity<br>35% selectivity<br>25% druglikeness"]
+            SCORE --> RANKED["Ranked list<br>with composite scores"]
+            RANKED --> REPORT["Generate Report<br>Summary stats<br>Visualizations<br>Top-10 detail cards"]
+            REPORT --> OUTPUT["PDF/HTML report<br>+ figures/"]
+        
+            style CSV fill:#4878CF,color:#fff
+            style CLEAN fill:#FDB863,color:#000
+            style ENRICHED fill:#FDB863,color:#000
+            style VIABLE fill:#FDB863,color:#000
+            style RANKED fill:#FDB863,color:#000
+            style OUTPUT fill:#55A868,color:#fff
+            style LOAD fill:#eee,color:#000
+            style PROPS fill:#eee,color:#000
+            style FILTER fill:#eee,color:#000
+            style SCORE fill:#eee,color:#000
+            style REPORT fill:#eee,color:#000
+        """
+    ),
+    mo.md(r"""
 
     Notice how the data transforms at each step: CSV file becomes a DataFrame, which gets enriched with new columns, then filtered down to fewer rows, then scored and ranked. Tracking these transformations is how you debug pipelines -- if the output of step 3 looks wrong, you inspect the data at the boundary between steps 2 and 3.
     """)
+    ])
     return
 
 

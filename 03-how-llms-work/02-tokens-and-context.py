@@ -239,39 +239,43 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
+    mo.mermaid(
+        """
+        graph TD
+            subgraph CTX ["Context Window — 200,000 tokens"]
+                direction TB
+                SYS["<b>System Prompt</b><br/>~200 tokens<br/>Sets Claude's role & rules"]
+                CONTENT["<b>Your Content</b><br/>Papers, data, code<br/>(variable size)"]
+                PROMPT["<b>Your Instruction</b><br/>~100-500 tokens<br/>What to do with the content"]
+                RESPONSE["<b>Claude's Response</b><br/>~200-5,000 tokens<br/>The generated output"]
+                FREE["<b>Unused Capacity</b>"]
+        
+                SYS ~~~ CONTENT
+                CONTENT ~~~ PROMPT
+                PROMPT ~~~ RESPONSE
+                RESPONSE ~~~ FREE
+            end
+        
+            subgraph COST ["Token Costs at a Glance"]
+                C1["Research abstract<br/>~400 tokens"]
+                C2["Full paper<br/>~8,000 tokens"]
+                C3["R01 grant<br/>~16,000 tokens"]
+                C4["RNA-seq table (20k genes)<br/>~120,000 tokens"]
+            end
+        
+            style SYS fill:#aa44aa,color:#fff
+            style CONTENT fill:#cc8844,color:#fff
+            style PROMPT fill:#4488cc,color:#fff
+            style RESPONSE fill:#44aa88,color:#fff
+            style FREE fill:#e8e8e8,color:#666
+        """
+    ),
     mo.md(r"""
-    ```mermaid
-    graph TD
-        subgraph CTX ["Context Window — 200,000 tokens"]
-            direction TB
-            SYS["<b>System Prompt</b><br/>~200 tokens<br/>Sets Claude's role & rules"]
-            CONTENT["<b>Your Content</b><br/>Papers, data, code<br/>(variable size)"]
-            PROMPT["<b>Your Instruction</b><br/>~100-500 tokens<br/>What to do with the content"]
-            RESPONSE["<b>Claude's Response</b><br/>~200-5,000 tokens<br/>The generated output"]
-            FREE["<b>Unused Capacity</b>"]
-
-            SYS ~~~ CONTENT
-            CONTENT ~~~ PROMPT
-            PROMPT ~~~ RESPONSE
-            RESPONSE ~~~ FREE
-        end
-
-        subgraph COST ["Token Costs at a Glance"]
-            C1["Research abstract<br/>~400 tokens"]
-            C2["Full paper<br/>~8,000 tokens"]
-            C3["R01 grant<br/>~16,000 tokens"]
-            C4["RNA-seq table (20k genes)<br/>~120,000 tokens"]
-        end
-
-        style SYS fill:#aa44aa,color:#fff
-        style CONTENT fill:#cc8844,color:#fff
-        style PROMPT fill:#4488cc,color:#fff
-        style RESPONSE fill:#44aa88,color:#fff
-        style FREE fill:#e8e8e8,color:#666
-    ```
 
     **Key insight:** Even a full R01 grant application uses less than 10% of Claude's context window. You can fit your grant + 10 supporting papers in a single conversation.
     """)
+    ])
     return
 
 

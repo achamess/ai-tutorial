@@ -90,27 +90,31 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
+    mo.mermaid(
+        """
+        sequenceDiagram
+            participant Code as Your Python Code
+            participant Net as Mac Network Stack
+            participant DNS as DNS Server
+            participant API as Anthropic API Server
+        
+            Code->>Net: POST https://api.anthropic.com/v1/messages<br/>(JSON body + API key header)
+            Net->>DNS: What IP is api.anthropic.com?
+            DNS-->>Net: 104.18.32.7
+            Net->>API: HTTP request over TLS (encrypted)
+            Note over API: Check API key<br/>Process prompt<br/>Generate response<br/>(1-30 seconds)
+            API-->>Net: HTTP 200 OK + JSON response
+            Net-->>Code: Response object with Claude's text
+        
+            Note over Code,API: The whole round trip: 1-30 seconds depending on response length
+        """
+    ),
     mo.md(r"""
-    ```mermaid
-    sequenceDiagram
-        participant Code as Your Python Code
-        participant Net as Mac Network Stack
-        participant DNS as DNS Server
-        participant API as Anthropic API Server
-
-        Code->>Net: POST https://api.anthropic.com/v1/messages<br/>(JSON body + API key header)
-        Net->>DNS: What IP is api.anthropic.com?
-        DNS-->>Net: 104.18.32.7
-        Net->>API: HTTP request over TLS (encrypted)
-        Note over API: Check API key<br/>Process prompt<br/>Generate response<br/>(1-30 seconds)
-        API-->>Net: HTTP 200 OK + JSON response
-        Net-->>Code: Response object with Claude's text
-
-        Note over Code,API: The whole round trip: 1-30 seconds depending on response length
-    ```
 
     This same request-response pattern applies to every API call -- whether you're querying Claude, NCBI for gene data, or UniProt for protein structures. The only differences are the URL, the data format, and whether you need an API key.
     """)
+    ])
     return
 
 
@@ -159,31 +163,35 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     > 🔑 **Key concept:** HTTP status codes tell you *why* your API call failed, and what to do about it. The first digit is all you need: **2xx = success**, **4xx = your mistake** (bad URL, wrong key, too many requests), **5xx = their problem** (server error). The most common ones you'll see: `200` (success), `401` (check your API key), `404` (check the URL), `429` (you're sending too many requests — wait and retry), `500` (server is down — try again later).
 
-    ```mermaid
-    graph TD
-        REQ["API call returns a status code"] --> Q1{"Code starts with?"}
-        Q1 -->|"2xx"| OK["**200 OK**<br/>Success! Parse the response."]
-        Q1 -->|"4xx"| CLIENT["**Client error** — something<br/>wrong on YOUR side"]
-        Q1 -->|"5xx"| SERVER["**Server error** — something<br/>wrong on THEIR side"]
-
-        CLIENT --> C1{"Which 4xx?"}
-        C1 -->|"400"| BAD["Bad Request<br/>*Check your parameters*"]
-        C1 -->|"401"| AUTH["Unauthorized<br/>*Check ANTHROPIC_API_KEY*"]
-        C1 -->|"404"| NOTF["Not Found<br/>*Check the URL*"]
-        C1 -->|"429"| RATE["Rate Limited<br/>*Wait, then retry*"]
-
-        SERVER --> S1["Wait 30-60 seconds<br/>and try again"]
-
-        style OK fill:#44aa88,color:#fff
-        style CLIENT fill:#cc8844,color:#fff
-        style SERVER fill:#cc4444,color:#fff
-        style AUTH fill:#cc4444,color:#fff
-        style RATE fill:#cc8844,color:#fff
-    ```
-    """)
+    """),
+    mo.mermaid(
+        """
+        graph TD
+            REQ["API call returns a status code"] --> Q1{"Code starts with?"}
+            Q1 -->|"2xx"| OK["**200 OK**<br/>Success! Parse the response."]
+            Q1 -->|"4xx"| CLIENT["**Client error** — something<br/>wrong on YOUR side"]
+            Q1 -->|"5xx"| SERVER["**Server error** — something<br/>wrong on THEIR side"]
+        
+            CLIENT --> C1{"Which 4xx?"}
+            C1 -->|"400"| BAD["Bad Request<br/>*Check your parameters*"]
+            C1 -->|"401"| AUTH["Unauthorized<br/>*Check ANTHROPIC_API_KEY*"]
+            C1 -->|"404"| NOTF["Not Found<br/>*Check the URL*"]
+            C1 -->|"429"| RATE["Rate Limited<br/>*Wait, then retry*"]
+        
+            SERVER --> S1["Wait 30-60 seconds<br/>and try again"]
+        
+            style OK fill:#44aa88,color:#fff
+            style CLIENT fill:#cc8844,color:#fff
+            style SERVER fill:#cc4444,color:#fff
+            style AUTH fill:#cc4444,color:#fff
+            style RATE fill:#cc8844,color:#fff
+        """
+    )
+    ])
     return
 
 

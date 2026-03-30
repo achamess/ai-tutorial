@@ -109,39 +109,43 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
+    mo.mermaid(
+        """
+        graph TD
+            subgraph "The 6 Components of an Effective Prompt"
+                ROLE["1. <b>ROLE / System Prompt</b><br/>'You are an ion channel<br/>pharmacology expert'"]
+                CTX["2. <b>CONTEXT</b><br/>Paper abstract, dataset,<br/>experimental protocol"]
+                INST["3. <b>INSTRUCTION</b><br/>'Summarize the key findings<br/>relevant to binder design'"]
+                EX["4. <b>EXAMPLES</b><br/>Input/output demonstrations<br/>showing the format you want"]
+                CON["5. <b>CONSTRAINTS</b><br/>'Under 150 words,<br/>no speculation, exact numbers'"]
+                FMT["6. <b>OUTPUT FORMAT</b><br/>'Return a markdown table<br/>with columns: Gene, Mutation, Effect'"]
+            end
+        
+            ROLE --> CTX --> INST --> EX --> CON --> FMT
+        
+            subgraph "When output isn't right, diagnose:"
+                P1["Too generic?"] -.-> CTX
+                P2["Misses what matters?"] -.-> ROLE
+                P3["Too long/vague?"] -.-> CON
+                P4["Inconsistent format?"] -.-> FMT
+                P5["Doesn't understand task?"] -.-> EX
+                P6["Task too complex?"] -.-> CHAIN["Break into a<br/>prompt chain"]
+            end
+        
+            style ROLE fill:#aa44aa,color:#fff
+            style CTX fill:#cc8844,color:#fff
+            style INST fill:#4488cc,color:#fff
+            style EX fill:#44aa88,color:#fff
+            style CON fill:#cc4444,color:#fff
+            style FMT fill:#448888,color:#fff
+        """
+    ),
     mo.md(r"""
-    ```mermaid
-    graph TD
-        subgraph "The 6 Components of an Effective Prompt"
-            ROLE["1. <b>ROLE / System Prompt</b><br/>'You are an ion channel<br/>pharmacology expert'"]
-            CTX["2. <b>CONTEXT</b><br/>Paper abstract, dataset,<br/>experimental protocol"]
-            INST["3. <b>INSTRUCTION</b><br/>'Summarize the key findings<br/>relevant to binder design'"]
-            EX["4. <b>EXAMPLES</b><br/>Input/output demonstrations<br/>showing the format you want"]
-            CON["5. <b>CONSTRAINTS</b><br/>'Under 150 words,<br/>no speculation, exact numbers'"]
-            FMT["6. <b>OUTPUT FORMAT</b><br/>'Return a markdown table<br/>with columns: Gene, Mutation, Effect'"]
-        end
-
-        ROLE --> CTX --> INST --> EX --> CON --> FMT
-
-        subgraph "When output isn't right, diagnose:"
-            P1["Too generic?"] -.-> CTX
-            P2["Misses what matters?"] -.-> ROLE
-            P3["Too long/vague?"] -.-> CON
-            P4["Inconsistent format?"] -.-> FMT
-            P5["Doesn't understand task?"] -.-> EX
-            P6["Task too complex?"] -.-> CHAIN["Break into a<br/>prompt chain"]
-        end
-
-        style ROLE fill:#aa44aa,color:#fff
-        style CTX fill:#cc8844,color:#fff
-        style INST fill:#4488cc,color:#fff
-        style EX fill:#44aa88,color:#fff
-        style CON fill:#cc4444,color:#fff
-        style FMT fill:#448888,color:#fff
-    ```
 
     You don't need all six every time. But when a prompt isn't working, this map tells you which dial to turn.
     """)
+    ])
     return
 
 
@@ -362,29 +366,33 @@ def _(response_v1, response_v2, response_v3, response_v4, response_v5):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
+    mo.mermaid(
+        """
+        graph LR
+            subgraph "System Prompt (standing rules)"
+                SP["Your role, domain,<br/>team conventions<br/><i>Doesn't change between requests</i>"]
+            end
+        
+            subgraph "User Prompt (specific task)"
+                UP["Context + instruction +<br/>constraints + format<br/><i>Changes every time</i>"]
+            end
+        
+            SP --> |"combined for<br/>each API call"| CALL["Claude<br/>API Call"]
+            UP --> CALL
+            CALL --> OUT["Tailored<br/>Response"]
+        
+            style SP fill:#aa44aa,color:#fff
+            style UP fill:#4488cc,color:#fff
+            style CALL fill:#44aa88,color:#fff
+            style OUT fill:#44aa88,color:#fff
+        """
+    ),
     mo.md(r"""
-    ```mermaid
-    graph LR
-        subgraph "System Prompt (standing rules)"
-            SP["Your role, domain,<br/>team conventions<br/><i>Doesn't change between requests</i>"]
-        end
-
-        subgraph "User Prompt (specific task)"
-            UP["Context + instruction +<br/>constraints + format<br/><i>Changes every time</i>"]
-        end
-
-        SP --> |"combined for<br/>each API call"| CALL["Claude<br/>API Call"]
-        UP --> CALL
-        CALL --> OUT["Tailored<br/>Response"]
-
-        style SP fill:#aa44aa,color:#fff
-        style UP fill:#4488cc,color:#fff
-        style CALL fill:#44aa88,color:#fff
-        style OUT fill:#44aa88,color:#fff
-    ```
 
     **Think of it like a lab protocol:** The system prompt is the standing protocol (always the same). The user prompt is today's specific experiment (what sample, what conditions, what measurements).
     """)
+    ])
     return
 
 

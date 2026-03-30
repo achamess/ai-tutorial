@@ -65,30 +65,35 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### Architecture Diagram
 
     Here's how an HPC cluster is structured. This is roughly what WashU's RIS looks like:
 
-    ```mermaid
-    graph LR
-        A["🖥️ Your MacBook<br/>(Terminal/VS Code)"] -->|SSH over internet| B["🚪 Login Node<br/>(Gateway — no heavy compute!)"]
-        B -->|Job scheduler<br/>(SLURM)| C["⚙️ Compute Node 1<br/>64 cores, 256GB RAM"]
-        B -->|Job scheduler| D["🎮 GPU Node 1<br/>64 cores, 4× A100 GPUs"]
-        B -->|Job scheduler| E["⚙️ Compute Node 2<br/>64 cores, 256GB RAM"]
-        B -->|Job scheduler| F["🎮 GPU Node 2<br/>64 cores, 4× V100 GPUs"]
-
-        G["💾 Shared Storage<br/>(home, scratch, project)"] --- C
-        G --- D
-        G --- E
-        G --- F
-        G --- B
-
-        style A fill:#e1f5fe
-        style B fill:#fff3e0
-        style D fill:#e8f5e9
-        style F fill:#e8f5e9
-    ```
+    """),
+    mo.mermaid(
+        """
+        graph LR
+            A["🖥️ Your MacBook<br/>(Terminal/VS Code)"] -->|SSH over internet| B["🚪 Login Node<br/>(Gateway — no heavy compute!)"]
+            B -->|Job scheduler<br/>(SLURM)| C["⚙️ Compute Node 1<br/>64 cores, 256GB RAM"]
+            B -->|Job scheduler| D["🎮 GPU Node 1<br/>64 cores, 4× A100 GPUs"]
+            B -->|Job scheduler| E["⚙️ Compute Node 2<br/>64 cores, 256GB RAM"]
+            B -->|Job scheduler| F["🎮 GPU Node 2<br/>64 cores, 4× V100 GPUs"]
+        
+            G["💾 Shared Storage<br/>(home, scratch, project)"] --- C
+            G --- D
+            G --- E
+            G --- F
+            G --- B
+        
+            style A fill:#e1f5fe
+            style B fill:#fff3e0
+            style D fill:#e8f5e9
+            style F fill:#e8f5e9
+        """
+    ),
+    mo.md(r"""
 
     **The key players:**
     - **Your laptop** — where you type commands and view results
@@ -97,6 +102,7 @@ def _(mo):
     - **GPU nodes** — compute nodes with GPUs attached. This is where RFdiffusion, ESMFold, etc. run.
     - **Shared storage** — a filesystem that all nodes can see. Your files are the same whether you're on the login node or a compute node.
     """)
+    ])
     return
 
 

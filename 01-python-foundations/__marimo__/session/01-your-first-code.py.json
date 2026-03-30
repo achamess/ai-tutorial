@@ -130,14 +130,42 @@
     {
       "id": "emfo",
       "code_hash": "caf87d2ef3ef20c32c0ff28b34a35eee",
-      "outputs": [],
-      "console": []
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "['NaV1.7', 'NaV1.8', 'KCNQ2', 'KCNQ3']\nNumber of targets: 4\n",
+          "mimetype": "text/plain"
+        }
+      ]
     },
     {
       "id": "Hstk",
       "code_hash": "9851a57c69513e0a3274cd7e9a3b517b",
-      "outputs": [],
-      "console": []
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "NaV1.7\nKCNQ3\n",
+          "mimetype": "text/plain"
+        }
+      ]
     },
     {
       "id": "nWHF",

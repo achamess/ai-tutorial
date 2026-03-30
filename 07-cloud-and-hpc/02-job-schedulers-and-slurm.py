@@ -38,6 +38,7 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ---
 
@@ -53,21 +54,25 @@ def _(mo):
 
     You do NOT run heavy computation here. The login node is shared by every user on the cluster.
 
-    ```mermaid
-    graph TD
-        A["👤 You (ssh ris)"] --> B["🚪 Login Node<br/><i>Edit scripts, submit jobs</i><br/>⚠️ NO heavy compute!"]
-        B -->|sbatch submit.sh| C["📋 SLURM Scheduler<br/><i>Manages the queue</i>"]
-        C -->|assigns resources| D["⚙️ Compute Node<br/>64 cores, 256GB RAM"]
-        C -->|assigns resources| E["🎮 GPU Node<br/>4× A100, 256GB RAM"]
-        C -->|assigns resources| F["⚙️ Compute Node<br/>64 cores, 256GB RAM"]
-
-        D --> G["📊 Your RNA-seq<br/>alignment runs here"]
-        E --> H["🧬 Your RFdiffusion<br/>job runs here"]
-
-        style B fill:#fff3e0
-        style C fill:#e3f2fd
-        style E fill:#e8f5e9
-    ```
+    """),
+    mo.mermaid(
+        """
+        graph TD
+            A["👤 You (ssh ris)"] --> B["🚪 Login Node<br/><i>Edit scripts, submit jobs</i><br/>⚠️ NO heavy compute!"]
+            B -->|sbatch submit.sh| C["📋 SLURM Scheduler<br/><i>Manages the queue</i>"]
+            C -->|assigns resources| D["⚙️ Compute Node<br/>64 cores, 256GB RAM"]
+            C -->|assigns resources| E["🎮 GPU Node<br/>4× A100, 256GB RAM"]
+            C -->|assigns resources| F["⚙️ Compute Node<br/>64 cores, 256GB RAM"]
+        
+            D --> G["📊 Your RNA-seq<br/>alignment runs here"]
+            E --> H["🧬 Your RFdiffusion<br/>job runs here"]
+        
+            style B fill:#fff3e0
+            style C fill:#e3f2fd
+            style E fill:#e8f5e9
+        """
+    ),
+    mo.md(r"""
 
     > ⚠️ **Warning:** NEVER run heavy computation on a login node. This includes RFdiffusion, STAR alignment, large Python scripts, anything GPU-intensive, or even `conda create` (which can use lots of CPU). If you do, your process will likely be killed automatically, and you may receive a warning email from the HPC admins. Use `sbatch` or `srun` instead.
 
@@ -83,6 +88,7 @@ def _(mo):
 
     > 🔑 **Key concept:** You're not running things interactively (usually). You write a script that contains your commands, submit it to the scheduler, and check back later. This is called **batch processing** — and it's why you can submit 100 binder designs at 5pm and find results waiting at 9am.
     """)
+    ])
     return
 
 

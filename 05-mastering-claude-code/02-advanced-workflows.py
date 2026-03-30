@@ -119,29 +119,35 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### The Multi-Step Workflow
 
-    ```mermaid
-    graph TD
-        A["1. PLAN<br>Describe what you want<br>Ask Claude Code to outline approach"] --> B["2. REVIEW<br>Read the plan<br>Ask questions, suggest changes"]
-        B --> C["3. EXECUTE<br>Tell Claude Code to build it<br>It reads, writes, runs"]
-        C --> D["4. VERIFY<br>Check the output<br>Run tests, inspect results"]
-        D --> E{"Correct?"}
-        E -->|"Yes"| F["5. COMMIT<br>Save with git<br>Meaningful commit message"]
-        E -->|"No"| G["6. ITERATE<br>Describe what's wrong<br>Claude Code fixes it"]
-        G --> D
-
-        style A fill:#4878CF,color:#fff
-        style B fill:#55A868,color:#fff
-        style C fill:#E24A33,color:#fff
-        style D fill:#8172B2,color:#fff
-        style F fill:#FDB863,color:#000
-        style G fill:#E24A33,color:#fff
-    ```
+    """),
+    mo.mermaid(
+        """
+        graph TD
+            A["1. PLAN<br>Describe what you want<br>Ask Claude Code to outline approach"] --> B["2. REVIEW<br>Read the plan<br>Ask questions, suggest changes"]
+            B --> C["3. EXECUTE<br>Tell Claude Code to build it<br>It reads, writes, runs"]
+            C --> D["4. VERIFY<br>Check the output<br>Run tests, inspect results"]
+            D --> E{"Correct?"}
+            E -->|"Yes"| F["5. COMMIT<br>Save with git<br>Meaningful commit message"]
+            E -->|"No"| G["6. ITERATE<br>Describe what's wrong<br>Claude Code fixes it"]
+            G --> D
+        
+            style A fill:#4878CF,color:#fff
+            style B fill:#55A868,color:#fff
+            style C fill:#E24A33,color:#fff
+            style D fill:#8172B2,color:#fff
+            style F fill:#FDB863,color:#000
+            style G fill:#E24A33,color:#fff
+        """
+    ),
+    mo.md(r"""
 
     This plan-execute-verify-commit loop is the core workflow for productive Claude Code use. Notice how it mirrors the scientific method: hypothesis (plan), experiment (execute), analyze (verify), publish (commit).
     """)
+    ])
     return
 
 

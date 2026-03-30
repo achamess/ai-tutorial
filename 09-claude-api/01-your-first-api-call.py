@@ -153,29 +153,35 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### API Call Lifecycle
 
-    ```mermaid
-    sequenceDiagram
-        participant You as Your Python Code
-        participant SDK as Anthropic SDK
-        participant HTTP as HTTPS Request
-        participant API as Anthropic Servers
-
-        You->>SDK: client.messages.create(model, messages, ...)
-        SDK->>HTTP: POST /v1/messages<br/>+ API key header<br/>+ JSON body
-        HTTP->>API: Encrypted request<br/>over the internet
-
-        Note over API: Claude processes your prompt<br/>generates response tokens
-
-        API->>HTTP: JSON response<br/>(content, usage, stop_reason)
-        HTTP->>SDK: Parse HTTP response
-        SDK->>You: Message object<br/>.content[0].text = "..."<br/>.usage.input_tokens = N<br/>.usage.output_tokens = M
-    ```
+    """),
+    mo.mermaid(
+        """
+        sequenceDiagram
+            participant You as Your Python Code
+            participant SDK as Anthropic SDK
+            participant HTTP as HTTPS Request
+            participant API as Anthropic Servers
+        
+            You->>SDK: client.messages.create(model, messages, ...)
+            SDK->>HTTP: POST /v1/messages<br/>+ API key header<br/>+ JSON body
+            HTTP->>API: Encrypted request<br/>over the internet
+        
+            Note over API: Claude processes your prompt<br/>generates response tokens
+        
+            API->>HTTP: JSON response<br/>(content, usage, stop_reason)
+            HTTP->>SDK: Parse HTTP response
+            SDK->>You: Message object<br/>.content[0].text = "..."<br/>.usage.input_tokens = N<br/>.usage.output_tokens = M
+        """
+    ),
+    mo.md(r"""
 
     Each API call follows this lifecycle. Your code never communicates with Claude directly -- the SDK handles authentication, serialization, error handling, and retries. The response comes back as a structured `Message` object that you can inspect for both the text content and metadata like token usage.
     """)
+    ])
     return
 
 

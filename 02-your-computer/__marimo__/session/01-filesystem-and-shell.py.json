@@ -1,0 +1,486 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.21.1",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "5d1879833e3d8338a7dad81b19a077d7",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "6cb0ea74212172174e8db3a94019b962",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"01-the-filesystem-and-the-shell\">01: The Filesystem and the Shell</h1>\n<span class=\"paragraph\">When Claude Code runs a command like <code>mkdir data/calcium_imaging</code> or reads a file, it's navigating your computer's <strong>filesystem</strong> \u2014 the same tree of folders and files you see in Finder. This notebook gives you the mental model for what's actually happening.</span>\n<blockquote>\n<span class=\"paragraph\"><strong>Reference:</strong> This notebook parallels <a href=\"https://missing.csail.mit.edu/2020/course-shell/\" rel=\"noopener noreferrer\" target=\"_blank\">MIT Missing Semester \u2014 Lecture 1: Course Overview + The Shell</a>. That lecture is worth watching in full \u2014 it covers the same ideas with more depth.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "02e8bafbbad0531d0a69214b20c36fa6",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Navigation:</strong> <a href=\"../01-python-foundations/04-data-structures-in-practice.py\">\\u2190 Previous: Data Structures in Practice</a> | <a href=\"../README.md\">Module Index</a> | <a href=\"02-processes-and-environment.py\">Next: Processes and Environment \\u2192</a></span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "06ecc4a8d86800b8a54974d30509a852",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Why this matters for your work</strong></span>\n<ul>\n<li>Claude Code reads, writes, and manipulates files on your computer constantly. If you don't understand paths and directories, you can't verify where it's putting your data or catch mistakes like writing to the wrong folder.</li>\n<li>When Claude Code says \"I'll create <code>data/calcium_imaging/peak_amplitudes.csv</code>,\" you need to know what that means, where that file will end up, and how to find it. That's filesystem literacy.</li>\n<li>Every \"file not found\" error you'll encounter \u2014 whether from a Python script, Claude Code, or a bioinformatics tool like RFdiffusion \u2014 comes down to a path problem. This notebook gives you the mental model to debug them instantly.</li>\n<li>The shell commands here (<code>ls</code>, <code>cd</code>, <code>cat</code>, <code>grep</code>) are exactly what Claude Code runs under the hood. Understanding them means understanding what Claude Code is actually doing on your machine.</li>\n</ul>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "b7d149b5be470b952d575005cf80e0c2",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"what-is-a-filesystem\">What is a filesystem?</h2>\n<span class=\"paragraph\">Your computer stores everything \u2014 documents, code, images, data \u2014 in a <strong>tree structure</strong>. It's like the organizational hierarchy of folders you see in Finder, but the tree goes all the way down to a single root.</span>\n<div class=\"language-gdscript codehilite\"><pre><span></span><code><span class=\"o\">/</span><span class=\"w\">                          </span><span class=\"err\">\u2190</span><span class=\"w\"> </span><span class=\"n\">the</span><span class=\"w\"> </span><span class=\"n\">root</span><span class=\"w\"> </span><span class=\"p\">(</span><span class=\"n\">top</span><span class=\"w\"> </span><span class=\"n\">of</span><span class=\"w\"> </span><span class=\"n\">the</span><span class=\"w\"> </span><span class=\"n\">tree</span><span class=\"p\">)</span>\n<span class=\"err\">\u251c\u2500\u2500</span><span class=\"w\"> </span><span class=\"n\">Users</span><span class=\"o\">/</span>\n<span class=\"err\">\u2502</span><span class=\"w\">   </span><span class=\"err\">\u2514\u2500\u2500</span><span class=\"w\"> </span><span class=\"n\">alex</span><span class=\"o\">/</span><span class=\"w\">              </span><span class=\"err\">\u2190</span><span class=\"w\"> </span><span class=\"n\">your</span><span class=\"w\"> </span><span class=\"n\">home</span><span class=\"w\"> </span><span class=\"n\">directory</span><span class=\"w\"> </span><span class=\"p\">(</span><span class=\"o\">~</span><span class=\"p\">)</span>\n<span class=\"err\">\u2502</span><span class=\"w\">       </span><span class=\"err\">\u251c\u2500\u2500</span><span class=\"w\"> </span><span class=\"n\">Desktop</span><span class=\"o\">/</span>\n<span class=\"err\">\u2502</span><span class=\"w\">       </span><span class=\"err\">\u251c\u2500\u2500</span><span class=\"w\"> </span><span class=\"n\">Documents</span><span class=\"o\">/</span>\n<span class=\"err\">\u2502</span><span class=\"w\">       </span><span class=\"err\">\u251c\u2500\u2500</span><span class=\"w\"> </span><span class=\"n\">Downloads</span><span class=\"o\">/</span>\n<span class=\"err\">\u2502</span><span class=\"w\">       </span><span class=\"err\">\u2514\u2500\u2500</span><span class=\"w\"> </span><span class=\"n\">ai</span><span class=\"o\">-</span><span class=\"n\">tutorial</span><span class=\"o\">/</span><span class=\"w\">   </span><span class=\"err\">\u2190</span><span class=\"w\"> </span><span class=\"n\">this</span><span class=\"w\"> </span><span class=\"n\">project</span><span class=\"o\">!</span>\n<span class=\"err\">\u2502</span><span class=\"w\">           </span><span class=\"err\">\u251c\u2500\u2500</span><span class=\"w\"> </span><span class=\"mi\">01</span><span class=\"o\">-</span><span class=\"n\">python</span><span class=\"o\">-</span><span class=\"n\">foundations</span><span class=\"o\">/</span>\n<span class=\"err\">\u2502</span><span class=\"w\">           </span><span class=\"err\">\u251c\u2500\u2500</span><span class=\"w\"> </span><span class=\"mi\">02</span><span class=\"o\">-</span><span class=\"n\">your</span><span class=\"o\">-</span><span class=\"n\">computer</span><span class=\"o\">/</span>\n<span class=\"err\">\u2502</span><span class=\"w\">           </span><span class=\"err\">\u2514\u2500\u2500</span><span class=\"w\"> </span><span class=\"o\">...</span>\n<span class=\"err\">\u251c\u2500\u2500</span><span class=\"w\"> </span><span class=\"n\">Applications</span><span class=\"o\">/</span>\n<span class=\"err\">\u251c\u2500\u2500</span><span class=\"w\"> </span><span class=\"n\">tmp</span><span class=\"o\">/</span>\n<span class=\"err\">\u2514\u2500\u2500</span><span class=\"w\"> </span><span class=\"o\">...</span>\n</code></pre></div>\n<span class=\"paragraph\">Every file on your Mac has a unique <strong>path</strong> \u2014 an address that describes how to get from the root to that file. When Claude Code says it's reading <code>/Users/alex/ai-tutorial/CLAUDE.md</code>, that's a path.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "7c12e7a2fa381ca3852821da39072df5",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><div class=\"language-gdscript codehilite\"><pre><span></span><code><span class=\"n\">graph</span><span class=\"w\"> </span><span class=\"n\">TD</span>\n<span class=\"w\">    </span><span class=\"n\">ROOT</span><span class=\"p\">[</span><span class=\"s2\">&quot;/  (root)&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">ROOT</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">USERS</span><span class=\"p\">[</span><span class=\"s2\">&quot;/Users&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">ROOT</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">APPS</span><span class=\"p\">[</span><span class=\"s2\">&quot;/Applications&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">ROOT</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">TMP</span><span class=\"p\">[</span><span class=\"s2\">&quot;/tmp&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">ROOT</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">USR</span><span class=\"p\">[</span><span class=\"s2\">&quot;/usr&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">ROOT</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">OPT</span><span class=\"p\">[</span><span class=\"s2\">&quot;/opt&quot;</span><span class=\"p\">]</span>\n\n<span class=\"w\">    </span><span class=\"n\">USERS</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">ALEX</span><span class=\"p\">[</span><span class=\"s2\">&quot;/Users/alex  ~&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">ALEX</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">DESK</span><span class=\"p\">[</span><span class=\"s2\">&quot;Desktop/&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">ALEX</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">DOCS</span><span class=\"p\">[</span><span class=\"s2\">&quot;Documents/&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">ALEX</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">DOWN</span><span class=\"p\">[</span><span class=\"s2\">&quot;Downloads/&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">ALEX</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">AI</span><span class=\"p\">[</span><span class=\"s2\">&quot;&lt;b&gt;ai-tutorial/&lt;/b&gt;&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">ALEX</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">ZSHRC</span><span class=\"p\">[</span><span class=\"s2\">&quot;.zshrc&quot;</span><span class=\"p\">]</span>\n\n<span class=\"w\">    </span><span class=\"n\">AI</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">M01</span><span class=\"p\">[</span><span class=\"s2\">&quot;01-python-foundations/&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">AI</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">M02</span><span class=\"p\">[</span><span class=\"s2\">&quot;02-your-computer/&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">AI</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">M03</span><span class=\"p\">[</span><span class=\"s2\">&quot;03-how-llms-work/&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">AI</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">M04</span><span class=\"p\">[</span><span class=\"s2\">&quot;04-prompt-engineering/&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">AI</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">VENV</span><span class=\"p\">[</span><span class=\"s2\">&quot;.venv/&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">AI</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">GIT</span><span class=\"p\">[</span><span class=\"s2\">&quot;.git/&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">AI</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">CMD</span><span class=\"p\">[</span><span class=\"s2\">&quot;CLAUDE.md&quot;</span><span class=\"p\">]</span>\n\n<span class=\"w\">    </span><span class=\"n\">USR</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">LOCAL</span><span class=\"p\">[</span><span class=\"s2\">&quot;/usr/local/bin/&lt;br/&gt;Homebrew tools&quot;</span><span class=\"p\">]</span>\n<span class=\"w\">    </span><span class=\"n\">OPT</span><span class=\"w\"> </span><span class=\"o\">--&gt;</span><span class=\"w\"> </span><span class=\"n\">BREW</span><span class=\"p\">[</span><span class=\"s2\">&quot;/opt/homebrew/&lt;br/&gt;Homebrew (Apple Silicon)&quot;</span><span class=\"p\">]</span>\n\n<span class=\"w\">    </span><span class=\"n\">style</span><span class=\"w\"> </span><span class=\"n\">ROOT</span><span class=\"w\"> </span><span class=\"n\">fill</span><span class=\"p\">:</span><span class=\"c1\">#cc4444,color:#fff</span>\n<span class=\"w\">    </span><span class=\"n\">style</span><span class=\"w\"> </span><span class=\"n\">ALEX</span><span class=\"w\"> </span><span class=\"n\">fill</span><span class=\"p\">:</span><span class=\"c1\">#4488cc,color:#fff</span>\n<span class=\"w\">    </span><span class=\"n\">style</span><span class=\"w\"> </span><span class=\"n\">AI</span><span class=\"w\"> </span><span class=\"n\">fill</span><span class=\"p\">:</span><span class=\"c1\">#44aa88,color:#fff</span>\n<span class=\"w\">    </span><span class=\"n\">style</span><span class=\"w\"> </span><span class=\"n\">VENV</span><span class=\"w\"> </span><span class=\"n\">fill</span><span class=\"p\">:</span><span class=\"c1\">#888,color:#fff</span>\n<span class=\"w\">    </span><span class=\"n\">style</span><span class=\"w\"> </span><span class=\"n\">GIT</span><span class=\"w\"> </span><span class=\"n\">fill</span><span class=\"p\">:</span><span class=\"c1\">#888,color:#fff</span>\n<span class=\"w\">    </span><span class=\"n\">style</span><span class=\"w\"> </span><span class=\"n\">ZSHRC</span><span class=\"w\"> </span><span class=\"n\">fill</span><span class=\"p\">:</span><span class=\"c1\">#888,color:#fff</span>\n</code></pre></div>\n<span class=\"paragraph\">Dotfiles (gray) are hidden -- they start with <code>.</code> and don't show up in Finder. The <code>ai-tutorial</code> directory (green) is where all your work for this course lives.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "26094f53784b5fca5d0b18d80fed857f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"paths-absolute-vs-relative\">Paths: absolute vs. relative</h2>\n<span class=\"paragraph\">There are two ways to describe a location:</span>\n<table>\n<thead>\n<tr>\n<th>Type</th>\n<th>Starts with</th>\n<th>Example</th>\n<th>Meaning</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><strong>Absolute</strong></td>\n<td><code>/</code></td>\n<td><code>/Users/alex/ai-tutorial/CLAUDE.md</code></td>\n<td>Full address from the root</td>\n</tr>\n<tr>\n<td><strong>Relative</strong></td>\n<td>anything else</td>\n<td><code>../01-python-foundations/01-your-first-code.py</code></td>\n<td>Address relative to where you are now</td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\"><strong>Special path symbols:</strong></span>\n<ul>\n<li><code>/</code> \u2014 the root of the filesystem (top of the tree)</li>\n<li><code>~</code> \u2014 shorthand for your home directory (<code>/Users/alex</code>)</li>\n<li><code>.</code> \u2014 the current directory (\"right here\")</li>\n<li><code>..</code> \u2014 the parent directory (\"one level up\")</li>\n</ul>\n<span class=\"paragraph\">Think of it like giving directions in a building. Absolute: \"Room 314, Building A, 3rd floor.\" Relative: \"Two doors down on the left.\"</span>\n<blockquote>\n<span class=\"paragraph\">See the <a href=\"https://docs.python.org/3/library/pathlib.html\" rel=\"noopener noreferrer\" target=\"_blank\">Python <code>pathlib</code> docs</a> for the full API reference, and <a href=\"https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html\" rel=\"noopener noreferrer\" target=\"_blank\">Apple's File System Basics</a> for macOS-specific filesystem details.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "ae2e8e18edc3e1faa11cb75214bf0d55",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\">\ud83d\udd11 <strong>Key concept:</strong> Absolute vs. relative paths. An absolute path starts from <code>/</code> (the root) and works everywhere, regardless of where you are. A relative path starts from your current directory and only works from that location. When you see <code>/Users/alex/ai-tutorial/data/genes.txt</code>, that's absolute \u2014 it's an unambiguous address. When you see <code>../data/genes.txt</code>, that's relative \u2014 it means \"go up one directory, then into data/.\" Most \"file not found\" errors come from using a relative path when you're in the wrong directory. When in doubt, use absolute paths.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "909a6af81e3b1a6e07a28ac80725399a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Let's see this in action with Python. The <code>pathlib</code> module is Python's way of working with paths.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "9a8ae72eda044122387528e5a6d45a84",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "75e426a5c712023696d287658e78e9d4",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "4b02fb72ea2ad46c26d5d20452d66f29",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"your-macs-key-directories\">Your Mac's key directories</h2>\n<span class=\"paragraph\">Here are the directories you'll encounter most often:</span>\n<table>\n<thead>\n<tr>\n<th>Directory</th>\n<th>What's there</th>\n<th>When you'll care</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>/Users/alex/</code></td>\n<td>Your home \u2014 everything personal</td>\n<td>Always</td>\n</tr>\n<tr>\n<td><code>/Applications/</code></td>\n<td>Installed apps (VS Code, etc.)</td>\n<td>Rarely</td>\n</tr>\n<tr>\n<td><code>/tmp/</code></td>\n<td>Temporary files, cleared on reboot</td>\n<td>When debugging</td>\n</tr>\n<tr>\n<td><code>/usr/local/bin/</code></td>\n<td>Command-line tools you install (Homebrew)</td>\n<td>When <code>which</code> shows you where things live</td>\n</tr>\n<tr>\n<td><code>/opt/homebrew/</code></td>\n<td>Homebrew's home on Apple Silicon Macs</td>\n<td>When installing tools</td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\">Let's check some of these exist on your Mac:</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "962e519313483722a0119c8ca8e5e4d2",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "32cc15f8b4d5e3c0ff60aec9ee94ea4f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\">\ud83d\udca1 <strong>Tip:</strong> Tab completion is your best friend in the terminal. Start typing a file or directory name and press <code>Tab</code> \u2014 the shell will auto-complete it. If there are multiple matches, press <code>Tab</code> twice to see all options. This prevents typos in paths (a leading cause of errors), saves typing, and is how experienced users navigate the filesystem quickly. It works for commands too \u2014 try typing <code>git st</code> and pressing Tab.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "b017f11a532f2a2f7f60fef82d01628f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"the-terminal-and-the-shell\">The terminal and the shell</h2>\n<span class=\"paragraph\">The <strong>terminal</strong> is an app that gives you a text interface to your computer. The <strong>shell</strong> is the program running inside it that interprets your commands.</span>\n<span class=\"paragraph\">On your Mac, the shell is <strong>zsh</strong> (Z shell). When you open Terminal.app or the VS Code terminal, you're talking to zsh.</span>\n<span class=\"paragraph\">Every command has the same basic structure:</span>\n<div class=\"language-tsql codehilite\"><pre><span></span><code><span class=\"n\">command</span><span class=\"w\">  </span><span class=\"o\">[</span><span class=\"n\">flags</span><span class=\"o\">]</span><span class=\"w\">  </span><span class=\"o\">[</span><span class=\"n\">arguments</span><span class=\"o\">]</span>\n</code></pre></div>\n<span class=\"paragraph\">For example:\n<div class=\"language-bash codehilite\"><pre><span></span><code>ls<span class=\"w\"> </span>-la<span class=\"w\"> </span>~/ai-tutorial\n</code></pre></div></span>\n<ul>\n<li><code>ls</code> \u2014 the command (list files)</li>\n<li><code>-la</code> \u2014 flags (<code>-l</code> for long format, <code>-a</code> for all including hidden)</li>\n<li><code>~/ai-tutorial</code> \u2014 the argument (which directory to list)</li>\n</ul>\n<span class=\"paragraph\"><strong>This is exactly what Claude Code does.</strong> When Claude Code runs commands on your behalf, it's typing into a shell just like you would.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "ef13a6394b8dbd97bdf7b4380ede0167",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"essential-shell-commands\">Essential shell commands</h2>\n<span class=\"paragraph\">These are the commands you'll see Claude Code running, and the ones you'll use yourself:</span>\n<table>\n<thead>\n<tr>\n<th>Command</th>\n<th>What it does</th>\n<th>Example</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>pwd</code></td>\n<td>Print working directory (where am I?)</td>\n<td><code>pwd</code></td>\n</tr>\n<tr>\n<td><code>ls</code></td>\n<td>List files</td>\n<td><code>ls -la</code></td>\n</tr>\n<tr>\n<td><code>cd</code></td>\n<td>Change directory</td>\n<td><code>cd ~/ai-tutorial</code></td>\n</tr>\n<tr>\n<td><code>mkdir</code></td>\n<td>Make a new directory</td>\n<td><code>mkdir data</code></td>\n</tr>\n<tr>\n<td><code>cp</code></td>\n<td>Copy a file</td>\n<td><code>cp results.csv backup.csv</code></td>\n</tr>\n<tr>\n<td><code>mv</code></td>\n<td>Move or rename a file</td>\n<td><code>mv old_name.py new_name.py</code></td>\n</tr>\n<tr>\n<td><code>rm</code></td>\n<td>Remove a file (<strong>no undo!</strong>)</td>\n<td><code>rm temp.txt</code></td>\n</tr>\n<tr>\n<td><code>cat</code></td>\n<td>Print file contents</td>\n<td><code>cat CLAUDE.md</code></td>\n</tr>\n<tr>\n<td><code>head</code></td>\n<td>Print first N lines</td>\n<td><code>head -20 data.csv</code></td>\n</tr>\n<tr>\n<td><code>less</code></td>\n<td>Scroll through a file</td>\n<td><code>less big_file.txt</code> (press <code>q</code> to quit)</td>\n</tr>\n<tr>\n<td><code>which</code></td>\n<td>Find where a program lives</td>\n<td><code>which python</code></td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\">Let's run some of these from Python. In marimo, you can run shell commands using subprocess:</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "335ba6e29989b61563abc3946a7c3453",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\">\u26a0\ufe0f <strong>Warning:</strong> <code>rm</code> has no undo. When you run <code>rm file.txt</code>, that file is gone \u2014 it does not go to the Trash. And <code>rm -rf directory/</code> will delete a directory and everything inside it, instantly, without asking for confirmation. Claude Code will sometimes suggest <code>rm</code> commands; always read them carefully before approving. If you're not sure, use <code>mv</code> to move the file to a temporary location instead of deleting it. The most dangerous command on any Unix system is <code>rm -rf /</code> \u2014 which would try to delete your entire filesystem.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "ea56b9da07e083fb98fe2dfae4cb0f63",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "ced3e3e659d3c32e0918ec817fa42f83",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "424fa97b7056465e781e7695dcae1ab0",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ulZA",
+      "code_hash": "57b14e23294b10d9e884086782e9573e",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ecfG",
+      "code_hash": "c42aa0ce89d01ec892d0ad802c221b80",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"doing-the-same-things-with-pythons-pathlib\">Doing the same things with Python's pathlib</h2>\n<span class=\"paragraph\">Every shell command has a Python equivalent. Here's the mapping \u2014 you don't need to memorize both, but it helps to see that they're doing the same thing.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Pvdt",
+      "code_hash": "e5ba066cc116b29605772a46ab30a9b7",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ZBYS",
+      "code_hash": "057782d3e8f1cff34abb11490ebfdf23",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "aLJB",
+      "code_hash": "e078df68bc07659638e27970ec53e94f",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "nHfw",
+      "code_hash": "1171f0656ce184c286b2af32ef19090a",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "xXTn",
+      "code_hash": "82e59f7c611a51f7d45a4998830d307f",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "AjVT",
+      "code_hash": "119ae3c651a397215019012d170cbc5b",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "pHFh",
+      "code_hash": "5537a8a2f58d268c475d1a946ca752a4",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Why permissions matter for you:</strong> Your <code>.env</code> file containing your <code>ANTHROPIC_API_KEY</code> should be readable only by you \u2014 not accidentally committed to GitHub where anyone can use your API credits. Understanding permissions is how you keep secrets secret.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "NCOB",
+      "code_hash": "90dbd0412e5efb7179706891d46fbcd8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"file-permissions\">File permissions</h2>\n<span class=\"paragraph\">Every file on your Mac has <strong>permissions</strong> that control who can do what:</span>\n<ul>\n<li><strong>r</strong> (read) \u2014 can you look at the contents?</li>\n<li><strong>w</strong> (write) \u2014 can you change the contents?</li>\n<li><strong>x</strong> (execute) \u2014 can you run it as a program?</li>\n</ul>\n<span class=\"paragraph\">When you see <code>ls -l</code> output like <code>-rw-r--r--</code>, that's three sets of rwx: <strong>owner</strong>, <strong>group</strong>, <strong>everyone else</strong>.</span>\n<span class=\"paragraph\">You'll mostly encounter permissions when:</span>\n<ul>\n<li>A command fails with \"Permission denied\" \u2014 you might need <code>sudo</code> (run as administrator)</li>\n<li>A script won't run \u2014 it might need execute permission (<code>chmod +x script.sh</code>)</li>\n<li>An API key file should be private \u2014 you want only your user to read it</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "aqbW",
+      "code_hash": "021555b88f252358dc83b7a6b1e06e8b",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "TRpd",
+      "code_hash": "b38185b74b18a2a911fad360a2636944",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"hidden-files-and-dotfiles\">Hidden files and dotfiles</h2>\n<span class=\"paragraph\">Files and directories that start with a <code>.</code> (dot) are <strong>hidden</strong> \u2014 they don't show up in Finder or regular <code>ls</code> by default. You need <code>ls -a</code> to see them.</span>\n<span class=\"paragraph\">These are everywhere in development:</span>\n<table>\n<thead>\n<tr>\n<th>Dotfile</th>\n<th>What it is</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>.venv/</code></td>\n<td>Your Python virtual environment</td>\n</tr>\n<tr>\n<td><code>.git/</code></td>\n<td>Git's internal data for version control</td>\n</tr>\n<tr>\n<td><code>.gitignore</code></td>\n<td>Tells git which files to ignore</td>\n</tr>\n<tr>\n<td><code>.env</code></td>\n<td>Environment variables (often contains API keys \u2014 <strong>never commit this</strong>)</td>\n</tr>\n<tr>\n<td><code>.claude/</code></td>\n<td>Claude Code's project settings</td>\n</tr>\n<tr>\n<td><code>.zshrc</code></td>\n<td>Your shell's configuration file (in your home directory)</td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\">When Claude Code creates a <code>.gitignore</code> or reads <code>.env</code>, now you know what those dots mean.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TXez",
+      "code_hash": "312d0649e709e202a5c928f2401c9dc8",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\">\ud83e\udd14 <strong>Decision point:</strong> When should you use the terminal vs. Finder for file operations?</span>\n<table>\n<thead>\n<tr>\n<th>Option</th>\n<th>Pros</th>\n<th>Cons</th>\n<th>Use when...</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><strong>Finder</strong> (GUI)</td>\n<td>Visual, familiar, drag-and-drop, preview files</td>\n<td>Can't automate, can't do bulk operations, hidden files invisible by default</td>\n<td>Browsing files casually, opening a specific file, drag-and-drop to an email</td>\n</tr>\n<tr>\n<td><strong>Terminal</strong> (shell commands)</td>\n<td>Automatable, handles bulk operations, works with hidden files, scriptable</td>\n<td>Learning curve, typos can be destructive (<code>rm</code>), no visual preview</td>\n<td>Renaming 50 files at once, finding files by pattern (<code>*.csv</code>), anything you want to repeat or script, managing dotfiles and configs</td>\n</tr>\n<tr>\n<td><strong>Python <code>pathlib</code></strong></td>\n<td>Cross-platform, integrates with your analysis code, safe (no <code>rm -rf</code> risk)</td>\n<td>More verbose than shell one-liners</td>\n<td>File operations inside a Python script or notebook, building file paths programmatically</td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\"><strong>As a researcher:</strong> You'll use Finder for browsing, the terminal for quick operations, and <code>pathlib</code> inside your analysis code. Claude Code uses the terminal, so understanding shell commands helps you verify what it's doing.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "dNNg",
+      "code_hash": "134cabd953f978cc0940ae91d9e38e16",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "yCnT",
+      "code_hash": "dca87d25573730d92442c8d792bf0c60",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "wlCL",
+      "code_hash": "9b536123d415c01403dce991b738f101",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"why-this-matters-for-ai-tools\">Why this matters for AI tools</h2>\n<span class=\"paragraph\">When you use Claude Code and it says something like:</span>\n<blockquote>\n<span class=\"paragraph\"><em>\"I'll create the directory <code>data/calcium_imaging/</code> and write the processed results to <code>data/calcium_imaging/peak_amplitudes.csv</code>\"</em></span>\n</blockquote>\n<span class=\"paragraph\">You now know:</span>\n<ul>\n<li>It's creating a folder inside your project directory</li>\n<li>The path is relative to wherever Claude Code is running</li>\n<li>The file will be a regular text file (CSV) that you can open in Finder, Excel, or Python</li>\n<li>You can verify it exists with <code>ls</code> or <code>Path(...).exists()</code></li>\n</ul>\n<span class=\"paragraph\">The filesystem isn't mysterious. It's a tree of folders and files, and every tool \u2014 Finder, the terminal, Python, Claude Code \u2014 is just navigating that same tree.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "kqZH",
+      "code_hash": "530cdd85fa358bed80f8316ad62d645d",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"exercises\">Exercises</h2>\n<h3 id=\"exercise-1-explore-the-project-tree\">Exercise 1: Explore the project tree</h3>\n<span class=\"paragraph\">Using <code>pathlib</code>, list all the directories (modules) in the <code>ai-tutorial</code> project. For each directory, count how many <code>.py</code> files are inside.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "wAgl",
+      "code_hash": "c834710fcfabf21ab658989e58672334",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "rEll",
+      "code_hash": "32da82c4464cdb4e918e9b822591627e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"exercise-2-build-a-path-and-read-a-file\">Exercise 2: Build a path and read a file</h3>\n<span class=\"paragraph\">Using <code>pathlib</code>, construct the path to <code>CLAUDE.md</code> in the project root, read its contents, and print the number of lines and the number of times the word \"pain\" appears.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "dGlV",
+      "code_hash": "f1a22f0fd8ea2ecfd662a241c3686ee3",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "SdmI",
+      "code_hash": "793bb5ced6ad2ef4552e5518b0067120",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h3 id=\"exercise-3-shell-vs-python-comparison\">Exercise 3: Shell vs Python comparison</h3>\n<span class=\"paragraph\">Run the shell command <code>ls -la ~/ai-tutorial/</code> using the <code>!</code> prefix, then do the equivalent with <code>pathlib</code> (list all items with their sizes). Compare the output.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lgWD",
+      "code_hash": "3b6124455afc35578f8788c2bb5f0c92",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "yOPj",
+      "code_hash": "ac9c427c3c9b30e75b07f4206af957db",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "fwwy",
+      "code_hash": "b9122f66d12b6e130b217f49136172ec",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"what-you-just-learned\">What you just learned</h2>\n<ul>\n<li>The <strong>filesystem</strong> is a tree of directories and files, rooted at <code>/</code></li>\n<li><strong>Absolute paths</strong> start from root (<code>/</code>); <strong>relative paths</strong> start from where you are</li>\n<li><code>~</code> is your home directory, <code>.</code> is here, <code>..</code> is one level up</li>\n<li>The <strong>shell</strong> (zsh) interprets commands in the form <code>command [flags] [arguments]</code></li>\n<li>Essential commands: <code>ls</code>, <code>cd</code>, <code>pwd</code>, <code>mkdir</code>, <code>cp</code>, <code>mv</code>, <code>rm</code>, <code>cat</code>, <code>head</code>, <code>which</code></li>\n<li>Python's <code>pathlib</code> can do everything the shell can, just with a different syntax</li>\n<li><strong>Dotfiles</strong> (hidden files starting with <code>.</code>) store configuration and project settings</li>\n<li><strong>Permissions</strong> (rwx) control who can read, write, or execute a file</li>\n</ul>\n<span class=\"paragraph\">Next up: what happens when you actually <em>run</em> something \u2014 processes and environment variables.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "LJZf",
+      "code_hash": "cf7d4185d9f3f09be87cc6d134bf46a3",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"further-reading\">Further Reading</h2>\n<ul>\n<li><strong>Missing Semester, Lecture 1</strong>: <a href=\"https://missing.csail.mit.edu/2020/course-shell/\" rel=\"noopener noreferrer\" target=\"_blank\">Course Overview + The Shell</a> \u2014 the full lecture covering shell navigation, file manipulation, and permissions in greater depth than this notebook; highly recommended</li>\n<li><a href=\"https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html\" rel=\"noopener noreferrer\" target=\"_blank\">Apple's File System Programming Guide</a> \u2014 macOS-specific filesystem documentation, covering the directory structure, bundles, and macOS conventions</li>\n<li><a href=\"https://docs.python.org/3/library/pathlib.html\" rel=\"noopener noreferrer\" target=\"_blank\">Python docs: <code>pathlib</code></a> \u2014 the full API reference for <code>Path</code>, including <code>glob()</code>, <code>iterdir()</code>, <code>stat()</code>, and all the methods used in this notebook</li>\n<li><a href=\"https://docs.python.org/3/library/shutil.html\" rel=\"noopener noreferrer\" target=\"_blank\">Python docs: <code>shutil</code></a> \u2014 high-level file operations (copy, move, remove directory trees) used in the cleanup example</li>\n<li><a href=\"https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html\" rel=\"noopener noreferrer\" target=\"_blank\">Filesystem Hierarchy Standard</a> \u2014 the Linux/Unix standard for directory layout; macOS follows a similar (but not identical) structure</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "urSm",
+      "code_hash": "02e8bafbbad0531d0a69214b20c36fa6",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Navigation:</strong> <a href=\"../01-python-foundations/04-data-structures-in-practice.py\">\\u2190 Previous: Data Structures in Practice</a> | <a href=\"../README.md\">Module Index</a> | <a href=\"02-processes-and-environment.py\">Next: Processes and Environment \\u2192</a></span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "jxvo",
+      "code_hash": "325d85053832ba967fa84794b0fe49a3",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"edit-log\">Edit Log</h2>\n<ul>\n<li>2026-03-25: Created notebook with initial content</li>\n<li>2026-03-25: Added \"Why this matters\" rationale section</li>\n<li>2026-03-25: Added external references and Further Reading section</li>\n<li>2026-03-25: Added cross-module navigation links</li>\n<li>2026-03-25: Added standardized callouts and decision frameworks</li>\n<li>2026-03-25: Updated navigation links for new module numbering</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}

@@ -91,30 +91,36 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### Claude Code Architecture
 
-    ```mermaid
-    graph LR
-        You["You<br>(natural language)"] -->|"describe task"| CC["Claude Code<br>(AI agent)"]
-        CC -->|"Read / Grep / Glob"| Files["Your Files<br>& Codebase"]
-        CC -->|"Edit / Write"| Files
-        CC -->|"Bash commands"| Terminal["Terminal<br>(shell)"]
-        CC -->|"git operations"| Git["Git<br>(version control)"]
-        Terminal -->|"output"| CC
-        Files -->|"contents"| CC
-        Git -->|"status/diff"| CC
-        CC -->|"response"| You
-
-        style You fill:#4878CF,color:#fff
-        style CC fill:#E24A33,color:#fff
-        style Files fill:#55A868,color:#fff
-        style Terminal fill:#8172B2,color:#fff
-        style Git fill:#FDB863,color:#000
-    ```
+    """),
+    mo.mermaid(
+        """
+        graph LR
+            You["You<br>(natural language)"] -->|"describe task"| CC["Claude Code<br>(AI agent)"]
+            CC -->|"Read / Grep / Glob"| Files["Your Files<br>& Codebase"]
+            CC -->|"Edit / Write"| Files
+            CC -->|"Bash commands"| Terminal["Terminal<br>(shell)"]
+            CC -->|"git operations"| Git["Git<br>(version control)"]
+            Terminal -->|"output"| CC
+            Files -->|"contents"| CC
+            Git -->|"status/diff"| CC
+            CC -->|"response"| You
+        
+            style You fill:#4878CF,color:#fff
+            style CC fill:#E24A33,color:#fff
+            style Files fill:#55A868,color:#fff
+            style Terminal fill:#8172B2,color:#fff
+            style Git fill:#FDB863,color:#000
+        """
+    ),
+    mo.md(r"""
 
     **Key insight:** You never interact with files, terminal, or git directly when using Claude Code. You describe what you want in plain English, and Claude Code uses its tools to make it happen. The permission model (Section 5) controls which of these tool-uses require your approval.
     """)
+    ])
     return
 
 

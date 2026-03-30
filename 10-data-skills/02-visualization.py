@@ -532,42 +532,48 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
     mo.md(r"""
     ### Visual decision guide: which plot for which data?
 
     Use this flowchart when you're not sure which plot type to use:
 
-    ```mermaid
-    flowchart TD
-        Q["What kind of data<br>are you plotting?"]
-        Q --> TS["Time series?<br>(measurements over time)"]
-        Q --> CAT["Categories vs. numbers?<br>(groups with measurements)"]
-        Q --> REL["Relationship between<br>two numeric variables?"]
-        Q --> DIST["Distribution of<br>a single variable?"]
-        Q --> MAT["Matrix / many variables<br>across many samples?"]
-
-        TS --> LINE["LINE PLOT<br>ax.plot()<br><br>e.g., calcium traces,<br>edema over time"]
-
-        CAT --> FEW{"Few data<br>points per<br>group?"}
-        FEW -->|"< 20"| BOX["BOX / VIOLIN PLOT<br>sns.boxplot()<br><br>e.g., von Frey thresholds<br>by treatment"]
-        FEW -->|"means only"| BAR["BAR CHART<br>ax.bar() + yerr<br><br>e.g., gene expression<br>fold change"]
-
-        REL --> SCAT["SCATTER PLOT<br>ax.scatter()<br><br>e.g., Kd vs. selectivity,<br>affinity vs. expression"]
-
-        DIST --> HIST["HISTOGRAM<br>ax.hist()<br><br>e.g., fold-change<br>distribution"]
-
-        MAT --> HEAT["HEATMAP<br>sns.clustermap()<br><br>e.g., RNA-seq across<br>samples"]
-
-        style LINE fill:#3498db,color:#fff
-        style BOX fill:#e74c3c,color:#fff
-        style BAR fill:#f39c12,color:#fff
-        style SCAT fill:#2ecc71,color:#fff
-        style HIST fill:#9b59b6,color:#fff
-        style HEAT fill:#1abc9c,color:#fff
-    ```
+    """),
+    mo.mermaid(
+        """
+        flowchart TD
+            Q["What kind of data<br>are you plotting?"]
+            Q --> TS["Time series?<br>(measurements over time)"]
+            Q --> CAT["Categories vs. numbers?<br>(groups with measurements)"]
+            Q --> REL["Relationship between<br>two numeric variables?"]
+            Q --> DIST["Distribution of<br>a single variable?"]
+            Q --> MAT["Matrix / many variables<br>across many samples?"]
+        
+            TS --> LINE["LINE PLOT<br>ax.plot()<br><br>e.g., calcium traces,<br>edema over time"]
+        
+            CAT --> FEW{"Few data<br>points per<br>group?"}
+            FEW -->|"< 20"| BOX["BOX / VIOLIN PLOT<br>sns.boxplot()<br><br>e.g., von Frey thresholds<br>by treatment"]
+            FEW -->|"means only"| BAR["BAR CHART<br>ax.bar() + yerr<br><br>e.g., gene expression<br>fold change"]
+        
+            REL --> SCAT["SCATTER PLOT<br>ax.scatter()<br><br>e.g., Kd vs. selectivity,<br>affinity vs. expression"]
+        
+            DIST --> HIST["HISTOGRAM<br>ax.hist()<br><br>e.g., fold-change<br>distribution"]
+        
+            MAT --> HEAT["HEATMAP<br>sns.clustermap()<br><br>e.g., RNA-seq across<br>samples"]
+        
+            style LINE fill:#3498db,color:#fff
+            style BOX fill:#e74c3c,color:#fff
+            style BAR fill:#f39c12,color:#fff
+            style SCAT fill:#2ecc71,color:#fff
+            style HIST fill:#9b59b6,color:#fff
+            style HEAT fill:#1abc9c,color:#fff
+        """
+    ),
+    mo.md(r"""
 
     > **Rule of thumb:** When in doubt, show individual data points (stripplot or swarmplot overlaid on a box plot). Reviewers want to see your n.
     """)
+    ])
     return
 
 

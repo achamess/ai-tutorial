@@ -157,64 +157,68 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
+    mo.mermaid(
+        """
+        graph TB
+            subgraph "How Python Imports Work"
+                YOUR["YOUR CODE<br/><code>import pandas as pd</code>"]
+        
+                subgraph "Third-Party Packages (pip install)"
+                    PD["pandas"]
+                    NP["numpy"]
+                    PLT["matplotlib"]
+                    SNS["seaborn"]
+                    ANT["anthropic"]
+                end
+        
+                subgraph "Standard Library (comes with Python)"
+                    CSV["csv"]
+                    JSON["json"]
+                    MATH["math"]
+                    PATH["pathlib"]
+                    OS["os"]
+                end
+        
+                subgraph "Python Built-ins (always available)"
+                    PRINT["print()"]
+                    LEN["len()"]
+                    RANGE["range()"]
+                    TYPE["type()"]
+                end
+        
+                YOUR --> PD
+                YOUR --> NP
+                YOUR --> CSV
+                YOUR --> JSON
+                YOUR --> PRINT
+            end
+        
+            style YOUR fill:#cc4444,color:#fff
+            style PD fill:#4488cc,color:#fff
+            style NP fill:#4488cc,color:#fff
+            style PLT fill:#4488cc,color:#fff
+            style SNS fill:#4488cc,color:#fff
+            style ANT fill:#4488cc,color:#fff
+            style CSV fill:#44aa88,color:#fff
+            style JSON fill:#44aa88,color:#fff
+            style MATH fill:#44aa88,color:#fff
+            style PATH fill:#44aa88,color:#fff
+            style OS fill:#44aa88,color:#fff
+            style PRINT fill:#cc8844,color:#fff
+            style LEN fill:#cc8844,color:#fff
+            style RANGE fill:#cc8844,color:#fff
+            style TYPE fill:#cc8844,color:#fff
+        """
+    ),
     mo.md(r"""
-    ```mermaid
-    graph TB
-        subgraph "How Python Imports Work"
-            YOUR["YOUR CODE<br/><code>import pandas as pd</code>"]
-
-            subgraph "Third-Party Packages (pip install)"
-                PD["pandas"]
-                NP["numpy"]
-                PLT["matplotlib"]
-                SNS["seaborn"]
-                ANT["anthropic"]
-            end
-
-            subgraph "Standard Library (comes with Python)"
-                CSV["csv"]
-                JSON["json"]
-                MATH["math"]
-                PATH["pathlib"]
-                OS["os"]
-            end
-
-            subgraph "Python Built-ins (always available)"
-                PRINT["print()"]
-                LEN["len()"]
-                RANGE["range()"]
-                TYPE["type()"]
-            end
-
-            YOUR --> PD
-            YOUR --> NP
-            YOUR --> CSV
-            YOUR --> JSON
-            YOUR --> PRINT
-        end
-
-        style YOUR fill:#cc4444,color:#fff
-        style PD fill:#4488cc,color:#fff
-        style NP fill:#4488cc,color:#fff
-        style PLT fill:#4488cc,color:#fff
-        style SNS fill:#4488cc,color:#fff
-        style ANT fill:#4488cc,color:#fff
-        style CSV fill:#44aa88,color:#fff
-        style JSON fill:#44aa88,color:#fff
-        style MATH fill:#44aa88,color:#fff
-        style PATH fill:#44aa88,color:#fff
-        style OS fill:#44aa88,color:#fff
-        style PRINT fill:#cc8844,color:#fff
-        style LEN fill:#cc8844,color:#fff
-        style RANGE fill:#cc8844,color:#fff
-        style TYPE fill:#cc8844,color:#fff
-    ```
 
     Three layers of Python code you can use:
     - **Built-ins** (orange) -- always available, no import needed
     - **Standard library** (green) -- comes with Python, just `import` it
     - **Third-party packages** (blue) -- installed with `pip`, then `import`
     """)
+    ])
     return
 
 

@@ -145,29 +145,29 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
-    mo.md(r"""
-    ```mermaid
-    graph TD
-        subgraph "What happens when you press Shift+Enter on a code cell"
-            A["You press <b>Shift+Enter</b><br/>in VS Code"] --> B["VS Code sends cell code to<br/>the <b>marimo</b> runtime<br/>(a running Python process)"]
-            B --> C["The kernel <b>executes</b><br/>your Python code"]
-            C --> D["Output from print() and<br/>return values go to <b>stdout</b>"]
-            D --> E["VS Code <b>displays</b> the output<br/>below the cell"]
-        end
-
-        subgraph "What happens when Claude Code runs a command"
-            F["Claude Code decides to run<br/>e.g. <code>pip install pandas</code>"] --> G["Your <b>shell</b> (zsh) creates<br/>a <b>new process</b>"]
-            G --> H["The process <b>inherits</b><br/>environment variables<br/>(PATH, API keys, etc.)"]
-            H --> I["Command runs, writes to<br/><b>stdout</b> and <b>stderr</b>"]
-            I --> J["Claude Code <b>reads output</b><br/>and decides next step"]
-        end
-
-        style A fill:#4488cc,color:#fff
-        style F fill:#44aa88,color:#fff
-        style E fill:#4488cc,color:#fff
-        style J fill:#44aa88,color:#fff
-    ```
-    """)
+    mo.mermaid(
+        """
+        graph TD
+            subgraph "What happens when you press Shift+Enter on a code cell"
+                A["You press <b>Shift+Enter</b><br/>in VS Code"] --> B["VS Code sends cell code to<br/>the <b>marimo</b> runtime<br/>(a running Python process)"]
+                B --> C["The kernel <b>executes</b><br/>your Python code"]
+                C --> D["Output from print() and<br/>return values go to <b>stdout</b>"]
+                D --> E["VS Code <b>displays</b> the output<br/>below the cell"]
+            end
+        
+            subgraph "What happens when Claude Code runs a command"
+                F["Claude Code decides to run<br/>e.g. <code>pip install pandas</code>"] --> G["Your <b>shell</b> (zsh) creates<br/>a <b>new process</b>"]
+                G --> H["The process <b>inherits</b><br/>environment variables<br/>(PATH, API keys, etc.)"]
+                H --> I["Command runs, writes to<br/><b>stdout</b> and <b>stderr</b>"]
+                I --> J["Claude Code <b>reads output</b><br/>and decides next step"]
+            end
+        
+            style A fill:#4488cc,color:#fff
+            style F fill:#44aa88,color:#fff
+            style E fill:#4488cc,color:#fff
+            style J fill:#44aa88,color:#fff
+        """
+    )
     return
 
 
@@ -243,25 +243,29 @@ def _(mo):
 
 @app.cell(hide_code=True)
 def _(mo):
+    mo.vstack([
+    mo.mermaid(
+        """
+        graph LR
+            subgraph "How ANTHROPIC_API_KEY flows from config to API call"
+                A["<b>~/.zshrc</b><br/><code>export ANTHROPIC_API_KEY=sk-ant-...</code>"] -->|"loaded on<br/>terminal open"| B["<b>Shell (zsh)</b><br/>Key is now in<br/>shell environment"]
+                B -->|"inherited by<br/>child process"| C["<b>Python process</b><br/><code>os.environ['ANTHROPIC_API_KEY']</code>"]
+                C -->|"read by<br/>anthropic library"| D["<b>API Request</b><br/>Key sent as HTTP header<br/><code>x-api-key: sk-ant-...</code>"]
+                D -->|"over HTTPS"| E["<b>Anthropic Server</b><br/>Authenticates you,<br/>processes prompt"]
+            end
+        
+            style A fill:#cc8844,color:#fff
+            style B fill:#4488cc,color:#fff
+            style C fill:#44aa88,color:#fff
+            style D fill:#aa44aa,color:#fff
+            style E fill:#cc4444,color:#fff
+        """
+    ),
     mo.md(r"""
-    ```mermaid
-    graph LR
-        subgraph "How ANTHROPIC_API_KEY flows from config to API call"
-            A["<b>~/.zshrc</b><br/><code>export ANTHROPIC_API_KEY=sk-ant-...</code>"] -->|"loaded on<br/>terminal open"| B["<b>Shell (zsh)</b><br/>Key is now in<br/>shell environment"]
-            B -->|"inherited by<br/>child process"| C["<b>Python process</b><br/><code>os.environ['ANTHROPIC_API_KEY']</code>"]
-            C -->|"read by<br/>anthropic library"| D["<b>API Request</b><br/>Key sent as HTTP header<br/><code>x-api-key: sk-ant-...</code>"]
-            D -->|"over HTTPS"| E["<b>Anthropic Server</b><br/>Authenticates you,<br/>processes prompt"]
-        end
-
-        style A fill:#cc8844,color:#fff
-        style B fill:#4488cc,color:#fff
-        style C fill:#44aa88,color:#fff
-        style D fill:#aa44aa,color:#fff
-        style E fill:#cc4444,color:#fff
-    ```
 
     This is why you set the key in `~/.zshrc` once and it "just works" everywhere -- environment variable inheritance passes it from parent process to child process automatically.
     """)
+    ])
     return
 
 
