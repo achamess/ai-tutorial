@@ -164,7 +164,7 @@ A searchable reference for all technical terms used throughout the AI Power-User
 
 **JSON (JavaScript Object Notation)** — A lightweight text format for structured data, used heavily in APIs. It looks like nested Python dictionaries and lists. API responses from Claude arrive as JSON. *Module: 01-python-foundations, 05-claude-api*
 
-**Jupyter notebook** — An interactive document (`.ipynb` file) that mixes code cells you can run with text cells for explanation. This entire tutorial is built with Jupyter notebooks. *Module: 01-python-foundations*
+**Jupyter notebook** — An interactive document (`.py` file) that mixes code cells you can run with text cells for explanation. This entire tutorial is built with Jupyter notebooks. *Module: 01-python-foundations*
 
 ## K
 

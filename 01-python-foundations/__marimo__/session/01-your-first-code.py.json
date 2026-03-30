@@ -1,0 +1,495 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.21.1",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "03b13fbef7e9cee09b8b759284812cda",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"01-your-first-code\">01: Your First Code</h1>\n<h2 id=\"how-this-works\">How this works</h2>\n<span class=\"paragraph\">You're looking at a <strong>marimo notebook</strong>. It's made of <strong>cells</strong> \u2014 some are text (like this one), some are code (like the next one).</span>\n<h3 id=\"the-one-shortcut-you-need-right-now\">The one shortcut you need right now</h3>\n<span class=\"paragraph\"><strong><code>Shift + Enter</code></strong> \u2014 runs the current cell and moves to the next one.</span>\n<span class=\"paragraph\">Click on the code cell below and press <code>Shift + Enter</code>.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "27bb4bcc1125f97ad96f9949b26e7a92",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Navigation:</strong> <a href=\"../00-getting-started/02-preflight-check.py\">\\u2190 Previous: Pre-Flight Check</a> | <a href=\"../README.md\">Module Index</a> | <a href=\"02-working-with-files.py\">Next: Working with Files \\u2192</a></span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "a86860379035d2b87d84252d96ac1c15",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Why this matters for your work</strong></span>\n<ul>\n<li>Every Claude API call you'll write is Python. When you ask Claude to analyze your NaV1.7 binder screening data or automate a literature search, the code it generates \u2014 and that you'll need to read, trust, and modify \u2014 is Python.</li>\n<li>The data structures in this notebook (lists, dictionaries, loops) are exactly how you'll represent binder candidates, experimental results, and gene lists when building automated workflows.</li>\n<li>Understanding variables, types, and functions means you can verify what Claude Code produces instead of blindly trusting it. That's the difference between using AI effectively and using it dangerously.</li>\n<li>Python is the lingua franca of bioinformatics, structural biology tools (RFdiffusion, ProteinMPNN, AlphaFold2), and data science. This notebook is the entry point to all of them.</li>\n</ul>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "896dfcc788823e79eddab8df7af34e83",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "ef9b353d0a24813c8a711f4eb7a0bf40",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">You just ran Python. The output appears right below the cell. That's the whole workflow \u2014 write code, run it, see the result.</span>\n<blockquote>\n<span class=\"paragraph\"><strong>VS Code tip:</strong> If it asks you to select a kernel, choose <strong>\"ai-tutorial\"</strong> from the dropdown. That's the Python environment we set up for this project.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "47c92501b973e9427bb27f4f761c4456",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"variables-giving-names-to-things\">Variables: giving names to things</h2>\n<span class=\"paragraph\">A variable is just a name that points to a value. Think of it like labeling a tube in the lab.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "a2feaa6460141bddae2180921515eed3",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "6bf07525ea6ded1d6917672f7337c6b2",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Four types, and that's most of what you'll use:</span>\n<table>\n<thead>\n<tr>\n<th>Type</th>\n<th>What it holds</th>\n<th>Example</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>str</code></td>\n<td>Text</td>\n<td><code>\"NaV1.7\"</code></td>\n</tr>\n<tr>\n<td><code>int</code></td>\n<td>Whole numbers</td>\n<td><code>45</code></td>\n</tr>\n<tr>\n<td><code>float</code></td>\n<td>Decimals</td>\n<td><code>-35.2</code></td>\n</tr>\n<tr>\n<td><code>bool</code></td>\n<td>True/False</td>\n<td><code>True</code></td>\n</tr>\n</tbody>\n</table>\n<span class=\"paragraph\">The <code>#</code> symbol starts a <strong>comment</strong> \u2014 Python ignores everything after it. Use comments to leave yourself notes.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "d38eaf053a690964eed537f23c2a0457",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><div class=\"language-xml codehilite\"><pre><span></span><code>graph<span class=\"w\"> </span>TD\n<span class=\"w\">    </span>subgraph<span class=\"w\"> </span>&quot;Python&#39;s<span class=\"w\"> </span>Core<span class=\"w\"> </span>Data<span class=\"w\"> </span>Types&quot;\n<span class=\"w\">        </span>STR[&quot;<span class=\"nt\">&lt;b&gt;</span>str<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>Text<span class=\"nt\">&lt;br/&gt;&lt;i&gt;</span>&#39;NaV1.7&#39;<span class=\"nt\">&lt;/i&gt;</span>&quot;]\n<span class=\"w\">        </span>INT[&quot;<span class=\"nt\">&lt;b&gt;</span>int<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>Whole<span class=\"w\"> </span>numbers<span class=\"nt\">&lt;br/&gt;&lt;i&gt;</span>45<span class=\"nt\">&lt;/i&gt;</span>&quot;]\n<span class=\"w\">        </span>FLOAT[&quot;<span class=\"nt\">&lt;b&gt;</span>float<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>Decimals<span class=\"nt\">&lt;br/&gt;&lt;i&gt;</span>-35.2<span class=\"nt\">&lt;/i&gt;</span>&quot;]\n<span class=\"w\">        </span>BOOL[&quot;<span class=\"nt\">&lt;b&gt;</span>bool<span class=\"nt\">&lt;/b&gt;&lt;br/&gt;</span>True<span class=\"w\"> </span>/<span class=\"w\"> </span>False<span class=\"nt\">&lt;br/&gt;&lt;i&gt;</span>True<span class=\"nt\">&lt;/i&gt;</span>&quot;]\n<span class=\"w\">    </span>end\n\n<span class=\"w\">    </span>subgraph<span class=\"w\"> </span>&quot;When<span class=\"w\"> </span>to<span class=\"w\"> </span>use<span class=\"w\"> </span>each&quot;\n<span class=\"w\">        </span>STR<span class=\"w\"> </span>---<span class=\"w\"> </span>S1[&quot;Names,<span class=\"w\"> </span>labels,<span class=\"w\"> </span>sequences<span class=\"nt\">&lt;br/&gt;</span>Gene<span class=\"w\"> </span>names,<span class=\"w\"> </span>binder<span class=\"w\"> </span>IDs,<span class=\"w\"> </span>FASTA&quot;]\n<span class=\"w\">        </span>INT<span class=\"w\"> </span>---<span class=\"w\"> </span>S2[&quot;Counts,<span class=\"w\"> </span>indices<span class=\"nt\">&lt;br/&gt;</span>Neuron<span class=\"w\"> </span>counts,<span class=\"w\"> </span>well<span class=\"w\"> </span>numbers&quot;]\n<span class=\"w\">        </span>FLOAT<span class=\"w\"> </span>---<span class=\"w\"> </span>S3[&quot;Measurements<span class=\"nt\">&lt;br/&gt;</span>Kd<span class=\"w\"> </span>values,<span class=\"w\"> </span>voltage,<span class=\"w\"> </span>temperature&quot;]\n<span class=\"w\">        </span>BOOL<span class=\"w\"> </span>---<span class=\"w\"> </span>S4[&quot;Yes/No<span class=\"w\"> </span>decisions<span class=\"nt\">&lt;br/&gt;</span>Is<span class=\"w\"> </span>it<span class=\"w\"> </span>a<span class=\"w\"> </span>nociceptor?<span class=\"w\"> </span>Passed<span class=\"w\"> </span>QC?&quot;]\n<span class=\"w\">    </span>end\n\n<span class=\"w\">    </span>style<span class=\"w\"> </span>STR<span class=\"w\"> </span>fill:#4488cc,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>INT<span class=\"w\"> </span>fill:#44aa88,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>FLOAT<span class=\"w\"> </span>fill:#cc8844,color:#fff\n<span class=\"w\">    </span>style<span class=\"w\"> </span>BOOL<span class=\"w\"> </span>fill:#aa44aa,color:#fff\n</code></pre></div></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "9d3e2e45c02c1f967bdcaec8f943ca66",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"lists-groups-of-things\">Lists: groups of things</h2>\n<span class=\"paragraph\">A list holds multiple values in order. Square brackets, comma-separated.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "emfo",
+      "code_hash": "caf87d2ef3ef20c32c0ff28b34a35eee",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "9851a57c69513e0a3274cd7e9a3b517b",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "90067eb97e364257baed85bbfef5654c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\">\ud83d\udd11 <strong>Key concept:</strong> Python counts from 0, not 1. The first item in a list is <code>target_channels[0]</code>, not <code>target_channels[1]</code>. This isn't arbitrary \u2014 it comes from how memory addresses work in computers. The index tells Python <em>how far to jump from the start</em>, so the first item is zero jumps away. You'll encounter zero-based indexing everywhere: list positions, DataFrame row numbers, and array indices in numpy. It feels weird for about a week, then it becomes second nature.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "fef93bc1873bbc12c34cf6067964f766",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "46edfcaca58ecbc40b8da19fe0c35736",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Why dictionaries?</strong> When Claude generates code to process your binder screening data, it almost always represents each candidate as a dictionary \u2014 <code>{\"name\": \"DNB-001\", \"target\": \"NaV1.7\", \"kd_nm\": 8.3}</code>. Recognizing this pattern means you can read and modify Claude's output.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "583be3a27e02b4d772ed3d87ef052301",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"dictionaries-labeled-data\">Dictionaries: labeled data</h2>\n<span class=\"paragraph\">A dictionary maps <strong>keys</strong> to <strong>values</strong>. Think of it as a structured record \u2014 like metadata for an experiment.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "64c58dd94f255f13ee2bb74047b1924f",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "bdb451423339ccc200bcd651d9984dab",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "f3e77bceba9efce0921f3446fb0b691c",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "5562800e9924a7dc5b8fa5bc39525b40",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><div class=\"language-teratermmacro codehilite\"><pre><span></span><code><span class=\"nv\">graph</span><span class=\"w\"> </span><span class=\"nv\">LR</span>\n<span class=\"w\">    </span><span class=\"nv\">subgraph</span><span class=\"w\"> </span><span class=\"s2\">&quot;Lists \u2014 Ordered Collections&quot;</span>\n<span class=\"w\">        </span><span class=\"nv\">L</span>[<span class=\"s2\">&quot;[ &#39;NaV1.7&#39;, &#39;NaV1.8&#39;, &#39;KCNQ2&#39; ]&quot;</span>]\n<span class=\"w\">        </span><span class=\"nv\">L</span><span class=\"w\"> </span><span class=\"o\">---</span><span class=\"w\"> </span><span class=\"nv\">L1</span>[<span class=\"s2\">&quot;Access by position: list[0]&quot;</span>]\n<span class=\"w\">        </span><span class=\"nv\">L</span><span class=\"w\"> </span><span class=\"o\">---</span><span class=\"w\"> </span><span class=\"nv\">L2</span>[<span class=\"s2\">&quot;Ordered: first, second, third...&quot;</span>]\n<span class=\"w\">        </span><span class=\"nv\">L</span><span class=\"w\"> </span><span class=\"o\">---</span><span class=\"w\"> </span><span class=\"nv\">L3</span>[<span class=\"s2\">&quot;Use for: channels, measurements, gene lists&quot;</span>]\n<span class=\"w\">    </span><span class=\"k\">end</span>\n\n<span class=\"w\">    </span><span class=\"nv\">subgraph</span><span class=\"w\"> </span><span class=\"s2\">&quot;Dictionaries \u2014 Labeled Records&quot;</span>\n<span class=\"w\">        </span><span class=\"nv\">D</span>[<span class=\"s2\">&quot;{ &#39;target&#39;: &#39;NaV1.8&#39;, &#39;Kd&#39;: 12.7 }&quot;</span>]\n<span class=\"w\">        </span><span class=\"nv\">D</span><span class=\"w\"> </span><span class=\"o\">---</span><span class=\"w\"> </span><span class=\"nv\">D1</span>[<span class=\"s2\">&quot;Access by key: dict[&#39;target&#39;]&quot;</span>]\n<span class=\"w\">        </span><span class=\"nv\">D</span><span class=\"w\"> </span><span class=\"o\">---</span><span class=\"w\"> </span><span class=\"nv\">D2</span>[<span class=\"s2\">&quot;Labeled: each value has a name&quot;</span>]\n<span class=\"w\">        </span><span class=\"nv\">D</span><span class=\"w\"> </span><span class=\"o\">---</span><span class=\"w\"> </span><span class=\"nv\">D3</span>[<span class=\"s2\">&quot;Use for: experiments, candidates, metadata&quot;</span>]\n<span class=\"w\">    </span><span class=\"k\">end</span>\n\n<span class=\"w\">    </span><span class=\"nv\">style</span><span class=\"w\"> </span><span class=\"nv\">L</span><span class=\"w\"> </span><span class=\"nv\">fill</span>:<span class=\"sc\">#4488</span><span class=\"nv\">cc</span>,<span class=\"nv\">color</span>:#<span class=\"nv\">fff</span>\n<span class=\"w\">    </span><span class=\"nv\">style</span><span class=\"w\"> </span><span class=\"nv\">D</span><span class=\"w\"> </span><span class=\"nv\">fill</span>:<span class=\"sc\">#44</span><span class=\"nv\">aa88</span>,<span class=\"nv\">color</span>:#<span class=\"nv\">fff</span>\n</code></pre></div></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ulZA",
+      "code_hash": "2277ca21abe8361599b9a5666de55183",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\">\ud83e\udd14 <strong>Decision point:</strong> When should you use a list vs. a dictionary?</span>\n<table>\n<thead>\n<tr>\n<th>Option</th>\n<th>Pros</th>\n<th>Cons</th>\n<th>Use when...</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><strong>List</strong> <code>[]</code></td>\n<td>Ordered, easy to loop through, supports slicing</td>\n<td>Access by position only \u2014 <code>items[2]</code> doesn't tell you what's there</td>\n<td>You have a collection of similar things: gene names, Kd values, time points, channel targets</td>\n</tr>\n<tr>\n<td><strong>Dictionary</strong> <code>{}</code></td>\n<td>Named access (<code>experiment[\"target\"]</code>), self-documenting, great for records</td>\n<td>No inherent order (though insertion order is preserved in modern Python), can't slice</td>\n<td>You have a single record with labeled fields: one experiment, one binder candidate, one paper's metadata</td>\n</tr>\n<tr>\n<td><strong>List of dicts</strong> <code>[{}, {}]</code></td>\n<td>Combines both: a table of labeled records you can loop through</td>\n<td>More verbose than a simple list</td>\n<td>You have multiple records \u2014 this is the gateway to pandas DataFrames and JSON (covered in notebook 04)</td>\n</tr>\n</tbody>\n</table>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ecfG",
+      "code_hash": "0f60f8fb01569e6f38ebaca5efb9327a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Lists are for <strong>ordered collections</strong> (a set of channels, a sequence of measurements).\nDictionaries are for <strong>labeled records</strong> (an experiment, a protein, a paper's metadata).</span>\n<span class=\"paragraph\">You'll use both constantly.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Pvdt",
+      "code_hash": "509b1812eee16f4998ff55a4df4d6bc2",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"f-strings-putting-variables-into-text\">f-strings: putting variables into text</h2>\n<span class=\"paragraph\">The <code>f</code> before the quotes lets you embed variables directly in text using <code>{curly braces}</code>.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZBYS",
+      "code_hash": "71b308f2a20eb47bc124508a275b6c14",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "aLJB",
+      "code_hash": "bda02e4acd458b9215a9a6a8772038e7",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\">\ud83d\udca1 <strong>Tip:</strong> f-string quoting rules \u2014 this is where Alex hit a real bug (see exercise below). Inside an f-string, the quotes around dictionary keys must differ from the outer quotes. If your f-string uses double quotes (<code>f\"...\"</code>), use single quotes for dict keys inside braces (<code>{candidate['name']}</code>). Mixing them up causes a <code>SyntaxError</code> that's hard to spot. When in doubt, use single quotes inside and double quotes outside.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nHfw",
+      "code_hash": "6b19748dddf00714783549b3f878b602",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "xXTn",
+      "code_hash": "a79d08cf3eebbad03eeb1bde93140334",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">The <code>:.1f</code> is a format code \u2014 it means \"one decimal place.\" You don't need to memorize these; just know they exist and ask when you need one.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "AjVT",
+      "code_hash": "755f99d191f0ad97d012f5fd8b15bcde",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"loops-doing-something-to-every-item\">Loops: doing something to every item</h2>\n<span class=\"paragraph\">A <code>for</code> loop walks through a list one item at a time.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "pHFh",
+      "code_hash": "4036cf860dc1d2e562aa9014b617f6b8",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "NCOB",
+      "code_hash": "9e333fd53288f7f5ae7473c03a427aaf",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Critical Python rule:</strong> the indented block under the <code>for</code> line is what gets repeated. Indentation isn't cosmetic in Python \u2014 it's how the language knows what's inside the loop.</span>\n<span class=\"paragraph\">VS Code will auto-indent for you after a colon (<code>:</code>), so this usually just works.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "aqbW",
+      "code_hash": "9539727731cbf3a6f029c6bb8bd52849",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\">\u26a0\ufe0f <strong>Warning:</strong> Mutable default arguments are a classic Python trap. Never write <code>def process_data(results=[])</code>. If you use a list or dict as a default argument, Python creates it <em>once</em> and reuses it across all calls \u2014 so data from one call leaks into the next. Instead, use <code>None</code> and create the list inside the function:\n<div class=\"language-python codehilite\"><pre><span></span><code><span class=\"k\">def</span><span class=\"w\"> </span><span class=\"nf\">process_data</span><span class=\"p\">(</span><span class=\"n\">results</span><span class=\"o\">=</span><span class=\"kc\">None</span><span class=\"p\">):</span>\n    <span class=\"k\">if</span> <span class=\"n\">results</span> <span class=\"ow\">is</span> <span class=\"kc\">None</span><span class=\"p\">:</span>\n        <span class=\"n\">results</span> <span class=\"o\">=</span> <span class=\"p\">[]</span>\n</code></pre></div>\nThis won't bite you today, but it will the first time Claude generates a function with a mutable default. Now you'll catch it.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TRpd",
+      "code_hash": "1b2dfb5d084fb3f70f2e1eb31cfca48d",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "TXez",
+      "code_hash": "ad380d0ccf3925b5193bcde3bf639c04",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">Read that code out loud: <em>\"For each channel in channels, if it starts with 'NaV', add it to the nav_channels list.\"</em></span>\n<span class=\"paragraph\">Good Python reads almost like English.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "dNNg",
+      "code_hash": "e5095948bbdc42f891b08207f3e05a71",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"functions-reusable-recipes\">Functions: reusable recipes</h2>\n<span class=\"paragraph\">A function packages up code so you can reuse it. Like a protocol \u2014 define it once, run it many times.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "yCnT",
+      "code_hash": "5c5bfad4ea6bdebf3ec2041ee8c94d73",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Why functions?</strong> Every reusable analysis \u2014 calculating dF/F from a calcium trace, filtering binder candidates by affinity, formatting a screening report \u2014 becomes a function. When Claude writes code for you, it structures it as functions. Understanding <code>def</code> and <code>return</code> means you can read, test, and trust that code.</span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "wlCL",
+      "code_hash": "0582ca5bdcf5e1adb7ec4b9750584793",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "kqZH",
+      "code_hash": "a5d73467294a08505caaf6e76a2555b7",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\">The <code>def</code> keyword defines the function. The <code>return</code> keyword sends a value back. The triple-quoted string is a <strong>docstring</strong> \u2014 a built-in way to document what the function does.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "wAgl",
+      "code_hash": "eb92c5f97c9332c4e7631b1ccc27e0bb",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"exercise-build-a-binder-candidate-record\">\ud83e\uddea Exercise: Build a binder candidate record</h2>\n<span class=\"paragraph\">Your turn. In the cell below:</span>\n<ol>\n<li>\n<span class=\"paragraph\">Create a dictionary called <code>candidate</code> with these keys:</span>\n<ul>\n<li><code>\"name\"</code> \u2014 make up a binder name (e.g., <code>\"DNB-Nav17-001\"</code>)</li>\n<li><code>\"target_channel\"</code> \u2014 which channel it targets</li>\n<li><code>\"binding_region\"</code> \u2014 where on the channel (C-terminus, extracellular loop, etc.)</li>\n<li><code>\"effector\"</code> \u2014 what payload it carries (E3 ligase, deubiquitinase, etc.)</li>\n<li><code>\"predicted_kd_nm\"</code> \u2014 a made-up binding affinity in nanomolar</li>\n</ul>\n</li>\n<li>Print a formatted summary using an f-string, something like:\n   <code>\"DNB-Nav17-001 targets NaV1.7 C-terminus with E3 ligase payload (predicted Kd: 12.5 nM)\"</code></li>\n</ol>\n<span class=\"paragraph\">Don't overthink it \u2014 just get something that runs.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "rEll",
+      "code_hash": "663c1776dc09c2ddee86f557fdd1f839",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "dGlV",
+      "code_hash": "7f8abe4c6d465ff2644077d731e34fbd",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"exercise-filter-a-list-of-candidates\">\ud83e\uddea Exercise: Filter a list of candidates</h2>\n<span class=\"paragraph\">Here's a list of candidates with their predicted affinities. Write a loop that prints only the ones with Kd below 20 nM.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SdmI",
+      "code_hash": "240f47c38978a13463ba4d1088275c7b",
+      "outputs": [],
+      "console": []
+    },
+    {
+      "id": "lgWD",
+      "code_hash": "ccac950ee663c86e6c599f91bd337754",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"what-you-just-learned\">What you just learned</h2>\n<ul>\n<li><strong>Variables</strong> \u2014 store values with meaningful names (<a href=\"https://docs.python.org/3/library/stdtypes.html\" rel=\"noopener noreferrer\" target=\"_blank\">Python docs: Data Types</a>)</li>\n<li><strong>Types</strong> \u2014 strings, numbers, booleans</li>\n<li><strong>Lists</strong> \u2014 ordered collections (<code>[]</code>) (<a href=\"https://docs.python.org/3/tutorial/introduction.html#lists\" rel=\"noopener noreferrer\" target=\"_blank\">Python docs: Lists</a>)</li>\n<li><strong>Dictionaries</strong> \u2014 labeled records (<code>{}</code>) (<a href=\"https://docs.python.org/3/tutorial/datastructures.html#dictionaries\" rel=\"noopener noreferrer\" target=\"_blank\">Python docs: Dictionaries</a>)</li>\n<li><strong>f-strings</strong> \u2014 embed variables in text (<a href=\"https://docs.python.org/3/tutorial/inputoutput.html#formatted-string-literals\" rel=\"noopener noreferrer\" target=\"_blank\">Python docs: Formatted String Literals</a>)</li>\n<li><strong>Loops</strong> \u2014 do something for every item</li>\n<li><strong>Conditionals</strong> \u2014 <code>if</code> to make decisions</li>\n<li><strong>Functions</strong> \u2014 reusable code with <code>def</code></li>\n</ul>\n<span class=\"paragraph\">That's a real foundation. Next notebook, we'll use these building blocks to read and work with actual files \u2014 the kind of data you deal with every day.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "yOPj",
+      "code_hash": "a6599dba18a97b7e26897e866831a09c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"further-reading\">Further Reading</h2>\n<ul>\n<li><strong>Think Python, Chapter 1</strong>: <a href=\"https://allendowney.github.io/ThinkPython/chap01.html\" rel=\"noopener noreferrer\" target=\"_blank\">The Way of the Program</a> \u2014 introduces what programming is and how to think about it; covers running your first Python code</li>\n<li><strong>Think Python, Chapter 2</strong>: <a href=\"https://allendowney.github.io/ThinkPython/chap02.html\" rel=\"noopener noreferrer\" target=\"_blank\">Variables and Statements</a> \u2014 variables, assignment, types, and expressions in depth</li>\n<li><strong>Think Python, Chapter 5</strong>: <a href=\"https://allendowney.github.io/ThinkPython/chap05.html\" rel=\"noopener noreferrer\" target=\"_blank\">Conditionals and Recursion</a> \u2014 <code>if</code>/<code>else</code> logic and boolean expressions</li>\n<li><strong>Think Python, Chapter 6</strong>: <a href=\"https://allendowney.github.io/ThinkPython/chap06.html\" rel=\"noopener noreferrer\" target=\"_blank\">Return Values</a> \u2014 how functions return values and why that matters</li>\n<li><strong>Think Python, Chapter 7</strong>: <a href=\"https://allendowney.github.io/ThinkPython/chap07.html\" rel=\"noopener noreferrer\" target=\"_blank\">Iteration</a> \u2014 <code>for</code> and <code>while</code> loops in detail</li>\n<li><a href=\"https://docs.python.org/3/tutorial/introduction.html\" rel=\"noopener noreferrer\" target=\"_blank\">Python Official Tutorial \u2014 Sections 3-5</a> \u2014 the official introduction to Python data types, control flow, and data structures</li>\n<li><a href=\"https://docs.python.org/3/library/functions.html\" rel=\"noopener noreferrer\" target=\"_blank\">Python Built-in Functions Reference</a> \u2014 documentation for <code>print()</code>, <code>len()</code>, <code>type()</code>, <code>range()</code>, and all other built-ins used in this notebook</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "fwwy",
+      "code_hash": "27bb4bcc1125f97ad96f9949b26e7a92",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><blockquote>\n<span class=\"paragraph\"><strong>Navigation:</strong> <a href=\"../00-getting-started/02-preflight-check.py\">\\u2190 Previous: Pre-Flight Check</a> | <a href=\"../README.md\">Module Index</a> | <a href=\"02-working-with-files.py\">Next: Working with Files \\u2192</a></span>\n</blockquote></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "LJZf",
+      "code_hash": "47af6d5495694ec1edc2052c290e6335",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><hr />\n<h2 id=\"edit-log\">Edit Log</h2>\n<ul>\n<li>2026-03-24: Created notebook with initial content</li>\n<li>2026-03-25: Fixed exercise 1 f-string bugs, added corrected version with Alex's attempt preserved</li>\n<li>2026-03-25: Fixed exercise 2 loop bugs, added corrected version with Alex's attempt preserved</li>\n<li>2026-03-25: Added \"Why this matters\" rationale section</li>\n<li>2026-03-25: Added external references and Further Reading section</li>\n<li>2026-03-25: Added cross-module navigation links</li>\n<li>2026-03-25: Updated navigation links for new module numbering</li>\n</ul></span>"
+          }
+        }
+      ],
+      "console": []
+    }
+  ]
+}

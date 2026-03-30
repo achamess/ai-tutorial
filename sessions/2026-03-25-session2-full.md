@@ -49,7 +49,7 @@ All built and committed.
 **Claude:** Saved as permanent feedback. Already running the reference sweep.
 
 ### Data Structures Notebook
-Created 01-python-foundations/04-data-structures-in-practice.ipynb — "The Five Shapes of Your Data" connecting lists, dicts, JSON, DataFrames with round-trip conversions.
+Created 01-python-foundations/04-data-structures-in-practice.py — "The Five Shapes of Your Data" connecting lists, dicts, JSON, DataFrames with round-trip conversions.
 
 ### QA Pass
 3 parallel agents across all modules. Found and fixed:
@@ -66,7 +66,7 @@ All 38 notebooks now pass.
 ### Comprehensive Setup Guide
 **Alex:** "I want a complete and comprehensive computer setup in the 00 module. Assume for people who may have little experience setting up computing environments (including me). Be very explicit"
 
-**Claude:** Created 00-getting-started/01-complete-setup-guide.ipynb — 12-part guide: Homebrew, Python, VS Code + extensions, Git, venv, Jupyter kernel, Claude Code, API key, troubleshooting. Existing preflight check renumbered to 02.
+**Claude:** Created 00-getting-started/01-complete-setup-guide.py — 12-part guide: Homebrew, Python, VS Code + extensions, Git, venv, Jupyter kernel, Claude Code, API key, troubleshooting. Existing preflight check renumbered to 02.
 
 ### Sharing and GitHub
 **Alex:** "I'd like to share this tutorial with others. is there a way to package it up for sharing?"
@@ -90,7 +90,7 @@ All 38 notebooks now pass.
 ### Tutorial Philosophy
 **Alex:** "I want to have a polished overview, the philosophy of this, the design principles of this tutorial, who its for, why we made the choices we made, how to use, etc"
 
-**Claude:** Created 00-getting-started/00-tutorial-philosophy.ipynb covering: who it's for, what it is/isn't, 6 core philosophy points, design choice justifications (why Python, why Jupyter, why VS Code, why Claude, why this order, why pain biology), how to use the tutorial, 10 design principles, what success looks like.
+**Claude:** Created 00-getting-started/00-tutorial-philosophy.py covering: who it's for, what it is/isn't, 6 core philosophy points, design choice justifications (why Python, why Jupyter, why VS Code, why Claude, why this order, why pain biology), how to use the tutorial, 10 design principles, what success looks like.
 
 ### Notebook Interaction
 **Alex:** Previously asked about interacting with notebook content — covered in Session 1 transcript.
@@ -142,13 +142,13 @@ Retroactive sweep across all existing modules queued for next session.
 13. Tutorial now 13 modules, 41 notebooks
 
 ## What Was Built This Session
-- 00-getting-started/00-tutorial-philosophy.ipynb (new)
-- 00-getting-started/01-complete-setup-guide.ipynb (new, cross-platform)
-- 00-getting-started/02-preflight-check.ipynb (renumbered)
-- 01-python-foundations/04-data-structures-in-practice.ipynb (new)
-- 07-cloud-and-hpc/01-remote-computing-fundamentals.ipynb (new)
-- 07-cloud-and-hpc/02-job-schedulers-and-slurm.ipynb (new)
-- 07-cloud-and-hpc/03-cloud-computing-and-when-to-use-what.ipynb (new)
+- 00-getting-started/00-tutorial-philosophy.py (new)
+- 00-getting-started/01-complete-setup-guide.py (new, cross-platform)
+- 00-getting-started/02-preflight-check.py (renumbered)
+- 01-python-foundations/04-data-structures-in-practice.py (new)
+- 07-cloud-and-hpc/01-remote-computing-fundamentals.py (new)
+- 07-cloud-and-hpc/02-job-schedulers-and-slurm.py (new)
+- 07-cloud-and-hpc/03-cloud-computing-and-when-to-use-what.py (new)
 - README.md (rewritten for GitHub)
 - resources/glossary.md (new)
 - External references added to all 38 prior notebooks

@@ -24,11 +24,11 @@ Not about building AI — about leveraging AI tools effectively for research.
 
 ## Python environment
 - venv at `.venv/` (Python 3.14)
-- Jupyter kernel: "ai-tutorial"
-- Core packages: jupyter, pandas, numpy, matplotlib, seaborn, anthropic
+- marimo notebooks (plain `.py` files, no kernel registration needed)
+- Core packages: marimo, pandas, numpy, matplotlib, seaborn, anthropic
 
 ## Conventions
-- Each module contains numbered .ipynb notebooks with cross-module navigation (prev/next)
+- Each module contains numbered .py notebooks with cross-module navigation (prev/next)
 - Notebooks mix explanation (markdown cells) with runnable exercises (code cells)
 - Every notebook opens with a "Why this matters" justification tied to Alex's research
 - Use pain biology examples wherever possible (DRG neurons, nociceptors, inflammatory mediators, behavioral assays, calcium imaging, RNA-seq of pain-related tissues)

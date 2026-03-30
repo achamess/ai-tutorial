@@ -60,7 +60,7 @@ Also proposed module approach: concept → hands-on → reflection, with interle
 **Alex:** "missing semester looks good. Include its content and cross reference"
 
 ### First Notebook & VS Code Setup
-**Claude:** Created 01-your-first-code.ipynb with pain biology examples throughout.
+**Claude:** Created 01-your-first-code.py with pain biology examples throughout.
 
 **Alex:** Couldn't open notebook as interactive — showed as raw JSON code.
 
@@ -160,7 +160,7 @@ New structure: 10 modules. Built both new modules in parallel.
 ### Data Structures Discussion
 **Alex:** "do you think there is any need for me to know about data structures?"
 
-**Claude:** Yes but not CS-style. The practical shapes: tabular (DataFrames), nested dicts/JSON (API responses), lists of records, trees/hierarchies. Already woven through modules — proposed adding one connecting notebook to Module 01 (04-data-structures-in-practice.ipynb).
+**Claude:** Yes but not CS-style. The practical shapes: tabular (DataFrames), nested dicts/JSON (API responses), lists of records, trees/hierarchies. Already woven through modules — proposed adding one connecting notebook to Module 01 (04-data-structures-in-practice.py).
 
 ### Databases Discussion
 **Alex:** "Any need to know about databases, either relational or graph?"

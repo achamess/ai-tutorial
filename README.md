@@ -18,23 +18,23 @@ cd ai-tutorial
 
 ### Step 2: Follow the setup guide
 
-Open `00-getting-started/01-complete-setup-guide.ipynb` — it walks you through installing everything you need step by step, with instructions for **Mac, Windows, and Linux**. No prior experience required.
+Open `00-getting-started/01-complete-setup-guide.py` — it walks you through installing everything you need step by step, with instructions for **Mac, Windows, and Linux**. No prior experience required.
 
-The setup guide covers: VS Code, Python, Git, virtual environment, Jupyter, Claude Code, and API key configuration.
+The setup guide covers: VS Code, Python, Git, virtual environment, marimo, Claude Code, and API key configuration.
 
 ### Step 3: Run the preflight check
 
-Open `00-getting-started/02-preflight-check.ipynb` and run every cell (`Shift+Enter`). This verifies your environment is ready. Green checks = good to go.
+Open `00-getting-started/02-preflight-check.py` and run every cell (`Shift+Enter`). This verifies your environment is ready. Green checks = good to go.
 
 ### Step 4: Start learning
 
-Open `01-python-foundations/01-your-first-code.ipynb` and begin. Work through the notebooks in order — each one builds on the last.
+Open `01-python-foundations/01-your-first-code.py` and begin. Work through the notebooks in order — each one builds on the last.
 
 ---
 
 ## What this is
 
-13 modules, 42 interactive Jupyter notebooks that take you from "I've never written code" to "I can build AI-powered research tools." Every example uses pain biology data so the skills transfer directly to the bench.
+13 modules, 42 interactive marimo notebooks that take you from "I've never written code" to "I can build AI-powered research tools." Every example uses pain biology data so the skills transfer directly to the bench.
 
 Each notebook has:
 - **"Why this matters"** — concrete justification tied to research work
@@ -95,8 +95,8 @@ Each notebook has:
 ```
 ai-tutorial/
 ├── 00-getting-started/      ← Start here
-│   ├── 01-complete-setup-guide.ipynb
-│   └── 02-preflight-check.ipynb
+│   ├── 01-complete-setup-guide.py
+│   └── 02-preflight-check.py
 ├── 01-python-foundations/    ← Then work through these in order
 ├── 02-your-computer/
 ├── ...
