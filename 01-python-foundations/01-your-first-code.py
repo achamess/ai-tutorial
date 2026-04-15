@@ -122,17 +122,17 @@ def _(mo):
         """
         graph TD
             subgraph "Python's Core Data Types"
-                STR["<b>str</b><br/>Text<br/><i>'NaV1.7'</i>"]
-                INT["<b>int</b><br/>Whole numbers<br/><i>45</i>"]
-                FLOAT["<b>float</b><br/>Decimals<br/><i>-35.2</i>"]
-                BOOL["<b>bool</b><br/>True / False<br/><i>True</i>"]
+                STR["str — Text — NaV1.7"]
+                INT["int — Whole numbers — 45"]
+                FLOAT["float — Decimals — -35.2"]
+                BOOL["bool — True / False — True"]
             end
         
             subgraph "When to use each"
-                STR --- S1["Names, labels, sequences<br/>Gene names, binder IDs, FASTA"]
-                INT --- S2["Counts, indices<br/>Neuron counts, well numbers"]
-                FLOAT --- S3["Measurements<br/>Kd values, voltage, temperature"]
-                BOOL --- S4["Yes/No decisions<br/>Is it a nociceptor? Passed QC?"]
+                STR --- S1["Names, labels, sequences — gene names, binder IDs, FASTA"]
+                INT --- S2["Counts, indices — neuron counts, well numbers"]
+                FLOAT --- S3["Measurements — Kd values, voltage, temperature"]
+                BOOL --- S4["Yes/No decisions — is it a nociceptor? Passed QC?"]
             end
         
             style STR fill:#4488cc,color:#fff
